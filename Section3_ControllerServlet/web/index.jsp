@@ -11,6 +11,11 @@
     <title>Hello World</title>
   </head>
   <body>
-    <h1>Hello World</h1>
+    <h1>Hello World</h1><br/>
+    <tr>
+      <td><a href='${pageContext.request.contextPath}/GetAllFilms'>Get All Films Servlet</a></td>
+      <br/>
+      <td><a href='${pageContext.request.contextPath}/GetFilms'>Get Films Servlet</a></td>
+    </tr>
   </body>
 </html>
