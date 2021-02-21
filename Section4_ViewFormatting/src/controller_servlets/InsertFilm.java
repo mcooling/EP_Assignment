@@ -1,0 +1,59 @@
+package controller_servlets;
+
+import model_beans.Film;
+import model_beans.FilmDAO;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+/**
+ * Web servlet controller<br>
+ *     interacts with FilmDAO model bean<br>
+ *     inserts film record into connected MySQL db<br>
+ *     prints validation response to browser and console
+ */
+
+@WebServlet(name = "InsertFilm", value = "/InsertFilm")
+public class InsertFilm extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+
+        // extract film object parameters from request body
+        int filmId = Integer.parseInt(request.getParameter("filmid"));
+        String filmName = request.getParameter("name");
+        int filmYear = Integer.parseInt(request.getParameter("year"));
+        String filmStars = request.getParameter("stars");
+        String filmDirector = request.getParameter("director");
+        String filmReview = request.getParameter("review");
+
+        // instantiate FilmDAO
+        FilmDAO filmDAO = new FilmDAO();
+
+        // create Film object, passing request params
+        Film film = new Film(filmId, filmName, filmYear, filmStars,
+                filmDirector, filmReview);
+
+        // call insert film method
+        filmDAO.insertFilm(film);
+
+        // todo debug print the result numbers of records inserted
+        // not quite sure on this one. need to revisit logic in insertFilm
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    }
+}
