@@ -29,7 +29,7 @@ public class FilmDAO {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(jdbcUrl);
+            conn = DriverManager.getConnection(jdbcUrl, user, password);
             stmt = conn.createStatement();
         } catch (Exception e) {
             System.out.println(e);
@@ -175,7 +175,7 @@ public class FilmDAO {
      * @return integer, with value of 0 (failed) or 1 (success)
      */
 
-    public Integer insertFilm(Film f) {
+    public int insertFilm(Film f) {
 
         // int value returned (0 or 1)
         int returnValue = 0;
@@ -192,19 +192,21 @@ public class FilmDAO {
             String filmStars = f.getStars();
             String filmReview = f.getReview();
 
+            // the sql insert string that we need to compile
+            // insert into films(id, title, year, director, stars, review) values (filmId, 'filmName', filmYear, 'filmDirector', 'filmStars', 'filmReview');
+
             // write sql insert statement string
-            String insertSql = "insert into films(id,title,year,director,stars,review) values ("
-                    + filmId
-                    + "'" + filmName + "'"
-                    + filmYear
-                    + "'" + filmDirector + "'"
-                    + "'" + filmStars + "'"
-                    + "'" + filmReview + "')";
+            String insertSql =
+                    "insert into films(id, title, year, director, stars, review) values ("
+                    + filmId + ", "
+                    + "'" + filmName + "', "
+                    + filmYear + ", "
+                    + "'" + filmDirector + "', "
+                    + "'" + filmStars + "', "
+                    + "'" + filmReview + "');";
 
             // print to console to test
-            // todo not sure how to do this on a bean class?
-            // todo might need to be a main method
-            // todo key test however and is called out as 'definitely do..' in brief
+            // added main method test class to test this
 
             // execute insert statement
             returnValue = stmt.executeUpdate(insertSql);
@@ -215,9 +217,6 @@ public class FilmDAO {
         } catch (SQLException se) {
             System.out.println(se);
         }
-
-        // check return value from insert
-        // todo not quite sure what's needed here
 
         // return value
         return returnValue;
