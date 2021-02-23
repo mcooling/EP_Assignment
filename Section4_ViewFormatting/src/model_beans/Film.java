@@ -1,6 +1,20 @@
 package model_beans;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+// jaxb annotation, sets root element for XML DOM
+@XmlRootElement(name = "film")
+
+// set order of xml tags
+@XmlType(propOrder = { "id", "title", "year", "director", "stars", "review" })
+
 public class Film {
+
+    // added no args constructor, used by jaxb
+    public Film() {
+
+    }
 
     /**
      * Base Model Java bean class, for creating a Film object<br>
@@ -76,5 +90,12 @@ public class Film {
 
     public void setReview(String review) {
         this.review = review;
+    }
+
+    @Override
+    public String toString() {
+        return "Film [id=" + id + ", title=" + title + ", year=" + year
+                + ", director=" + director + ", stars=" + stars + ", review="
+                + review + "]";
     }
 }

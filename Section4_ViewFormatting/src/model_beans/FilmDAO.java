@@ -8,6 +8,7 @@ import java.util.ArrayList;
  *     interacts with Film base class and remote MySQL db connection<br>
  *     includes several methods, to perform various db CRUD operations
  */
+
 public class FilmDAO {
 
     // mudfoot database connection details
@@ -25,6 +26,7 @@ public class FilmDAO {
      * opens MySQL db connection<br>
      * used in each of the CRUD operation methods
      */
+
     private void openConnection() {
 
         try {
@@ -41,13 +43,13 @@ public class FilmDAO {
         } catch (SQLException se) {
             System.out.println(se);
         }
-
     }
 
     /**
      * closes MySQL db connection<br>
      * used in each of the CRUD operation methods
      */
+
     private void closeConnection() {
         try {
             conn.close();
@@ -72,7 +74,7 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            String selectSQL = "select * from films";
+            String selectSQL = "select * from films limit 10";
 
             // todo not sure how to do this on a bean class?
             // todo might need to be a main method
