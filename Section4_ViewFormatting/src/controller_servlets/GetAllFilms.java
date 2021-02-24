@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.xml.bind.Unmarshaller;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -35,12 +35,11 @@ public class GetAllFilms extends HttpServlet {
         // response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
-        // PrintWriter printWriter = response.getWriter();
-        String printWriter = "";
+        String jspDisplayString = "";
 
         // access parameter for format. Set default to json if none is sent
         String dataFormat = request.getParameter("format");
-        if (dataFormat == null) dataFormat = "json";
+        if (dataFormat == null) dataFormat = "";
 
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = new FilmDAO();
@@ -49,10 +48,7 @@ public class GetAllFilms extends HttpServlet {
         // pass films array into request object
         request.setAttribute("films", allFilms);
 
-        String viewJspFilePath;
-
-        // todo something not quite right. printing two sets of content
-        // creates a browser error 'XML declaration allowed only at the start of the document'
+        String viewJspFilePath = "";
 
         // set content type in response object, depending on format sent
         if ("json".equals(dataFormat)) {
@@ -60,24 +56,25 @@ public class GetAllFilms extends HttpServlet {
             viewJspFilePath = "/WEB-INF/results/films-json.jsp";
 
             // calls gson json generator method
-            jsonGenerator(allFilms, printWriter);
+            jspDisplayString = jsonGenerator(allFilms);
 
         } else if ("xml".equals(dataFormat)) {
             response.setContentType("text/xml");
             viewJspFilePath = "/WEB-INF/results/films-xml.jsp";
 
-            /*/ calls jaxb xml generator method
+            // calls jaxb xml generator method
             try {
-                xmlGenerator(allFilms, printWriter);
+                jspDisplayString = xmlGenerator(allFilms);
             } catch (JAXBException e) {
                 e.printStackTrace();
-            }*/
+            }
 
         } else {
             response.setContentType("text/plain");
             viewJspFilePath = "/WEB-INF/results/films-string.jsp";
 
-            // todo add method call to string generator method
+            // calls string generator method
+            jspDisplayString = stringGenerator(allFilms);
         }
 
         // add dispatcher, to forward content to view jsp
@@ -95,48 +92,61 @@ public class GetAllFilms extends HttpServlet {
     /**
      * uses JAXB library, to generate xml for Film result set<br>
      * @param allFilms Arraylist of Film objects
-     * @param printWriter PrintWriter object
      * @throws JAXBException
      */
-    // todo review format for doing this. Kaleem suggested alternative
-    // method used for generating xml, using jaxb library
-    // takes in arraylist and print writer object
-    private void xmlGenerator(ArrayList<Film> allFilms,
-                              PrintWriter printWriter)
-        throws JAXBException {
+    // todo xml generated in browser, but JAXBException in console
+    private String xmlGenerator(ArrayList<Film> allFilms)
+            throws JAXBException, FileNotFoundException {
 
         // adds new FilmList, then populate with arraylist passed in
         FilmList filmList = new FilmList();
         filmList.setFilmList(allFilms);
 
-        // adds new JAXB object, to generate xml for FilmList object
-        // passes generated xml to print writer, to display in browser
+        // create marshaller
         JAXBContext jaxbContext = JAXBContext.newInstance(FilmList.class);
         Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        marshaller.marshal(filmList, printWriter);
 
+        // set marshaller properties
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+        // marshall xml content
+        StringWriter stringWriter = new StringWriter();
+        marshaller.marshal(allFilms, stringWriter);
+
+        return stringWriter.toString();
     }
 
     /**
-     * uses GSON library, to generate json for Film result set<br>
-     * @param allFilms Arraylist of Film objects
-     * @param printWriter PrintWriter object
+     * converts array list of films into json string representation<br>
+     * uses Gson library
+     * @param allFilms ArrayList of films
+     * @return String json representation of films
      */
-    // method used for generating json, using gson library
-    // takes in arraylist and print writer object
-    private void jsonGenerator(ArrayList<Film> allFilms,
-                               String printWriter) {
+
+    private String jsonGenerator(ArrayList<Film> allFilms) {
 
         Gson gson = new Gson();
-        String jsonResult;
-        jsonResult = gson.toJson(allFilms);
-
-        // printWriter.println(jsonResult);
+        String jsonResult = gson.toJson(allFilms);
+        return jsonResult;
     }
 
-    // todo method for generating string content
-    private void stringGenerator() {
+    /**
+     * converts array list of films into string representation<br>
+     * @param allFilms ArrayList of films
+     * @return String representation of films
+     */
+    private String stringGenerator(ArrayList<Film> allFilms) {
 
+        // add string buffer
+        StringBuffer stringBuffer = new StringBuffer();
+
+        // add each film from array list, to buffer
+        for (Film f : allFilms) {
+            stringBuffer.append(f);
+        }
+
+        // convert string buffer object to string
+        String stringResult = stringBuffer.toString();
+        return stringResult;
     }
 }

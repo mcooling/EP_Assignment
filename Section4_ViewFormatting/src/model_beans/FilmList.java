@@ -1,13 +1,18 @@
 package model_beans;
 
-// holds an array list of films
-// used by jaxb xml generator
+// todo getting jaxb exception error in console
+// raised post in stack, see what happens
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 
+/**
+ * holds an array list of films
+ * used by jaxb xml generator
+ */
 // jaxb annotation
 @XmlRootElement(namespace = "model_beans")
 

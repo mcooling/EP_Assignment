@@ -1,3 +1,13 @@
-ID#First Name#Last Name#Balance
-${customers[0].customerID}#${customers[0].firstName}#${customers[0].lastName}#${customers[0].formattedBalance}
-${customers[1].customerID}#${customers[1].firstName}#${customers[1].lastName}#${customers[1].formattedBalance}
+<%--@elvariable id="films" type="model_beans.Film"--%>
+<%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+
+<c:forEach items="${films}" var="f">
+    Film ID: ${f.id}#
+    Name: ${f.title}#
+    Year: ${f.year}#
+    Director: ${f.director}#
+    Cast: ${f.stars}#
+    Plot: ${f.review}
+</c:forEach>
+
+
