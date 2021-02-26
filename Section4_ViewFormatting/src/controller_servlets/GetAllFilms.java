@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -100,7 +99,7 @@ public class GetAllFilms extends HttpServlet {
 
         // adds new FilmList, then populate with arraylist passed in
         FilmList filmList = new FilmList();
-        filmList.setFilmList(allFilms);
+        filmList.setFilmArrayList(allFilms);
 
         // create marshaller
         JAXBContext jaxbContext = JAXBContext.newInstance(FilmList.class);
