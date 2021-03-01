@@ -5,6 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>URL Generator</title>
+    <script
+            src="resources/js/ajax_utils.js"
+            type="text/javascript"></script>
 </head>
 <body>
 <table border="1" bgcolor="#20b2aa">
@@ -15,9 +18,9 @@
 <fieldset>
     <legend>Retrieve Data from GetAllFilms</legend>
     <form action="#">
-        <input type="button" value="XML" onclick="xmlCustomerTable('result')"/>
-        <input type="button" value="JSON" onclick="xmlCustomerTable('result')"/>
-        <input type="button" value="TEXT" onclick="xmlCustomerTable('result')"/>
+        <input type="button" value="XML" onclick="xmlFilmResults('result')"/>
+        <!--input type="button" value="JSON" onclick="xmlCustomerTable('result')"/>
+        <input type="button" value="TEXT" onclick="xmlCustomerTable('result')"/-->
     </form>
     <p/>
     <div id="getallfilms"></div>
@@ -27,9 +30,9 @@
     <legend>Retrieve Data from GetFilms</legend>
     <form action="#">
         Film Name: <input type="text" name="filmname"/><br></br>
-        <input type="submit" value="XML" onclick="xmlCustomerTable('result')"/>
-        <input type="submit" value="JSON" onclick="xmlCustomerTable('result')"/>
-        <input type="submit" value="TEXT" onclick="xmlCustomerTable('result')"/>
+        <input type="submit" value="XML" onclick="xmlFilmResults('result')"/>
+        <!--input type="submit" value="JSON" onclick="xmlCustomerTable('result')"/>
+        <input type="submit" value="TEXT" onclick="xmlCustomerTable('result')"/-->
     </form>
     <p/>
     <div id="getfilms"></div>
