@@ -8,6 +8,7 @@ import java.util.ArrayList;
  *     interacts with Film base class and remote MySQL db connection<br>
  *     includes several methods, to perform various db CRUD operations
  */
+
 public class FilmDAO {
 
     // mudfoot database connection details
@@ -25,6 +26,7 @@ public class FilmDAO {
      * opens MySQL db connection<br>
      * used in each of the CRUD operation methods
      */
+
     private void openConnection() {
 
         try {
@@ -41,13 +43,13 @@ public class FilmDAO {
         } catch (SQLException se) {
             System.out.println(se);
         }
-
     }
 
     /**
      * closes MySQL db connection<br>
      * used in each of the CRUD operation methods
      */
+
     private void closeConnection() {
         try {
             conn.close();
@@ -72,22 +74,16 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            String selectSQL = "select * from films";
+            String selectSQL = "select * from films limit 10";
 
-            // todo not sure how to do this on a bean class?
-            // todo might need to be a main method
+            // todo revisit this. brief asks for debug
             // print to console to test
-            // System.out.println(selectSQL);
 
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
 
-            // loop through result set
             // for each item in result set, create new Film object and add to array list
             while (resultSet.next()) {
-
-                // todo NOTE. this is slightly different to the lab
-                // todo lab used 'getNextFilm'
 
                 int filmID = resultSet.getInt(1);
                 String filmName = resultSet.getString(2);
@@ -100,11 +96,6 @@ public class FilmDAO {
                         filmStars, filmReview);
 
                 allFilms.add(film);
-
-                // todo not sure how to do this on a bean class?
-                // todo might need to be a main method
-                // print to console to test
-                // System.out.println(film.toString());
             }
 
             stmt.close();
@@ -134,20 +125,15 @@ public class FilmDAO {
             // add db select statement string
             String selectSQL = "select * from films where title like '%" + searchString + "%'";
 
-            // todo not sure how to do this on a bean class?
-            // todo might need to be a main method
+            // todo revisit this. brief asks for debug
             // print to console to test
             System.out.println(selectSQL);
 
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
 
-            // loop through result set
             // for each item in result set, create new Film object and add to array list
             while (resultSet.next()) {
-
-                // todo NOTE. this is slightly different to the lab
-                // todo lab used 'getNextFilm'
 
                 int filmID = resultSet.getInt(1);
                 String filmName = resultSet.getString(2);
@@ -157,12 +143,11 @@ public class FilmDAO {
                 String filmReview = resultSet.getString(6);
 
                 Film film = new Film(filmID, filmName, filmYear, filmDirector,
-                        filmStars, filmName);
+                        filmStars, filmReview);
 
                 allFilms.add(film);
 
-                // todo not sure how to do this on a bean class?
-                // todo might need to be a main method
+                // todo revisit this. brief asks for debug
                 // print to console to test
                 System.out.println(film.toString());
             }
@@ -183,7 +168,9 @@ public class FilmDAO {
      * @return integer, with value of 0 (failed) or 1 (success)
      */
 
-    // todo don't think this is quite right
+    // todo need to confirm the ask on this
+    // section 2 tests the method / response code
+    // only way to test this will be to pass a Film object in through index.jsp
     public int insertFilm(Film f) {
 
         // int value returned (0 or 1)
@@ -202,18 +189,17 @@ public class FilmDAO {
             String filmReview = f.getReview();
 
             // write sql insert statement string
-            String insertSql = "insert into films(id,title,year,director,stars,review) values ("
-                    + filmId
-                    + "'" + filmName + "'"
-                    + filmYear
-                    + "'" + filmDirector + "'"
-                    + "'" + filmStars + "'"
-                    + "'" + filmReview + "')";
+            String insertSql =
+                    "insert into films(id, title, year, director, stars, review) values ("
+                            + filmId + ", "
+                            + "'" + filmName + "', "
+                            + filmYear + ", "
+                            + "'" + filmDirector + "', "
+                            + "'" + filmStars + "', "
+                            + "'" + filmReview + "');";
 
-            // print to console to test
-            // todo not sure how to do this on a bean class?
-            // todo might need to be a main method
-            // todo key test however and is called out as 'definitely do..' in brief
+            // todo print to console to test
+            // see previous comments. unclear what the ask is to test this
 
             // execute insert statement
             returnValue = stmt.executeUpdate(insertSql);
@@ -224,9 +210,6 @@ public class FilmDAO {
         } catch (SQLException se) {
             System.out.println(se);
         }
-
-        // check return value from insert
-        // todo not quite sure what's needed here
 
         // return value
         return returnValue;
