@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Film Search</title>
+</head>
+<body>
+    <table border="1" bgcolor="#20b2aa">
+        <tr><th><big></big>Film Search Application</th></tr>
+    </table>
+<p/>
+    <fieldset>
+        <legend>Retrieve Data from GetAllFilms</legend>
+        <form action="#">
+            <input type="button" value="XML" onclick="xmlFilmResults('getallfilms')"/>
+            <input type="button" value="JSON" onclick="xmlFilmResults('getallfilms')"/>
+            <input type="button" value="TEXT" onclick="xmlFilmResults('getallfilms')"/>
+        </form>
+        <p/>
+        <div id="getallfilms"></div>
+    </fieldset><br></br>
+
+    <fieldset>
+        <legend>Retrieve Data from GetFilms</legend>
+        <form action="#">
+            Film Name: <input type="text" name="filmname"/><br></br>
+            <input type="submit" value="XML" onclick="xmlFilmResults('getfilms')"/>
+            <input type="submit" value="JSON" onclick="xmlFilmResults('getfilms')"/>
+            <input type="submit" value="TEXT" onclick="xmlFilmResults('getfilms')"/>
+        </form>
+        <p/>
+        <div id="getfilms"></div>
+    </fieldset>
+    <br/>
+</body>
+</html>
