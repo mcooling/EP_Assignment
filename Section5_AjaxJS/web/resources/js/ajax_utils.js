@@ -67,31 +67,26 @@ function getRequestObject() {
  * @param resultRegion html div id location
  */
 
-// todo doesn't seem to be fetching any content
 function showXmlFilmInfo(request, resultRegion) {
     if ((request.readyState == 4) && (request.status == 200)) {
 
-        // todo debug seems to be null
         let xmlDocument = request.responseXML;
+        let displayData = ""; // passed into insertHtml function
 
-        // passed into insertHtml function
-        let displayData = "";
+        // fetches xml object for each film element
+        let xmlFilmElements = xmlDocument.getElementsByTagName("film");
 
-        // todo add console logs to test output
-        // doesn't seem to returning any body content
-        // kinda makes sense if xmlDocument is empty!?
+        // testing data fetch is valid
+        console.log(xmlFilmElements);
+        console.log(xmlFilmElements.length);
 
-        // console.log(xmlDocument.getElementsByName("films"));
-        let xmlFilmElement = xmlDocument.getElementsByTagName("film");
-
-        console.log(xmlFilmElement);
-        console.log(xmlFilmElement.length);
-
+        // test loop, to fetch & print unformatted results
+        // loops through xml film element
+        // gets element values for each element and adds to display string
         let subElementNames = ["id", "title", "year", "director", "stars", "review"];
-
-        for (let i = 0; i < xmlFilmElement.length; i++) {
+        for (let i = 0; i < xmlFilmElements.length; i++) {
             displayData = displayData + getElementValues(
-                xmlFilmElement[i], subElementNames);
+                xmlFilmElements[i], subElementNames);
         }
 
         /*let customers = xmlDocument.getElementsByTagName("customer");
@@ -103,7 +98,6 @@ function showXmlFilmInfo(request, resultRegion) {
         }
         let table = getTable(headings, rows);*/
 
-        // todo this is where result set is passed into html div
         htmlInsert(resultRegion, displayData);
     }
 }
@@ -118,21 +112,30 @@ function htmlInsert(resultRegion, displayData) {
     document.getElementById(resultRegion).innerHTML = displayData;
 }
 
-// takes an element object and array of sub-element names
-// returns an array of values of the sub-elements
-function getElementValues(element, subElementNames) {
+/**
+ * called by showXmlFilmInfo<br>
+ * fetches tag values for each xmlFilmElement passed in
+ * @param xmlFilmElement to fetch values for
+ * @param subElementNames array of film element tag names
+ * @returns {any[]} array of values for each xmlFilmElement
+ */
+function getElementValues(xmlFilmElement, subElementNames) {
     let values = new Array(subElementNames.length);
     for (let i = 0; i < subElementNames.length; i++) {
-        let name = subElementNames[i];
-        let subElement = element.getElementsByTagName(name)[0];
-        values[i] = getBodyContent(subElement);
+        let xmlSubElementName = subElementNames[i];
+        let xmlSubElement = xmlFilmElement.getElementsByTagName(xmlSubElementName)[0];
+        values[i] = getBodyContent(xmlSubElement);
     }
     return(values);
 }
 
-// takes in an xml element and returns body content
-// escape removes any whitespace/characters
-function getBodyContent(element) {
-    element.normalize();
-    return(element.childNodes[0].nodeValue);
+/**
+ * called by getElementValues<br>
+ * normalizes tags, to treat body content as a node<br>
+ * @param xmlSubElement
+ * @returns {any} node values for sub element child nodes
+ */
+function getBodyContent(xmlSubElement) {
+    xmlSubElement.normalize();
+    return(xmlSubElement.childNodes[0].nodeValue);
 }
