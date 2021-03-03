@@ -213,17 +213,29 @@ function jsonCustomerTable(resultRegion) {
 function showJsonCustomerInfo(request, resultRegion) {
     if ((request.readyState == 4) && (request.status == 200)) {
         // console.log(request.responseText);
-        // let jsonDocument = JSON.parse(request.responseText);
+        let jsonDocument = JSON.parse(request.responseText);
         // let customer0 = jsonDocument.customers[1].firstname;
         // console.log(jsonDocument.customers[1].firstname);
 
-        let jsonDocument = request.responseText;
-        let data = eval("(" + jsonDocument + ")");
-        let table = getTable(data.headings, data.customers);
-        htmlInsert(resultRegion, table);
+        // let jsonDocument = request.responseText;
+        // let data = eval("(" + jsonDocument + ")");
+        // let table = data.stars;
+        // htmlInsert(resultRegion, table);
         // console.log(request.responseText);
     }
 }
+
+/* boilerplate js provided in lab
+function showJsonCityInfo(request, resultRegion) {
+  if ((request.readyState == 4) &&
+      (request.status == 200)) {
+    var rawData = request.responseText;
+    var data = eval("(" + rawData + ")");
+    var table = getTable(data.headings, data.cities);
+    htmlInsert(resultRegion, table);
+  }
+}
+ */
 
 // new function, derived from showXmlCityInfo
 // called by ajaxPost response handler function

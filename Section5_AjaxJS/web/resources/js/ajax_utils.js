@@ -101,13 +101,67 @@ function jsonFilmResults(resultRegion) {
 function showJsonFilmInfo(request, resultRegion) {
     if ((request.readyState == 4) && (request.status == 200)) {
 
-        // todo testing using json.parse
         let rawJsonData = request.responseText;
-        console.log(rawJsonData.toString());            // log out to test content of request
-        let parsedJsonData = JSON.parse(rawJsonData);   // parse raw data into javascript object
-        console.log(parsedJsonData.films[1].stars);     // log out to test object values
+        let displayData = rawJsonData.toString();
+
+        //console.log(rawJsonData.toString());              // log out to test content of request
+        let parsedJsonData = JSON.parse(rawJsonData);       // parse raw data into javascript object
+        let filmTest = parsedJsonData.films[1].stars;       // create test json object
+        //console.log(filmTest);                            // log out to test object values
+
+        htmlInsert(resultRegion, displayData);              // display full json string in html
+        // htmlInsert(resultRegion, filmTest);              // display object value in html
 
     }
+}
+
+/**
+ * called by on click in webform<br>
+ * builds http request url to pass into ajax post request<br>
+ * @param resultRegion html div id for where results are displayed
+ */
+function stringFilmResults(resultRegion) {
+    let servletAddress = "";
+    let dataFormat = "format=text";
+
+    // decides which servlet to call, based on div id passed in
+    if (resultRegion === "getallfilms") {
+        servletAddress = "GetAllFilms";
+    } else {
+        servletAddress = "GetFilms";
+    }
+
+    ajaxPost(servletAddress, dataFormat,
+        function (request) {
+            showStringFilmInfo(request, resultRegion);
+        });
+}
+
+/**
+ * compiles the results data to be displayed<br>
+ *     called by ajax post<br>
+ *     extracts response string from request body<br>
+ *     inserts output into html region (via method call)
+ * @param request http request object
+ * @param resultRegion html div id location
+ */
+function showStringFilmInfo(request, resultRegion) {
+
+    let rawStringData = request.responseText;
+    console.log(rawStringData.toString());              // log out to test string data in response text
+
+    let displayData = rawStringData.toString();
+
+    /*let rowStrings = rawStringData.split(/[\n\r]+/);
+    let headings = rowStrings[0].split("#");
+    let rows = new Array(rowStrings.length-1);
+
+    for (let i = 1; i < rowStrings.length; i++) {
+        rows[i-1] = rowStrings[i].split("#");
+    }
+
+    let table = getTable(headings, rows); /*/
+    htmlInsert(resultRegion, displayData);              // test full string displays in html
 }
 
 /**
