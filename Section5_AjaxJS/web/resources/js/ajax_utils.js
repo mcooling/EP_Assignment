@@ -26,47 +26,13 @@ function xmlFilmResults(resultRegion) {
 }
 
 /**
- * handles the ajax post request from the client<br>
- *     passes servlet address and data format into request<br>
- * @param servletAddress
- * @param dataFormat
- * @param responseHandler
- */
-function ajaxPost(servletAddress, dataFormat, responseHandler) {
-    let request = getRequestObject();
-    request.onreadystatechange =
-        function () { responseHandler(request); };
-    request.open("POST", servletAddress, true);
-    request.setRequestHeader(
-        "Content-Type",
-        "application/x-www-form-urlencoded");
-    request.send(dataFormat);
-}
-
-/**
- * fetches request object from the client browser<br>
- *     XMLHttpRequest, or ActiveX for legacy browsers
- * @returns {XMLHttpRequest|null|any}
- */
-function getRequestObject() {
-    if (window.XMLHttpRequest) {
-        return(new XMLHttpRequest());
-    } else if (window.ActiveXObject) {
-        return(new ActiveXObject("Microsoft.XMLHTTP"));
-    } else {
-        return(null);
-    }
-}
-
-/**
  * compiles the results data to be displayed<br>
  *     called by ajax post<br>
  *     extracts response xml from request body<br>
  *     inserts output into html region (via method call)
- * @param request object
+ * @param request http request object
  * @param resultRegion html div id location
  */
-
 function showXmlFilmInfo(request, resultRegion) {
     if ((request.readyState == 4) && (request.status == 200)) {
 
@@ -99,6 +65,81 @@ function showXmlFilmInfo(request, resultRegion) {
         let table = getTable(headings, rows);*/
 
         htmlInsert(resultRegion, displayData);
+    }
+}
+
+/**
+ * called by on click in webform<br>
+ * builds http request url to pass into ajax post request<br>
+ * @param resultRegion html div id for where results are displayed
+ */
+function jsonFilmResults(resultRegion) {
+    let servletAddress = "";
+    let dataFormat = "format=json";
+
+    // decides which servlet to call, based on div id passed in
+    if (resultRegion === "getallfilms") {
+        servletAddress = "GetAllFilms";
+    } else {
+        servletAddress = "GetFilms";
+    }
+
+    ajaxPost(servletAddress, dataFormat,
+        function (request) {
+            showJsonFilmInfo(request, resultRegion);
+        });
+}
+
+/**
+ * compiles the results data to be displayed<br>
+ *     called by ajax post<br>
+ *     extracts response json from request body<br>
+ *     inserts output into html region (via method call)
+ * @param request http request object
+ * @param resultRegion html div id location
+ */
+function showJsonFilmInfo(request, resultRegion) {
+    if ((request.readyState == 4) && (request.status == 200)) {
+
+        // todo testing using json.parse
+        let rawJsonData = request.responseText;
+        console.log(rawJsonData.toString());            // log out to test content of request
+        let parsedJsonData = JSON.parse(rawJsonData);   // parse raw data into javascript object
+        console.log(parsedJsonData.films[1].stars);     // log out to test object values
+
+    }
+}
+
+/**
+ * handles the ajax post request from the client<br>
+ *     passes servlet address and data format into request<br>
+ * @param servletAddress
+ * @param dataFormat
+ * @param responseHandler
+ */
+function ajaxPost(servletAddress, dataFormat, responseHandler) {
+    let request = getRequestObject();
+    request.onreadystatechange =
+        function () { responseHandler(request); };
+    request.open("POST", servletAddress, true);
+    request.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded");
+    request.send(dataFormat);
+}
+
+/**
+ * fetches request object from the client browser<br>
+ *     XMLHttpRequest, or ActiveX for legacy browsers
+ * @returns {XMLHttpRequest|null|any}
+ */
+function getRequestObject() {
+    if (window.XMLHttpRequest) {
+        return(new XMLHttpRequest());
+    } else if (window.ActiveXObject) {
+        return(new ActiveXObject("Microsoft.XMLHTTP"));
+    } else {
+        return(null);
     }
 }
 

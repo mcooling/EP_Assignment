@@ -40,7 +40,7 @@ public class GetAllFilms extends HttpServlet {
 
         // access parameter for format. Set default to json if none is sent
         String dataFormat = request.getParameter("format");
-        if (dataFormat == null) dataFormat = "";
+        if (dataFormat == null) dataFormat = "json";
 
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = new FilmDAO();
@@ -52,14 +52,14 @@ public class GetAllFilms extends HttpServlet {
         String viewJspFilePath = "";
 
         // set content type in response object, depending on format sent
-        if ("json".equals(dataFormat)) {
+        if (dataFormat.equals("json")) {
             response.setContentType("application/json");
             viewJspFilePath = "/WEB-INF/results/films-json.jsp";
 
             // calls gson json generator method
             jspDisplayString = jsonGenerator(allFilms);
 
-        } else if ("xml".equals(dataFormat)) {
+        } else if (dataFormat.equals("xml")) {
             response.setContentType("text/xml");
             viewJspFilePath = "/WEB-INF/results/films-xml.jsp";
 
