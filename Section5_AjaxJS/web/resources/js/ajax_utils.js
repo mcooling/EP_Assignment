@@ -44,6 +44,7 @@ function xmlFilmResultsFromName(filmname, resultRegion) {
  * compiles the results data to be displayed<br>
  *     called by ajax post<br>
  *     extracts response xml from request body<br>
+ *     formats xml data into a html table (via method calls)<br>
  *     inserts output into html region (via method call)
  * @param request http request object
  * @param resultRegion html div id location
@@ -52,36 +53,63 @@ function showXmlFilmInfo(request, resultRegion) {
     if ((request.readyState == 4) && (request.status == 200)) {
 
         let xmlDocument = request.responseXML;
-        let displayData = ""; // passed into insertHtml function
 
         // fetches xml object for each film element
         let xmlFilmElements = xmlDocument.getElementsByTagName("film");
-
-        // testing data fetch is valid
-        // console.log(xmlFilmElements);
-        // console.log(xmlFilmElements.length);
-
-        // test loop, to fetch & print unformatted results
-        // loops through xml film element
-        // gets element values for each element and adds to display string
-        let subElementNames = ["id", "title", "year", "director", "stars", "review"];
-        for (let i = 0; i < xmlFilmElements.length; i++) {
-            displayData = displayData + getElementValues(
-                xmlFilmElements[i], subElementNames);
-        }
-
-        /*let customers = xmlDocument.getElementsByTagName("customer");
-        let rows = new Array(customers.length);
+        let tableHeadings = getXmlValues(xmlDocument, "heading");
+        let tableRows = new Array(xmlFilmElements.length);
         let subElementNames =
-            ["id", "firstName", "lastName", "balance"];
-        for (let i = 0; i < customers.length; i++) {
-            rows[i] = getElementValues(customers[i], subElementNames);
-        }
-        let table = getTable(headings, rows);*/
+            ["id", "title", "year", "director", "stars", "review"];
 
-        htmlInsert(resultRegion, displayData);
+        for (let i = 0; i < xmlFilmElements.length; i++) {
+            tableRows[i] = getElementValues(xmlFilmElements[i],
+                subElementNames);
+        }
+
+        let htmlTable = getTable(tableHeadings, tableRows);
+        htmlInsert(resultRegion, htmlTable);
+
     }
 }
+
+// builds a table
+// takes in an array of headings and and array of row arrays
+// calls separate functions to build tr (headings) and td (rows) tags
+function getTable(tableHeadings, tableRows) {
+    let table = "<table border='1' class='ajaxTable'>\n" +
+        getTableHeadings(tableHeadings) +
+        getTableBody(tableRows) +
+        "</table>";
+    return(table);
+}
+
+// takes in content of headings array
+// builds strings representation of tr/th html headings structure
+function getTableHeadings(tableHeadings) {
+    let firstRow = "  <tr>";
+    for (let i = 0; i < tableHeadings.length; i++) {
+        firstRow += "<th>" + tableHeadings[i] + "</th>";
+    }
+    firstRow += "</tr>\n";
+    return(firstRow);
+}
+
+// takes in content of rows (array of arrays)
+// this is based on nick's json format, which uses array of arrays, not array of json objects
+// builds strings representation of tr/td html rows structure
+function getTableBody(tableRows) {
+    let body = "";
+    for (let i = 0; i < tableRows.length; i++) {
+        body += "  <tr>";
+        let row = tableRows[i];
+        for (let j = 0; j < row.length; j++) {
+            body += "<td>" + row[j] + "</td>";
+        }
+        body += "</tr>\n";
+    }
+    return(body);
+}
+
 /**
  * called by on click in webform<br>
  * builds http request url to pass into ajax post request<br>
@@ -281,6 +309,19 @@ function getElementValues(xmlFilmElement, subElementNames) {
     return(values);
 }
 
+// takes in an xml document and xml element name
+// returns an array of values for that element
+function getXmlValues(xmlDocument, xmlElementName) {
+    let elementArray =
+        xmlDocument.getElementsByTagName(xmlElementName);
+    let valueArray = new Array();
+    for (let i = 0; i < elementArray.length; i++) {
+        valueArray[i] = getBodyContent(elementArray[i]);
+    }
+    return(valueArray);
+}
+
+
 /**
  * called by getElementValues<br>
  * normalizes tags, to treat body content as a node<br>
@@ -301,3 +342,5 @@ function getBodyContent(xmlSubElement) {
 function getValue(filmname) {
     return(escape(document.getElementById(filmname).value));
 }
+
+
