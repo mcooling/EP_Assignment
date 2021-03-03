@@ -7,11 +7,6 @@
  *     builds http request url to pass into ajax post request<br>
  * @param resultRegion html div id for where results are displayed
  */
-// todo check logic with jason
-// created a separate function for filmname
-// based on showCustomerFromId / Wk3 LabSheet2
-// combining the two required conditional logic...things were breaking
-// also means i can simply xml film results now, by removing if
 function xmlFilmResults(resultRegion) {
 
     let servletAddress = "GetAllFilms";
@@ -32,8 +27,10 @@ function xmlFilmResults(resultRegion) {
  */
 function xmlFilmResultsFromName(filmname, resultRegion) {
 
-    let baseServletAddress = "GetAllFilms";
+    let baseServletAddress = "GetFilms";
     let servletParams = "?filmname=" + getValue(filmname);
+
+    // e.g. GetFilms?filmname=wars
     let fullServletAddress = baseServletAddress + servletParams;
     let dataFormat = "format=xml";
 
@@ -52,7 +49,6 @@ function xmlFilmResultsFromName(filmname, resultRegion) {
  * @param resultRegion html div id location
  */
 function showXmlFilmInfo(request, resultRegion) {
-    // todo not showing ready state with getfilms request?
     if ((request.readyState == 4) && (request.status == 200)) {
 
         let xmlDocument = request.responseXML;
@@ -62,8 +58,8 @@ function showXmlFilmInfo(request, resultRegion) {
         let xmlFilmElements = xmlDocument.getElementsByTagName("film");
 
         // testing data fetch is valid
-        console.log(xmlFilmElements);
-        console.log(xmlFilmElements.length);
+        // console.log(xmlFilmElements);
+        // console.log(xmlFilmElements.length);
 
         // test loop, to fetch & print unformatted results
         // loops through xml film element
@@ -86,7 +82,6 @@ function showXmlFilmInfo(request, resultRegion) {
         htmlInsert(resultRegion, displayData);
     }
 }
-
 /**
  * called by on click in webform<br>
  * builds http request url to pass into ajax post request<br>
@@ -106,6 +101,28 @@ function jsonFilmResults(resultRegion) {
     ajaxPost(servletAddress, dataFormat,
         function (request) {
             showJsonFilmInfo(request, resultRegion);
+        });
+}
+
+// todo may be able to simplify
+// one function for 'getall films' and one for 'getfilmbyname'
+// then pass in additional field for format and checks if xml / json / string?
+/**
+ * called by on click in webform<br>
+ *     used for 'GetFilms' requests<br>
+ *     builds http request url to pass into ajax post request<br>
+ * @param filmname film name search string, entered into form
+ * @param resultRegion html div id for where results are displayed
+ */
+function jsonFilmResultsFromName(filmname, resultRegion) {
+    let baseServletAddress = "GetFilms";
+    let servletParams = "?filmname=" + getValue(filmname);
+    let fullServletAddress = baseServletAddress + servletParams;
+    let dataFormat = "format=json";
+
+    ajaxPost(fullServletAddress, dataFormat,
+        function (request) {
+            showJsonFilmInfo(request, resultRegion)
         });
 }
 
@@ -133,7 +150,6 @@ function showJsonFilmInfo(request, resultRegion) {
 
     }
 }
-
 /**
  * called by on click in webform<br>
  * builds http request url to pass into ajax post request<br>
@@ -153,6 +169,28 @@ function stringFilmResults(resultRegion) {
     ajaxPost(servletAddress, dataFormat,
         function (request) {
             showStringFilmInfo(request, resultRegion);
+        });
+}
+
+// todo may be able to simplify
+// one function for 'getall films' and one for 'getfilmbyname'
+// just passes in additional field for format and checks if xml / json / string?
+/**
+ * called by on click in webform<br>
+ *     used for 'GetFilms' requests<br>
+ *     builds http request url to pass into ajax post request<br>
+ * @param filmname film name search string, entered into form
+ * @param resultRegion html div id for where results are displayed
+ */
+function stringFilmResultsFromName(filmname, resultRegion) {
+    let baseServletAddress = "GetFilms";
+    let servletParams = "?filmname=" + getValue(filmname);
+    let fullServletAddress = baseServletAddress + servletParams;
+    let dataFormat = "format=text";
+
+    ajaxPost(fullServletAddress, dataFormat,
+        function (request) {
+            showStringFilmInfo(request, resultRegion)
         });
 }
 
@@ -254,6 +292,12 @@ function getBodyContent(xmlSubElement) {
     return(xmlSubElement.childNodes[0].nodeValue);
 }
 
+/**
+ * called by json/stringResultsFromName<br>
+ * fetches value for 'filmname'<br>
+ * @param filmname film name search string, entered into form
+ * @returns {string} string value of filmname element
+ */
 function getValue(filmname) {
     return(escape(document.getElementById(filmname).value));
 }

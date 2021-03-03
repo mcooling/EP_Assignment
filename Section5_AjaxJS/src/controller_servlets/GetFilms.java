@@ -42,14 +42,14 @@ public class GetFilms extends HttpServlet {
 
         // access parameter for format. Set default to json if none is sent
         String dataFormat = request.getParameter("format");
-        if (dataFormat == null) dataFormat = "json";
+        if (dataFormat == null) dataFormat = "xml";
 
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = new FilmDAO();
-        ArrayList<Film> filmList = filmDAO.getFilm(searchFilmName);
+        ArrayList<Film> allFilms = filmDAO.getFilm(searchFilmName);
 
         // pass films array into request object
-        request.setAttribute("films", filmList);
+        request.setAttribute("films", allFilms);
 
         // string object to pass into jsp
         String viewJspFilePath = "";
@@ -58,7 +58,7 @@ public class GetFilms extends HttpServlet {
         if (dataFormat.equals("json")) {
             response.setContentType("application/json");
             viewJspFilePath = "/WEB-INF/results/films-json.jsp";
-            jspDisplayString = jsonGenerator(filmList);
+            jspDisplayString = jsonGenerator(allFilms);
 
         } else if (dataFormat.equals("xml")) {
             response.setContentType("text/xml");
@@ -66,17 +66,17 @@ public class GetFilms extends HttpServlet {
 
             // calls jaxb xml generator method
             try {
-                jspDisplayString = xmlGenerator(filmList);
+                jspDisplayString = xmlGenerator(allFilms);
             } catch (JAXBException e) {
                 e.printStackTrace();
             }
 
-        } else {
+        } else if (dataFormat.equals("text")) {
             response.setContentType("text/plain");
             viewJspFilePath = "/WEB-INF/results/films-string.jsp";
 
             // calls string generator method
-            jspDisplayString = stringGenerator(filmList);
+            jspDisplayString = stringGenerator(allFilms);
         }
 
         // add dispatcher, to forward content to view jsp
@@ -89,6 +89,7 @@ public class GetFilms extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        doGet(request, response);
     }
 
     /**
