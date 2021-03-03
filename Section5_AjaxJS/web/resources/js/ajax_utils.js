@@ -3,23 +3,41 @@
 
 /**
  * called by on click in webform<br>
+ *     used for 'GetAllFilms' requests<br>
  *     builds http request url to pass into ajax post request<br>
  * @param resultRegion html div id for where results are displayed
  */
+// todo check logic with jason
+// created a separate function for filmname
+// based on showCustomerFromId / Wk3 LabSheet2
+// combining the two required conditional logic...things were breaking
+// also means i can simply xml film results now, by removing if
 function xmlFilmResults(resultRegion) {
 
-    let servletAddress = "";
-
-    // decides which servlet to call, based on div id passed in
-    if (resultRegion === "getallfilms") {
-        servletAddress = "GetAllFilms";
-    } else {
-        servletAddress = "GetFilms";
-    }
-
+    let servletAddress = "GetAllFilms";
     let dataFormat = "format=xml";
 
     ajaxPost(servletAddress, dataFormat,
+        function (request) {
+            showXmlFilmInfo(request, resultRegion)
+        });
+}
+
+/**
+ * called by on click in webform<br>
+ *     used for 'GetFilms' requests<br>
+ *     builds http request url to pass into ajax post request<br>
+ * @param filmname film name search string, entered into form
+ * @param resultRegion html div id for where results are displayed
+ */
+function xmlFilmResultsFromName(filmname, resultRegion) {
+
+    let baseServletAddress = "GetAllFilms";
+    let servletParams = "?filmname=" + getValue(filmname);
+    let fullServletAddress = baseServletAddress + servletParams;
+    let dataFormat = "format=xml";
+
+    ajaxPost(fullServletAddress, dataFormat,
         function (request) {
             showXmlFilmInfo(request, resultRegion)
         });
@@ -34,6 +52,7 @@ function xmlFilmResults(resultRegion) {
  * @param resultRegion html div id location
  */
 function showXmlFilmInfo(request, resultRegion) {
+    // todo not showing ready state with getfilms request?
     if ((request.readyState == 4) && (request.status == 200)) {
 
         let xmlDocument = request.responseXML;
@@ -233,4 +252,8 @@ function getElementValues(xmlFilmElement, subElementNames) {
 function getBodyContent(xmlSubElement) {
     xmlSubElement.normalize();
     return(xmlSubElement.childNodes[0].nodeValue);
+}
+
+function getValue(filmname) {
+    return(escape(document.getElementById(filmname).value));
 }

@@ -28,10 +28,11 @@
     <fieldset>
         <legend>Retrieve Data from GetFilms</legend>
         <form action="#">
-            Film Name: <input type="text" name="filmname"/><br></br>
-            <input type="submit" value="XML" onclick="xmlFilmResults('getfilms')"/>
-            <input type="submit" value="JSON" onclick="jsonFilmResults('getfilms')"/>
-            <input type="submit" value="TEXT" onclick="stringFilmResults('getfilms')"/>
+            <label>Film Name: <input type="text" id="filmname"/></label><br></br>
+            <input type="button" value="XML"
+                   onclick="xmlFilmResultsFromName('filmname', 'getfilms')"/>
+            <input type="button" value="JSON" onclick="jsonFilmResults('getfilms')"/>
+            <input type="button" value="TEXT" onclick="stringFilmResults('getfilms')"/>
         </form>
         <p/>
         <div id="getfilms"></div>
