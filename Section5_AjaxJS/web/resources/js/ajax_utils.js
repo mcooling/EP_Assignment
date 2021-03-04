@@ -20,7 +20,7 @@ function xmlFilmResults(resultRegion) {
 
 /**
  * called by on click in webform<br>
- *     used for 'GetFilms' requests<br>
+ *     used by 'GetFilms' requests<br>
  *     builds http request url to pass into ajax post request<br>
  * @param filmname film name search string, entered into form
  * @param resultRegion html div id for where results are displayed
@@ -30,7 +30,6 @@ function xmlFilmResultsFromName(filmname, resultRegion) {
     let baseServletAddress = "GetFilms";
     let servletParams = "?filmname=" + getValue(filmname);
 
-    // e.g. GetFilms?filmname=wars
     let fullServletAddress = baseServletAddress + servletParams;
     let dataFormat = "format=xml";
 
@@ -72,9 +71,15 @@ function showXmlFilmInfo(request, resultRegion) {
     }
 }
 
-// builds a table
-// takes in an array of headings and and array of row arrays
-// calls separate functions to build tr (headings) and td (rows) tags
+/**
+ * called by showXmlFilmInfo and showStringFilmInfo<br>
+ * builds html table, to format the raw data in the View jsp<br>
+ * makes separate function calls, to compile table headings and rows<br>
+ * wraps table tags around heading and row content
+ * @param tableHeadings array of xml objects, for each table heading
+ * @param tableRows array of xml objects, for each film
+ * @returns {string} string representation of compiled html table
+ */
 function getTable(tableHeadings, tableRows) {
     let table = "<table border='1' class='ajaxTable'>\n" +
         getTableHeadings(tableHeadings) +
@@ -83,8 +88,12 @@ function getTable(tableHeadings, tableRows) {
     return(table);
 }
 
-// takes in content of headings array
-// builds strings representation of tr/th html headings structure
+/**
+ * called by getTable. builds html table headings row<br>
+ * compiles tr/th html around table headings xml objects<br>
+ * @param tableHeadings array of xml objects, for each table heading
+ * @returns {string} string representation of compiled html heading row
+ */
 function getTableHeadings(tableHeadings) {
     let firstRow = "  <tr>";
     for (let i = 0; i < tableHeadings.length; i++) {
@@ -94,9 +103,12 @@ function getTableHeadings(tableHeadings) {
     return(firstRow);
 }
 
-// takes in content of rows (array of arrays)
-// this is based on nick's json format, which uses array of arrays, not array of json objects
-// builds strings representation of tr/td html rows structure
+/**
+ * called by getTable. builds html for table body rows<br>
+ * compiles tr/td html around table rows xml objects<br>
+ * @param tableRows array of xml objects, for each film
+ * @returns {string} string representation of compiled html, for each table row
+ */
 function getTableBody(tableRows) {
     let body = "";
     for (let i = 0; i < tableRows.length; i++) {
@@ -112,6 +124,16 @@ function getTableBody(tableRows) {
 
 // todo written separate function for json
 // calls a different table body function
+/**
+ * called by showJsonFilmInfo<br>
+ * separate function to xml & string, as it calls a different table body function<br>
+ * builds html table, to format the raw data in the View jsp<br>
+ * makes separate function calls, to compile table headings and rows<br>
+ * wraps table tags around heading and row content
+ * @param tableHeadings array of json objects, for each table heading
+ * @param tableRows array of json objects, for each film
+ * @returns {string} string representation of compiled html table
+ */
 function getJsonTable(tableHeadings, tableRows) {
     let table = "<table border='1' class='ajaxTable'>\n" +
         getTableHeadings(tableHeadings) +
@@ -120,8 +142,12 @@ function getJsonTable(tableHeadings, tableRows) {
     return(table);
 }
 
-// todo need separate function to handle json format
-// see comments above
+/**
+ * called by getJsonTable. builds html for table body rows<br>
+ * compiles tr/td html around table rows json objects<br>
+ * @param tableRows array of json objects, for each film
+ * @returns {string} string representation of compiled html, for each table row
+ */
 function getTableBodyJson(tableRows) {
 
     // todo technically seems to work but not sure if it's the most elegant way
@@ -386,8 +412,15 @@ function getElementValues(xmlFilmElement, subElementNames) {
     return(values);
 }
 
-// takes in an xml document and xml element name
-// returns an array of values for that element
+/**
+ * called by showXmlFilmInfo
+ * gets xml values for table headings, passed into getTable
+ * loops through array of element nodes
+ * makes further method call, to get body content for each element node
+ * @param xmlDocument xml DOM
+ * @param xmlElementName 'heading' xml element name
+ * @returns {any[]} array of element node values for 'heading'
+ */
 function getXmlValues(xmlDocument, xmlElementName) {
     let elementArray =
         xmlDocument.getElementsByTagName(xmlElementName);
@@ -397,7 +430,6 @@ function getXmlValues(xmlDocument, xmlElementName) {
     }
     return(valueArray);
 }
-
 
 /**
  * called by getElementValues<br>
