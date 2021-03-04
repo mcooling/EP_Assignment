@@ -15,9 +15,34 @@ public class FilmDAO {
     Film film = null;
     Connection conn = null;
     Statement stmt = null;
-    String user = "coolingm";
-    String password = "Saftreal4";
-    String jdbcUrl = "jdbc:mysql://mudfoot.doc.stu.mmu.ac.uk:6306/" + user;
+    // String user = "coolingm";
+    // String password = "Saftreal4";
+    // String jdbcUrl = "jdbc:mysql://mudfoot.doc.stu.mmu.ac.uk:6306/" + user;
+
+    // todo google cloud sql config
+    // string is in format
+
+    /* "jdbc:mysql://google/<dbname>?<connection-instance-name>&socketFactory=com.google.cloud.sql.mysql
+    .SocketFactory&useSSL=false&user=<username>&password=<password>" */
+
+    // split url into parts, to make it easier to read
+    // uses socket factory connector. jar needs adding to dependencies
+    // cloud sql instance credentials found in cloud sql dashboard
+
+    String baseUrl = "jdbc:mysql://google/";
+    String dbname = "mmufilms";
+    String connectionName = "tensile-sorter-306610:europe-west2:mmu-assignment";
+    String socketFactoryParam = "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false";
+    String username = "root";
+    String password = "B$xter74";
+
+    String googleSQLUrl = baseUrl + dbname + "?cloudSqlInstance=" + connectionName +
+            socketFactoryParam + "&user=" + username + "&password=" + password;
+
+    /*String cloudSqlUrl = "jdbc:mysql://google/mmufilms?cloudSqlInstance=civic-surge-304821:" +
+            "europe-west1:mmu-cloudsql&socketFactory=com.google.cloud.sql.mysql.SocketFactory" +
+            "&useSSL=false&user=root&password=B$xter74";*/
+
 
     public FilmDAO() {
     }
@@ -37,7 +62,8 @@ public class FilmDAO {
 
         // connecting to database
         try {
-            conn = DriverManager.getConnection(jdbcUrl,user,password);
+            // conn = DriverManager.getConnection(jdbcUrl,user,password);
+            conn = DriverManager.getConnection(googleSQLUrl);
             stmt = conn.createStatement();
 
         } catch (SQLException se) {
@@ -74,10 +100,8 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            String selectSQL = "select * from films limit 10";
-
-            // todo revisit this. brief asks for debug
-            // print to console to test
+            String selectSQL = "select * from mmufilms.films limit 10";
+            //String selectSQL = "select * from films limit 10";
 
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
@@ -123,7 +147,8 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            String selectSQL = "select * from films where title like '%" + searchString + "%'";
+            String selectSQL = "select * from mmufilms.films " +
+                    "where title like '%" + searchString + "%'";
 
             // todo revisit this. brief asks for debug
             // print to console to test
@@ -147,9 +172,8 @@ public class FilmDAO {
 
                 allFilms.add(film);
 
-                // todo revisit this. brief asks for debug
                 // print to console to test
-                System.out.println(film.toString());
+                // System.out.println(film.toString());
             }
 
             stmt.close();
@@ -190,7 +214,7 @@ public class FilmDAO {
 
             // write sql insert statement string
             String insertSql =
-                    "insert into films(id, title, year, director, stars, review) values ("
+                    "insert into mmufilms.films(id, title, year, director, stars, review) values ("
                             + filmId + ", "
                             + "'" + filmName + "', "
                             + filmYear + ", "
