@@ -110,21 +110,89 @@ function getTableBody(tableRows) {
     return(body);
 }
 
+// todo written separate function for json
+// calls a different table body function
+function getJsonTable(tableHeadings, tableRows) {
+    let table = "<table border='1' class='ajaxTable'>\n" +
+        getTableHeadings(tableHeadings) +
+        getTableBodyJson(tableRows) +
+        "</table>";
+    return(table);
+}
+
+// todo need separate function to handle json format
+// see comments above
+function getTableBodyJson(tableRows) {
+
+    // todo technically seems to work but not sure if it's the most elegant way
+    // other methods suggest Object.entries() but I just couldn't get it to work
+    // couldn't get past value just returning the Object instance
+    // see comments below..
+
+    // approach was to loop through array of json objects
+    // create a json object variable
+    // then build up each td tag by accessing key value
+    // todo get an 'undefined' final row, due to that annoying empty object
+
+    let body = "";
+
+    for (let i = 0; i < tableRows.length; i++) {
+
+        let jsonObject = tableRows[i];
+
+        body +=
+            " <tr>\n" +
+            "   <td>" + jsonObject.id + "</td\n>" +
+            "   <td>" + jsonObject.title + "</td\n>" +
+            "   <td>" + jsonObject.year + "</td\n>" +
+            "   <td>" + jsonObject.director + "</td\n>" +
+            "   <td>" + jsonObject.stars + "</td\n>" +
+            "   <td>" + jsonObject.review + "</td\n>" +
+            " </tr>\n";
+
+    }
+
+    return(body);
+
+    /*for (let [key, value] of Object.entries(tableRows)) {
+      console.log(`${key}: ${value}`);
+    }*/
+
+    /*for (const [key, value] of Object.entries(tableRows)) {
+        console.log(`${key}: ${value}`);
+    }*/
+
+    /*for (let key of Object.entries(tableRows)) {
+        body +=
+            " <tr>\n" +
+            " <td>" + `${Object.valueOf()}` + "</td\n>" +
+            //" <td>" + `${Object.toString()}` + "</td\n>" +
+            //"  <td>" + `${key.toString()}: ${value.toString()}` + "</td\n>" +
+            " </tr>\n";
+    }*/
+    //return(body);
+    /*
+    let body = "";
+    for (let i = 0; i < tableRows.length; i++) {
+        body += "  <tr>";
+        let row = tableRows[i];
+        for (let j = 0; j < row.length; j++) {
+            body += "<td>" + row[j] + "</td>";
+        }
+        body += "</tr>\n";
+    }*/
+
+}
+
 /**
  * called by on click in webform<br>
+ *     used for 'GetAllFilms'<br>
  * builds http request url to pass into ajax post request<br>
  * @param resultRegion html div id for where results are displayed
  */
 function jsonFilmResults(resultRegion) {
-    let servletAddress = "";
+    let servletAddress = "GetAllFilms";
     let dataFormat = "format=json";
-
-    // decides which servlet to call, based on div id passed in
-    if (resultRegion === "getallfilms") {
-        servletAddress = "GetAllFilms";
-    } else {
-        servletAddress = "GetFilms";
-    }
 
     ajaxPost(servletAddress, dataFormat,
         function (request) {
@@ -166,33 +234,41 @@ function showJsonFilmInfo(request, resultRegion) {
     if ((request.readyState == 4) && (request.status == 200)) {
 
         let rawJsonData = request.responseText;
-        let displayData = rawJsonData.toString();
+        // let displayData = rawJsonData.toString();
 
         //console.log(rawJsonData.toString());              // log out to test content of request
         let parsedJsonData = JSON.parse(rawJsonData);       // parse raw data into javascript object
-        let filmTest = parsedJsonData.films[1].stars;       // create test json object
+        // let filmTest = parsedJsonData.films[1].stars;    // create test json object
         //console.log(filmTest);                            // log out to test object values
 
-        htmlInsert(resultRegion, displayData);              // display full json string in html
-        // htmlInsert(resultRegion, filmTest);              // display object value in html
+        // create variable for headings and rows
+        // fetches json objects
+        let tableHeadings = parsedJsonData.headings;
+        let tableRows = parsedJsonData.films;
 
+        let htmlTable = getJsonTable(tableHeadings, tableRows);
+
+        // htmlInsert(resultRegion, displayData);           // display full json string in html
+        // htmlInsert(resultRegion, filmTest);              // display object value in html
+        htmlInsert(resultRegion, htmlTable);
+
+        /*
+        let rawData = request.responseText;
+        let data = eval("(" + rawData + ")");
+        let table = getTable(data.headings, data.cities);
+        htmlInsert(resultRegion, table);
+         */
     }
 }
+
 /**
  * called by on click in webform<br>
  * builds http request url to pass into ajax post request<br>
  * @param resultRegion html div id for where results are displayed
  */
 function stringFilmResults(resultRegion) {
-    let servletAddress = "";
+    let servletAddress = "GetAllFilms";
     let dataFormat = "format=text";
-
-    // decides which servlet to call, based on div id passed in
-    if (resultRegion === "getallfilms") {
-        servletAddress = "GetAllFilms";
-    } else {
-        servletAddress = "GetFilms";
-    }
 
     ajaxPost(servletAddress, dataFormat,
         function (request) {
@@ -234,19 +310,20 @@ function showStringFilmInfo(request, resultRegion) {
 
     let rawStringData = request.responseText;
     console.log(rawStringData.toString());              // log out to test string data in response text
+    // let displayData = rawStringData.toString();
 
-    let displayData = rawStringData.toString();
-
-    /*let rowStrings = rawStringData.split(/[\n\r]+/);
-    let headings = rowStrings[0].split("#");
-    let rows = new Array(rowStrings.length-1);
+    // todo table formatting not quite working
+    // tableRows not rendering properly
+    let rowStrings = rawStringData.split(/[\n\r]+/);
+    let tableHeadings = rowStrings[0].split("#");
+    let tableRows = new Array(rowStrings.length-1);
 
     for (let i = 1; i < rowStrings.length; i++) {
-        rows[i-1] = rowStrings[i].split("#");
+        tableRows[i-1] = rowStrings[i].split("#");
     }
 
-    let table = getTable(headings, rows); /*/
-    htmlInsert(resultRegion, displayData);              // test full string displays in html
+    let table = getTable(tableHeadings, tableRows);
+    htmlInsert(resultRegion, table);                    // test full string displays in html
 }
 
 /**
