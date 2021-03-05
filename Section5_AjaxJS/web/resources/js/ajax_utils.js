@@ -335,21 +335,20 @@ function stringFilmResultsFromName(filmname, resultRegion) {
 function showStringFilmInfo(request, resultRegion) {
 
     let rawStringData = request.responseText;
-    console.log(rawStringData.toString());              // log out to test string data in response text
+    // console.log(rawStringData.toString());              // log out to test string data in response text
     // let displayData = rawStringData.toString();
 
-    // todo table formatting not quite working
-    // tableRows not rendering properly
-    let rowStrings = rawStringData.split(/[\n\r]+/);
-    let tableHeadings = rowStrings[0].split("#");
+    let rowStrings = rawStringData.split("$");          // split each row on $ separator
+    let tableHeadings = rowStrings[0].split("#");       // split each heading on # separator
     let tableRows = new Array(rowStrings.length-1);
 
     for (let i = 1; i < rowStrings.length; i++) {
         tableRows[i-1] = rowStrings[i].split("#");
+        //console.log(tableRows[i-1]);
     }
-
+    console.log(tableRows[0]);
     let table = getTable(tableHeadings, tableRows);
-    htmlInsert(resultRegion, table);                    // test full string displays in html
+    htmlInsert(resultRegion, table);                        // test full string displays in html
 }
 
 /**

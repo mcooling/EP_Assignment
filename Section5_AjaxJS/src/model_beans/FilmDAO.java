@@ -19,9 +19,7 @@ public class FilmDAO {
     // String password = "Saftreal4";
     // String jdbcUrl = "jdbc:mysql://mudfoot.doc.stu.mmu.ac.uk:6306/" + user;
 
-    // todo google cloud sql config
-    // string is in format
-
+    // Google Cloud SQL format
     /* "jdbc:mysql://google/<dbname>?<connection-instance-name>&socketFactory=com.google.cloud.sql.mysql
     .SocketFactory&useSSL=false&user=<username>&password=<password>" */
 
@@ -38,11 +36,6 @@ public class FilmDAO {
 
     String googleSQLUrl = baseUrl + dbname + "?cloudSqlInstance=" + connectionName +
             socketFactoryParam + "&user=" + username + "&password=" + password;
-
-    /*String cloudSqlUrl = "jdbc:mysql://google/mmufilms?cloudSqlInstance=civic-surge-304821:" +
-            "europe-west1:mmu-cloudsql&socketFactory=com.google.cloud.sql.mysql.SocketFactory" +
-            "&useSSL=false&user=root&password=B$xter74";*/
-
 
     public FilmDAO() {
     }

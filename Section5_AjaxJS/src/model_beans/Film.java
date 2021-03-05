@@ -1,5 +1,7 @@
 package model_beans;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -8,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 // jaxb annotation, sets root element for XML DOM
 @XmlRootElement(name = "film")
+@XmlAccessorType(XmlAccessType.FIELD)
 
 // set order of xml tags
 @XmlType(propOrder = { "id", "title", "year", "director", "stars", "review" })
