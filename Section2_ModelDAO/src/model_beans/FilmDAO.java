@@ -66,11 +66,6 @@ public class FilmDAO {
             // add db select statement string
             String selectSQL = "select * from films";
 
-            // todo not sure how to do this on a bean class?
-            // todo might need to be a main method
-            // print to console to test
-            System.out.println(selectSQL);
-
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
 
@@ -78,8 +73,8 @@ public class FilmDAO {
             // for each item in result set, create new Film object and add to array list
             while (resultSet.next()) {
 
-                // todo NOTE. this is slightly different to the lab
-                // todo lab used 'getNextFilm'
+                // todo FIX THIS. also gets picked up later in assignment
+                // lab uses method call to 'getNextFilm'. cleaner way to do it
 
                 int filmID = resultSet.getInt(1);
                 String filmName = resultSet.getString(2);
@@ -93,10 +88,6 @@ public class FilmDAO {
 
                 allFilms.add(film);
 
-                // todo not sure how to do this on a bean class?
-                // todo might need to be a main method
-                // print to console to test
-                System.out.println(film.toString());
             }
 
             stmt.close();
@@ -124,12 +115,7 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            String selectSQL = "select * from films where title like '%'" + searchString + "'%'";
-
-            // todo not sure how to do this on a bean class?
-            // todo might need to be a main method
-            // print to console to test
-            System.out.println(selectSQL);
+            String selectSQL = "select * from films where title like '%" + searchString + "%'";
 
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
@@ -138,8 +124,8 @@ public class FilmDAO {
             // for each item in result set, create new Film object and add to array list
             while (resultSet.next()) {
 
-                // todo NOTE. this is slightly different to the lab
-                // todo lab used 'getNextFilm'
+                // todo FIX THIS. also gets picked up later in assignment
+                // lab uses method call to 'getNextFilm'. cleaner way to do it
 
                 int filmID = resultSet.getInt(1);
                 String filmName = resultSet.getString(2);
@@ -149,14 +135,10 @@ public class FilmDAO {
                 String filmReview = resultSet.getString(6);
 
                 Film film = new Film(filmID, filmName, filmYear, filmDirector,
-                        filmStars, filmName);
+                        filmStars, filmReview);
 
                 allFilms.add(film);
 
-                // todo not sure how to do this on a bean class?
-                // todo might need to be a main method
-                // print to console to test
-                System.out.println(film.toString());
             }
 
             stmt.close();
