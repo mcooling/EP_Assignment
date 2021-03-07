@@ -16,7 +16,7 @@
   </binding>
   <service name="FilmWebService">
     <port name="FilmWebService" binding="tns:FilmWebServiceBinding">
-      <soap:address location="http://localhost:8080/Section7_SOAPWS_war_exploded/services/FilmWebService"/>
+        <soap:address location="http://localhost:8080//services/webservice/FilmWebService"/>
     </port>
   </service>
 </definitions>
