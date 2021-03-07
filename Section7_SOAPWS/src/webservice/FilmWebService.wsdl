@@ -16,7 +16,7 @@
   </binding>
   <service name="FilmWebService">
     <port name="FilmWebService" binding="tns:FilmWebServiceBinding">
-        <soap:address location="http://localhost:8080//services/webservice/FilmWebService"/>
+      <soap:address location="https://20210307t193625-dot-tensile-sorter-306610.ew.r.appspot.com/services/FilmWebService"/>
     </port>
   </service>
 </definitions>
