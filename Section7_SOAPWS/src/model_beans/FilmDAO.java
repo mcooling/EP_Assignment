@@ -15,9 +15,9 @@ public class FilmDAO {
     Film film = null;
     Connection conn = null;
     Statement stmt = null;
-    String user = "coolingm";
-    String password = "Saftreal4";
-    String jdbcUrl = "jdbc:mysql://mudfoot.doc.stu.mmu.ac.uk:6306/" + user;
+    //String user = "coolingm";
+    //String password = "Saftreal4";
+    //String jdbcUrl = "jdbc:mysql://mudfoot.doc.stu.mmu.ac.uk:6306/" + user;
 
     // Google Cloud SQL format
     /* "jdbc:mysql://google/<dbname>?<connection-instance-name>&socketFactory=com.google.cloud.sql.mysql
@@ -27,7 +27,7 @@ public class FilmDAO {
     // uses socket factory connector. jar needs adding to dependencies
     // cloud sql instance credentials found in cloud sql dashboard
 
-    /* String baseUrl = "jdbc:mysql://google/";
+    String baseUrl = "jdbc:mysql://google/";
     String dbname = "mmufilms";
     String connectionName = "tensile-sorter-306610:europe-west2:mmu-assignment";
     String socketFactoryParam = "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false";
@@ -35,7 +35,7 @@ public class FilmDAO {
     String password = "B$xter74";
 
     String googleSQLUrl = baseUrl + dbname + "?cloudSqlInstance=" + connectionName +
-            socketFactoryParam + "&user=" + username + "&password=" + password; */
+            socketFactoryParam + "&user=" + username + "&password=" + password;
 
     public FilmDAO() {
     }
@@ -55,8 +55,8 @@ public class FilmDAO {
 
         // connecting to database
         try {
-            conn = DriverManager.getConnection(jdbcUrl, user, password);
-            // conn = DriverManager.getConnection(googleSQLUrl);
+            // conn = DriverManager.getConnection(jdbcUrl, user, password);
+            conn = DriverManager.getConnection(googleSQLUrl);
             stmt = conn.createStatement();
 
         } catch (SQLException se) {
@@ -96,8 +96,8 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            //String selectSQL = "select * from mmufilms.films limit 10";
-            String selectSQL = "select * from films limit 10";
+            String selectSQL = "select * from mmufilms.films limit 10";
+            // String selectSQL = "select * from films limit 10";
 
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
@@ -143,10 +143,10 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            String selectSQL = "select * from films " +
+            //String selectSQL = "select * from films " +
+              //      "where title like '%" + searchString + "%'";
+            String selectSQL = "select * from mmufilms.films " +
                     "where title like '%" + searchString + "%'";
-            //String selectSQL = "select * from mmufilms.films " +
-            //        "where title like '%" + searchString + "%'";
 
             // todo revisit this. brief asks for debug
             // print to console to test
@@ -211,23 +211,23 @@ public class FilmDAO {
             String filmReview = f.getReview();
 
             // write sql insert statement string
-            String insertSql =
+            /*String insertSql =
                     "insert into films(id, title, year, director, stars, review) values ("
                             + filmId + ", "
                             + "'" + filmName + "', "
                             + filmYear + ", "
                             + "'" + filmDirector + "', "
                             + "'" + filmStars + "', "
-                            + "'" + filmReview + "');";
+                            + "'" + filmReview + "');";*/
 
-            /*String insertSql =
+            String insertSql =
                     "insert into mmufilms.films(id, title, year, director, stars, review) values ("
                             + filmId + ", "
                             + "'" + filmName + "', "
                             + filmYear + ", "
                             + "'" + filmDirector + "', "
                             + "'" + filmStars + "', "
-                            + "'" + filmReview + "');";*/
+                            + "'" + filmReview + "');";
 
             // todo print to console to test
             // see previous comments. unclear what the ask is to test this
