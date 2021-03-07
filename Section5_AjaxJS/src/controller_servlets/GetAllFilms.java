@@ -112,7 +112,8 @@ public class GetAllFilms extends HttpServlet {
 
         // marshall xml content
         StringWriter stringWriter = new StringWriter();
-        marshaller.marshal(allFilms, stringWriter);
+        // marshaller.marshal(allFilms, stringWriter);
+        marshaller.marshal(filmList, stringWriter);     // note this now resolves the JAXBError
 
         return stringWriter.toString();
     }

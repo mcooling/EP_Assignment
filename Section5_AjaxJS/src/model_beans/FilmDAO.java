@@ -84,6 +84,9 @@ public class FilmDAO {
      * @return ArrayList of Film objects
      */
 
+    // todo come back to this!! kaleem's video on 5/3 shows much slicker way to do this
+    // uses getNext film method to create Film object, then adds that to list
+    // rather than extracting film body and compiling new film object
     public ArrayList<Film> getAllFilms() {
 
         // create array list to hold each film
