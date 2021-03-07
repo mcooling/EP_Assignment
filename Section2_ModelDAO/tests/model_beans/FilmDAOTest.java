@@ -86,6 +86,14 @@ class FilmDAOTest {
         } else if (returnValue == 1) {
             System.out.println("SQL insert complete: " + returnValue + " film record added \n");
 
+            System.out.println(
+                    "Film ID: " + film.getId() + "\n" +
+                            "Title: " + film.getTitle() + "\n" +
+                            "Year: " + film.getYear() + "\n" +
+                            "Director: " + film.getDirector() + "\n" +
+                            "Main Cast: " + film.getStars() + "\n" +
+                            "Synopsis: " + film.getReview() + "\n");
+
         } else if (returnValue > 1) {
             System.out.println("SQL insert complete: " + returnValue + " film records added \n");
         }
