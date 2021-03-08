@@ -3,9 +3,7 @@ package model_beans;
 // todo getting jaxb exception error in console
 // raised post in stack, see what happens
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 
 /**
@@ -15,16 +13,15 @@ import java.util.ArrayList;
 // jaxb annotation
 // @XmlRootElement(namespace = "model_beans")
 @XmlRootElement(name="filmList")
+@XmlAccessorType(XmlAccessType.FIELD)
 
 public class FilmList {
 
-    private ArrayList<Film> filmArrayList;
-
     // add wrapper element around XML
     @XmlElementWrapper(name = "filmList")
-
     // set the name of the xml entities
     @XmlElement(name = "film")
+    private ArrayList<Film> filmArrayList;
 
     public ArrayList<Film> getFilmArrayList() {
         return filmArrayList;

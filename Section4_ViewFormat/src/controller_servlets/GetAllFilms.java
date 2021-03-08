@@ -95,7 +95,6 @@ public class GetAllFilms extends HttpServlet {
      * @param allFilms Arraylist of Film objects
      * @throws JAXBException
      */
-    // todo xml generated in browser, but JAXBException in console
     private String xmlGenerator(ArrayList<Film> allFilms)
             throws JAXBException, FileNotFoundException {
 
@@ -112,7 +111,7 @@ public class GetAllFilms extends HttpServlet {
 
         // marshall xml content
         StringWriter stringWriter = new StringWriter();
-        marshaller.marshal(allFilms, stringWriter);
+        marshaller.marshal(filmList, stringWriter);
 
         return stringWriter.toString();
     }

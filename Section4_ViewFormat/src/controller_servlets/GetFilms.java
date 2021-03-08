@@ -127,7 +127,7 @@ public class GetFilms extends HttpServlet {
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
         StringWriter stringWriter = new StringWriter();
-        marshaller.marshal(allFilms, stringWriter);
+        marshaller.marshal(filmList, stringWriter);
 
         return stringWriter.toString();
     }
