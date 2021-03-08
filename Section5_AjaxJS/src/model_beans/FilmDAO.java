@@ -146,10 +146,6 @@ public class FilmDAO {
             String selectSQL = "select * from mmufilms.films " +
                     "where title like '%" + searchString + "%'";
 
-            // todo revisit this. brief asks for debug
-            // print to console to test
-            System.out.println(selectSQL);
-
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
 
@@ -218,9 +214,6 @@ public class FilmDAO {
                             + "'" + filmStars + "', "
                             + "'" + filmReview + "');";
 
-            // todo print to console to test
-            // see previous comments. unclear what the ask is to test this
-
             // execute insert statement
             returnValue = stmt.executeUpdate(insertSql);
             
@@ -233,8 +226,5 @@ public class FilmDAO {
 
         // return value
         return returnValue;
-
-        // todo come back to this
-        // create suitable amend/delete methods to complete CRUD set of ops
     }
 }

@@ -20,6 +20,36 @@ function xmlFilmResults(resultRegion) {
 
 /**
  * called by on click in webform<br>
+ * builds http request url to pass into ajax post request<br>
+ * @param resultRegion html div id for where results are displayed
+ */
+function jsonFilmResults(resultRegion) {
+    let servletAddress = "GetAllFilms";
+    let dataFormat = "format=json";
+
+    ajaxPost(servletAddress, dataFormat,
+        function (request) {
+            showJsonFilmInfo(request, resultRegion);
+        });
+}
+
+/**
+ * called by on click in webform<br>
+ * builds http request url to pass into ajax post request<br>
+ * @param resultRegion html div id for where results are displayed
+ */
+function stringFilmResults(resultRegion) {
+    let servletAddress = "GetAllFilms";
+    let dataFormat = "format=text";
+
+    ajaxPost(servletAddress, dataFormat,
+        function (request) {
+            showStringFilmInfo(request, resultRegion);
+        });
+}
+
+/**
+ * called by on click in webform<br>
  *     used by 'GetFilms' requests<br>
  *     builds http request url to pass into ajax post request<br>
  * @param filmname film name search string, entered into form
@@ -37,6 +67,115 @@ function xmlFilmResultsFromName(filmname, resultRegion) {
         function (request) {
             showXmlFilmInfo(request, resultRegion)
         });
+}
+
+// todo may be able to simplify
+// one function for 'getall films' and one for 'getfilmbyname'
+// then pass in additional field for format and checks if xml / json / string?
+/**
+ * called by on click in webform<br>
+ *     used for 'GetFilms' requests<br>
+ *     builds http request url to pass into ajax post request<br>
+ * @param filmname film name search string, entered into form
+ * @param resultRegion html div id for where results are displayed
+ */
+function jsonFilmResultsFromName(filmname, resultRegion) {
+    let baseServletAddress = "GetFilms";
+    let servletParams = "?filmname=" + getValue(filmname);
+    let fullServletAddress = baseServletAddress + servletParams;
+    let dataFormat = "format=json";
+
+    ajaxPost(fullServletAddress, dataFormat,
+        function (request) {
+            showJsonFilmInfo(request, resultRegion)
+        });
+}
+
+// todo may be able to simplify
+// one function for 'getall films' and one for 'getfilmbyname'
+// just passes in additional field for format and checks if xml / json / string?
+/**
+ * called by on click in webform<br>
+ *     used for 'GetFilms' requests<br>
+ *     builds http request url to pass into ajax post request<br>
+ * @param filmname film name search string, entered into form
+ * @param resultRegion html div id for where results are displayed
+ */
+function stringFilmResultsFromName(filmname, resultRegion) {
+    let baseServletAddress = "GetFilms";
+    let servletParams = "?filmname=" + getValue(filmname);
+    let fullServletAddress = baseServletAddress + servletParams;
+    let dataFormat = "format=text";
+
+    ajaxPost(fullServletAddress, dataFormat,
+        function (request) {
+            showStringFilmInfo(request, resultRegion)
+        });
+}
+
+// todo review with jason. merged three previous 'getresultsbyname' methods into 1
+function getFilmResultsFromName(filmname, resultRegion, dataFormatIn) {
+
+    let baseServletAddress = "GetFilms";
+    let servletParams = "?filmname=" + getValue(filmname);
+    let fullServletAddress = baseServletAddress + servletParams;
+    let dataFormat = "format=" + dataFormatIn;
+
+    if (dataFormatIn === "xml") {
+        ajaxPost(fullServletAddress, dataFormat,
+            function (request) {
+                showXmlFilmInfo(request, resultRegion)
+            });
+
+    } else if (dataFormatIn === "json") {
+        ajaxPost(fullServletAddress, dataFormat,
+            function (request) {
+                showJsonFilmInfo(request, resultRegion)
+            });
+
+    } else {
+        ajaxPost(fullServletAddress, dataFormat,
+            function (request) {
+                showStringFilmInfo(request, resultRegion)
+            });
+    }
+}
+
+// todo review with jason. merged three previous 'getfilmresults' methods into 1
+/**
+ * called by on click in webform<br>
+ *     used for 'GetAllFilms'<br>
+ * builds http request url to pass into ajax post request<br>
+ * @param resultRegion html div id for where results are displayed
+ * @param {string} dataFormatIn data format type requested
+ */
+// todo check with jc. this looks like it works
+// does this mean we can just have one generic function for all three buttons?
+// now takes in the data format value, passed in by webform
+// then adds if-else, to decide which 'show info' function to call
+// todo include this in 'code refactored' section of report if it's a goer
+function getAllFilmResults(resultRegion, dataFormatIn) {
+    let servletAddress = "GetAllFilms";
+    // let dataFormat = "format=json";
+
+    let dataFormat = "format=" + dataFormatIn;
+
+    if (dataFormatIn === "json") {
+        ajaxPost(servletAddress, dataFormat,
+            function (request) {
+                showJsonFilmInfo(request, resultRegion);
+            });
+    } else if (dataFormatIn === "xml") {
+        ajaxPost(servletAddress, dataFormat,
+            function (request) {
+                showXmlFilmInfo(request, resultRegion)
+            });
+    } else {
+        ajaxPost(servletAddress, dataFormat,
+            function (request) {
+                showStringFilmInfo(request, resultRegion)
+            });
+    }
 }
 
 /**
@@ -69,6 +208,72 @@ function showXmlFilmInfo(request, resultRegion) {
         htmlInsert(resultRegion, htmlTable);
 
     }
+}
+
+/**
+ * compiles the results data to be displayed<br>
+ *     called by ajax post<br>
+ *     extracts response json from request body<br>
+ *     inserts output into html region (via method call)
+ * @param request http request object
+ * @param resultRegion html div id location
+ */
+function showJsonFilmInfo(request, resultRegion) {
+    if ((request.readyState == 4) && (request.status == 200)) {
+
+        let rawJsonData = request.responseText;
+        // let displayData = rawJsonData.toString();
+
+        //console.log(rawJsonData.toString());              // log out to test content of request
+        let parsedJsonData = JSON.parse(rawJsonData);       // parse raw data into javascript object
+        // let filmTest = parsedJsonData.films[1].stars;    // create test json object
+        //console.log(filmTest);                            // log out to test object values
+
+        // create variable for headings and rows
+        // fetches json objects
+        let tableHeadings = parsedJsonData.headings;
+        let tableRows = parsedJsonData.films;
+
+        let htmlTable = getJsonTable(tableHeadings, tableRows);
+
+        // htmlInsert(resultRegion, displayData);           // display full json string in html
+        // htmlInsert(resultRegion, filmTest);              // display object value in html
+        htmlInsert(resultRegion, htmlTable);
+
+        /*
+        let rawData = request.responseText;
+        let data = eval("(" + rawData + ")");
+        let table = getTable(data.headings, data.cities);
+        htmlInsert(resultRegion, table);
+         */
+    }
+}
+
+/**
+ * compiles the results data to be displayed<br>
+ *     called by ajax post<br>
+ *     extracts response string from request body<br>
+ *     inserts output into html region (via method call)
+ * @param request http request object
+ * @param resultRegion html div id location
+ */
+function showStringFilmInfo(request, resultRegion) {
+
+    let rawStringData = request.responseText;
+    // console.log(rawStringData.toString());              // log out to test string data in response text
+    // let displayData = rawStringData.toString();
+
+    let rowStrings = rawStringData.split("$");          // split each row on $ separator
+    let tableHeadings = rowStrings[0].split("#");       // split each heading on # separator
+    let tableRows = new Array(rowStrings.length-1);
+
+    for (let i = 1; i < rowStrings.length; i++) {
+        tableRows[i-1] = rowStrings[i].split("#");
+        //console.log(tableRows[i-1]);
+    }
+    console.log(tableRows[0]);
+    let table = getTable(tableHeadings, tableRows);
+    htmlInsert(resultRegion, table);                        // test full string displays in html
 }
 
 /**
@@ -124,6 +329,7 @@ function getTableBody(tableRows) {
 
 // todo written separate function for json
 // calls a different table body function
+// just check in with jc on my thinking here...
 /**
  * called by showJsonFilmInfo<br>
  * separate function to xml & string, as it calls a different table body function<br>
@@ -150,7 +356,7 @@ function getJsonTable(tableHeadings, tableRows) {
  */
 function getTableBodyJson(tableRows) {
 
-    // todo technically seems to work but not sure if it's the most elegant way
+    // todo technically seems to work, but not sure if it's the most elegant way
     // other methods suggest Object.entries() but I just couldn't get it to work
     // couldn't get past value just returning the Object instance
     // see comments below..
@@ -208,147 +414,6 @@ function getTableBodyJson(tableRows) {
         body += "</tr>\n";
     }*/
 
-}
-
-/**
- * called by on click in webform<br>
- *     used for 'GetAllFilms'<br>
- * builds http request url to pass into ajax post request<br>
- * @param resultRegion html div id for where results are displayed
- */
-function jsonFilmResults(resultRegion) {
-    let servletAddress = "GetAllFilms";
-    let dataFormat = "format=json";
-
-    ajaxPost(servletAddress, dataFormat,
-        function (request) {
-            showJsonFilmInfo(request, resultRegion);
-        });
-}
-
-// todo may be able to simplify
-// one function for 'getall films' and one for 'getfilmbyname'
-// then pass in additional field for format and checks if xml / json / string?
-/**
- * called by on click in webform<br>
- *     used for 'GetFilms' requests<br>
- *     builds http request url to pass into ajax post request<br>
- * @param filmname film name search string, entered into form
- * @param resultRegion html div id for where results are displayed
- */
-function jsonFilmResultsFromName(filmname, resultRegion) {
-    let baseServletAddress = "GetFilms";
-    let servletParams = "?filmname=" + getValue(filmname);
-    let fullServletAddress = baseServletAddress + servletParams;
-    let dataFormat = "format=json";
-
-    ajaxPost(fullServletAddress, dataFormat,
-        function (request) {
-            showJsonFilmInfo(request, resultRegion)
-        });
-}
-
-/**
- * compiles the results data to be displayed<br>
- *     called by ajax post<br>
- *     extracts response json from request body<br>
- *     inserts output into html region (via method call)
- * @param request http request object
- * @param resultRegion html div id location
- */
-function showJsonFilmInfo(request, resultRegion) {
-    if ((request.readyState == 4) && (request.status == 200)) {
-
-        let rawJsonData = request.responseText;
-        // let displayData = rawJsonData.toString();
-
-        //console.log(rawJsonData.toString());              // log out to test content of request
-        let parsedJsonData = JSON.parse(rawJsonData);       // parse raw data into javascript object
-        // let filmTest = parsedJsonData.films[1].stars;    // create test json object
-        //console.log(filmTest);                            // log out to test object values
-
-        // create variable for headings and rows
-        // fetches json objects
-        let tableHeadings = parsedJsonData.headings;
-        let tableRows = parsedJsonData.films;
-
-        let htmlTable = getJsonTable(tableHeadings, tableRows);
-
-        // htmlInsert(resultRegion, displayData);           // display full json string in html
-        // htmlInsert(resultRegion, filmTest);              // display object value in html
-        htmlInsert(resultRegion, htmlTable);
-
-        /*
-        let rawData = request.responseText;
-        let data = eval("(" + rawData + ")");
-        let table = getTable(data.headings, data.cities);
-        htmlInsert(resultRegion, table);
-         */
-    }
-}
-
-/**
- * called by on click in webform<br>
- * builds http request url to pass into ajax post request<br>
- * @param resultRegion html div id for where results are displayed
- */
-function stringFilmResults(resultRegion) {
-    let servletAddress = "GetAllFilms";
-    let dataFormat = "format=text";
-
-    ajaxPost(servletAddress, dataFormat,
-        function (request) {
-            showStringFilmInfo(request, resultRegion);
-        });
-}
-
-// todo may be able to simplify
-// one function for 'getall films' and one for 'getfilmbyname'
-// just passes in additional field for format and checks if xml / json / string?
-/**
- * called by on click in webform<br>
- *     used for 'GetFilms' requests<br>
- *     builds http request url to pass into ajax post request<br>
- * @param filmname film name search string, entered into form
- * @param resultRegion html div id for where results are displayed
- */
-function stringFilmResultsFromName(filmname, resultRegion) {
-    let baseServletAddress = "GetFilms";
-    let servletParams = "?filmname=" + getValue(filmname);
-    let fullServletAddress = baseServletAddress + servletParams;
-    let dataFormat = "format=text";
-
-    ajaxPost(fullServletAddress, dataFormat,
-        function (request) {
-            showStringFilmInfo(request, resultRegion)
-        });
-}
-
-/**
- * compiles the results data to be displayed<br>
- *     called by ajax post<br>
- *     extracts response string from request body<br>
- *     inserts output into html region (via method call)
- * @param request http request object
- * @param resultRegion html div id location
- */
-function showStringFilmInfo(request, resultRegion) {
-
-    let rawStringData = request.responseText;
-    // console.log(rawStringData.toString());              // log out to test string data in response text
-    // let displayData = rawStringData.toString();
-
-    let rowStrings = rawStringData.split("$");          // split each row on $ separator
-    let tableHeadings = rowStrings[0].split("#");       // split each heading on # separator
-    let tableRows = new Array(rowStrings.length-1);
-
-    for (let i = 1; i < rowStrings.length; i++) {
-        tableRows[i-1] = rowStrings[i].split("#");
-        //console.log(tableRows[i-1]);
-    }
-    console.log(tableRows[0]);
-    let table = getTable(tableHeadings, tableRows);
-    htmlInsert(resultRegion, table);                        // test full string displays in html
 }
 
 /**

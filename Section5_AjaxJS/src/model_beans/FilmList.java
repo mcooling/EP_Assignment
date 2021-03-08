@@ -1,8 +1,5 @@
 package model_beans;
 
-// todo getting jaxb exception error in console
-// raised post in stack, see what happens
-
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 

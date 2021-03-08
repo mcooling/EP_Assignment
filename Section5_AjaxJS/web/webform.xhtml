@@ -18,7 +18,8 @@
         <legend>Retrieve Data from GetAllFilms</legend>
         <form action="#">
             <input type="button" value="XML" onclick="xmlFilmResults('getallfilms')"/>
-            <input type="button" value="JSON" onclick="jsonFilmResults('getallfilms')"/>
+            <!--<input type="button" value="JSON" onclick="jsonFilmResults('getallfilms')"/>-->
+            <input type="button" value="JSON" onclick="getAllFilmResults('getallfilms', 'json')"/>
             <input type="button" value="TEXT" onclick="stringFilmResults('getallfilms')"/>
         </form>
         <p/>
@@ -29,8 +30,10 @@
         <legend>Retrieve Data from GetFilms</legend>
         <form action="#">
             <label>Film Name: <input type="text" id="filmname"/></label><br></br>
+            <!--<input type="button" value="XML"
+                   onclick="xmlFilmResultsFromName('filmname', 'getfilms')"/>-->
             <input type="button" value="XML"
-                   onclick="xmlFilmResultsFromName('filmname', 'getfilms')"/>
+                   onclick="getFilmResultsFromName('filmname', 'getfilms', 'xml')"/>
             <input type="button" value="JSON"
                    onclick="jsonFilmResultsFromName('filmname', 'getfilms')"/>
             <input type="button" value="TEXT"
