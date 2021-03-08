@@ -32,17 +32,20 @@ public class GetAllFilms extends HttpServlet {
         FilmDAO filmDAO = new FilmDAO();
         ArrayList<Film> allFilms = filmDAO.getAllFilms();
 
-        // iterate through list and print to console for debug
+        // todo do i need a separate test class, or is this basically what the servlet is doing?
+        // same q applies to other servlets
+
+        // iterate through list and print to web page
         for (Film film : allFilms) {
 
-            System.out.println(film.getTitle());
-
-            out.println(film.getId());
-            out.println(film.getTitle());
-            out.println(film.getYear());
-            out.println(film.getStars());
-            out.println(film.getDirector());
-            out.println(film.getReview());
+            out.println(
+                    "Film ID: " + film.getId() + "<br>" +
+                    "Name: " + film.getTitle() + "<br>" +
+                    "Year: " + film.getYear() + "<br>" +
+                    "Stars: " + film.getStars() + "<br>" +
+                    "Director: " + film.getDirector() + "<br>" +
+                    "Plot: " + film.getReview() + "<br><br>"
+            );
         }
     }
 

@@ -17,6 +17,11 @@ import java.util.ArrayList;
  *     prints validation response to browser and console
  */
 
+// todo not quite sure what the ask is here
+    // do i need to create a film object in the jsp?
+    // at the moment this isn't really doing anything...unless full film params entered in url?
+    // could i create a test method to pass an object in...how?
+
 @WebServlet(name = "InsertFilm", value = "/InsertFilm")
 public class InsertFilm extends HttpServlet {
     @Override
@@ -45,9 +50,6 @@ public class InsertFilm extends HttpServlet {
 
         // call insert film method
         filmDAO.insertFilm(film);
-
-        // todo debug print the result numbers of records inserted
-        // not quite sure on this one. need to revisit logic in insertFilm
 
     }
 

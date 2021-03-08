@@ -36,14 +36,15 @@ public class GetFilms extends HttpServlet {
         ArrayList<Film> filmList = filmDAO.getFilm(searchFilmName);
 
         for (Film film : filmList) {
-            System.out.println(film.getTitle());
 
-            out.println(film.getId());
-            out.println(film.getTitle());
-            out.println(film.getYear());
-            out.println(film.getStars());
-            out.println(film.getDirector());
-            out.println(film.getReview());
+            out.println(
+                    "Film ID: " + film.getId() + "<br>" +
+                    "Name: " + film.getTitle() + "<br>" +
+                    "Year: " + film.getYear() + "<br>" +
+                    "Stars: " + film.getStars() + "<br>" +
+                    "Director: " + film.getDirector() + "<br>" +
+                    "Plot: " + film.getReview() + "<br><br>"
+            );
 
         }
     }
