@@ -18,6 +18,7 @@ function xmlFilmResults(resultRegion) {
         });
 }
 
+
 /**
  * called by on click in webform<br>
  * builds http request url to pass into ajax post request<br>
@@ -416,6 +417,7 @@ function getTableBodyJson(tableRows) {
 
 }
 
+
 /**
  * handles the ajax post request from the client<br>
  *     passes servlet address and data format into request<br>
@@ -432,6 +434,62 @@ function ajaxPost(servletAddress, dataFormat, responseHandler) {
         "Content-Type",
         "application/x-www-form-urlencoded");
     request.send(dataFormat);
+}
+
+function testJQueryFunction(servletAddress, dataType) {
+    $.ajax({
+
+        // The URL for the request
+        url: servletAddress,
+
+        /*/ The data to send (will be converted to a query string)
+        data: {
+            id: 123
+        },*/
+
+        // Whether this is a POST or GET request
+        type: "POST",
+
+        // The type of data we expect back
+        dataType : "json",
+
+        //success : showAlert("Hello World")
+
+        // servlet response data is the response back from 'type: post'
+        success: function(servletResponseData) {
+            outputJson(servletResponseData);
+        }
+    });
+}
+
+function outputJson(jsonData) {
+    $.each(jsonData.films, function(i, filmObject) {
+        $.each(filmObject, function(key, value){
+            $("#getallfilms").append(key + " = " + value + "\n");
+        })
+    });
+}
+
+// var json = JSON.stringify(obj);
+
+function showCtoHeading(companyExecutives) {
+    $("#cto-result").html("<h2>Chief Technology Officer is " +
+        companyExecutives.cto + "</h2>");
+}
+function showJson(text) {
+
+    let rawJsonData = text;
+    // let displayData = rawJsonData.toString();
+
+    //console.log(rawJsonData.toString());              // log out to test content of request
+    let parsedJsonData = JSON.parse(rawJsonData);
+
+    showAlert(parsedJsonData);
+}
+
+
+function showAlert(text, status) {
+    alert(text);
 }
 
 /**

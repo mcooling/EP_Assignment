@@ -6,8 +6,11 @@
 <head>
     <title>Film Search</title>
     <script
-            src="resources/js/ajax_utils.js"
+            src="resources/js/jquery_utils.js"
             type="text/javascript"></script>
+    <script src="resources/js/jquery-3.5.1.js"
+            type="text/javascript"></script>
+
 </head>
 <body>
     <table border="1" bgcolor="#20b2aa">
@@ -17,10 +20,13 @@
     <fieldset>
         <legend>Retrieve Data from GetAllFilms</legend>
         <form action="#">
-            <input type="button" value="XML" onclick="xmlFilmResults('getallfilms')"/>
-            <!--<input type="button" value="JSON" onclick="jsonFilmResults('getallfilms')"/>-->
-            <input type="button" value="JSON" onclick="getAllFilmResults('getallfilms', 'json')"/>
-            <input type="button" value="TEXT" onclick="stringFilmResults('getallfilms')"/>
+            <input type="button" value="XML" onclick="getAllFilms('GetAllFilms', 'xml')"/>
+            <input type="button" value="JSON" onclick="getAllFilms('GetAllFilms', 'json')"/>
+            <input type="button" value="TEXT" onclick="getAllFilms('GetAllFilms', 'text')"/>
+
+            <!--<input type="button" value="XML" onclick="getAllFilmsXml('GetAllFilms')"/>
+            <input type="button" value="JSON" onclick="getAllFilmsJson('GetAllFilms')"/>
+            <input type="button" value="TEXT" onclick="getAllFilmsText('GetAllFilms')"/>1-->
         </form>
         <p/>
         <div id="getallfilms"></div>
