@@ -3,16 +3,16 @@
 {
     "headings": ["Film ID", "Title", "Year", "Director", "Stars", "Review"],
     "films": [
-            <c:forEach items="${films}" var="f">
+        <c:forEach items="${films}" var="f" varStatus="status">
             {
-                    "id": "${f.id}",
-                    "title": "${f.title}",
-                    "year": "${f.year}",
-                    "director": "${f.director}",
-                    "stars": "${f.stars}",
-                    "review": "${f.review}"
-            },
-            </c:forEach>
-        {}
+                "id": "${f.id}",
+                "title": "${f.title}",
+                "year": "${f.year}",
+                "director": "${f.director}",
+                "stars": "${f.stars}",
+                "review": "${f.review}"
+            }
+            ${not status.last ? ',' :''}
+        </c:forEach>
     ]
 }
