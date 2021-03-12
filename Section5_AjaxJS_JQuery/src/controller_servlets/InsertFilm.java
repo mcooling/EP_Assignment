@@ -18,14 +18,6 @@ import java.util.ArrayList;
  *     inserts film record into connected MySQL db<br>
  *     prints validation response to browser and console
  */
-
-// todo not sure what the ask is here
-    // how can i test output when nothing has been passed in?
-    // wouldn't i have to pass a film object in through index.jsp?
-    // no clear requirement in assignment spec to pass input
-    // would also only return a response code, not film info
-    // check back with Nick / Kaleem
-
 @WebServlet(name = "InsertFilm", value = "/InsertFilm")
 public class InsertFilm extends HttpServlet {
     @Override

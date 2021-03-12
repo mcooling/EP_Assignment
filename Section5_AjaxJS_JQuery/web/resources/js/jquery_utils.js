@@ -1,4 +1,4 @@
-// todo consolidated function. review with jc
+// todo consolidated function. review with kaleem
 function getAllFilms(servletAddress, dataFormat) {
     $.ajax({
 
@@ -14,52 +14,142 @@ function getAllFilms(servletAddress, dataFormat) {
     });
 }
 
-// todo not done getFilmByName yet...or the other crud ops!!
-
-// todo consolidated function. review with jc
+// todo consolidated function. review with kaleem
 function responseHandler(servletResponse, dataFormat) {
+
+    /*You're treating htmlTableStructure as a string. ' +
+    'Rather than use htmlTableStructure = $("<table>"); htmlTableStructure .append("<tr><td></td></tr>")
+    just keep it as a string: htmlTableStructure = "<table>"; ' +
+    'htmlTableStructure += "<tr><td></td></tr>"; ' +
+    'htmlTableStructure += "</table>"; ' +
+    '$("#getall").append(htmlTableStructure); - ' +
+    'but you're then responsible to put closing tags in the right place
+    - so it's generally safer to build nodes and append to them ' +
+    '- just don't treat them as a string*/
+
+    // create base table structure object, with headings
+    let htmlTableStructure =
+        "<table border='1' class='ajaxTable'>" +
+        "<tr>" +
+            "<th>Film Id</th>" +
+            "<th>Name</th>" +
+            "<th>Year</th>" +
+            "<th>Director</th>" +
+            "<th>Cast</th>" +
+            "<th>Plot</th>" +
+        "</tr>";
+
+    // original version
+    /*let htmlTableStructure = $(
+        "<table border='1' class='ajaxTable'>" +
+        "<tr>" +
+        "<th>Film Id</th>" +
+        "<th>Name</th>" +
+        "<th>Year</th>" +
+        "<th>Director</th>" +
+        "<th>Cast</th>" +
+        "<th>Plot</th>" +
+        "</tr>"
+    );*/
 
     // if data format passed in is json
     if (dataFormat === "json") {
+
+        // append rows to html table structure
         $.each(servletResponse.films, function(i, filmObject) {
+            htmlTableStructure += "<tr>";
             $.each(filmObject, function(key, value){
-                $("#getallfilms").append(key + " = " + value + "; ");
+                htmlTableStructure += "<td>" + value + "</td>";
             })
+            htmlTableStructure += "</tr>";
         });
+
+        // original version
+        /*/ append rows to html table structure
+        $.each(servletResponse.films, function(i, filmObject) {
+            htmlTableStructure.append("<tr>");
+            $.each(filmObject, function(key, value){
+                htmlTableStructure.append("<td>" + value + "</td>")
+            })
+            htmlTableStructure.append("</tr>");
+        });*/
 
     // if data format passed in is xml
     } else if (dataFormat === "xml") {
-        // loop through each film node in xml
-        // for each node, return text values for each child
+
+        // append rows to html table structure
+        // loop through each film node in xml & get child node values
         $(servletResponse).find('film').each(function () {
+            htmlTableStructure +=
+                "<tr>" +
+                    "<td>" + $(this).find('id').text() + "</td>" +
+                    "<td>" + $(this).find('title').text() + "</td>" +
+                    "<td>" + $(this).find('year').text() + "</td>" +
+                    "<td>" + $(this).find('director').text() + "</td>" +
+                    "<td>" + $(this).find('stars').text() + "</td>" +
+                    "<td>" + $(this).find('review').text() + "</td>" +
+                "</tr>";
+        });
 
-            // now need to get to each sub element
-            let id = $(this).find('id').text();
-            let title = $(this).find('title').text();
-            let year = $(this).find('year').text();
-            let director = $(this).find('director').text();
-            let stars = $(this).find('stars').text();
-            let review = $(this).find('review').text();
-
-            // then append to div
-            $("#getallfilms").append(
-                id + ", " +
-                title + ", " +
-                year + ", " +
-                director + ", " +
-                stars + ", " +
-                review + "\n"
+        // original version
+        /*
+        $(servletResponse).find('film').each(function () {
+            htmlTableStructure.append("" +
+                "<tr>" +
+                    "<td>" + $(this).find('id').text() + "</td>" +
+                    "<td>" + $(this).find('title').text() + "</td>" +
+                    "<td>" + $(this).find('year').text() + "</td>" +
+                    "<td>" + $(this).find('director').text() + "</td>" +
+                    "<td>" + $(this).find('stars').text() + "</td>" +
+                    "<td>" + $(this).find('review').text() + "</td>" +
+                "</tr>"
             );
         });
+         */
 
     // if data format passed in is text
     } else {
-        let rowString = servletResponse.split("$");    // splits each line in text file
-        $.each(rowString, function (i, stringLine) {
-            $("#getallfilms").append(stringLine + "; ");
+
+        // append rows to html table structure
+
+        // split servlet response into rows using $ delimiter (rows 3 & 10)
+        // ignore first row (this is the header, which we've already hardcoded)
+        let rowString = servletResponse.split("$").slice(1);
+
+        // then for each remaining row, split each field by # delimiter and wrap row in <tr>
+        $.each(rowString, function (i, rowField) {
+
+            let rowParts = rowString[i].split('#');
+            htmlTableStructure += "<tr>";
+
+            $.each(rowParts, function (i, data) {
+                htmlTableStructure +=
+
+                    "<td>" + data + "</td>";
+
+            });
+            htmlTableStructure += "</tr>";
         })
-    }
+
+        // original version
+        /*
+        $.each(rowString, function (i, stringLine) {
+            htmlTableStructure.append(
+                    "<tr>" +
+                        "<td>" + stringLine.split('#') + "</td>" +
+                    "</tr>"
+            );
+        })
+         */
+
+    } $("#getallfilms").append(htmlTableStructure + "</table>");
 }
+
+
+// todo not done getFilmByName yet...or the other crud ops!!
+// collection of early 'longhand' functions
+
+/*
 
 // todo refactored table function...this feels like a lot more code than before
 // even if the 3 js functions were merged, i think there would be less code than here
@@ -126,9 +216,10 @@ function getTable(tableHeadings, tableRows) {
     });
 }
 
-// collection of early 'longhand' functions
 
-/*function getAllFilmsJson(servletAddress) {
+
+
+function getAllFilmsJson(servletAddress) {
 
     $.ajax({
 
