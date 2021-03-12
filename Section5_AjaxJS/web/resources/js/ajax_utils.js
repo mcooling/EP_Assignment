@@ -69,9 +69,6 @@ function xmlFilmResultsFromName(filmname, resultRegion) {
         });
 }
 
-// todo may be able to simplify
-// one function for 'getall films' and one for 'getfilmbyname'
-// then pass in additional field for format and checks if xml / json / string?
 /**
  * called by on click in webform<br>
  *     used for 'GetFilms' requests<br>
@@ -91,9 +88,6 @@ function jsonFilmResultsFromName(filmname, resultRegion) {
         });
 }
 
-// todo may be able to simplify
-// one function for 'getall films' and one for 'getfilmbyname'
-// just passes in additional field for format and checks if xml / json / string?
 /**
  * called by on click in webform<br>
  *     used for 'GetFilms' requests<br>
@@ -113,7 +107,6 @@ function stringFilmResultsFromName(filmname, resultRegion) {
         });
 }
 
-// todo review with jason. merged three previous 'getresultsbyname' methods into 1
 function getFilmResultsFromName(filmname, resultRegion, dataFormatIn) {
 
     let baseServletAddress = "GetFilms";
@@ -140,8 +133,6 @@ function getFilmResultsFromName(filmname, resultRegion, dataFormatIn) {
             });
     }
 }
-
-// todo review with jason. merged three previous 'getfilmresults' methods into 1
 /**
  * called by on click in webform<br>
  *     used for 'GetAllFilms'<br>
@@ -149,11 +140,6 @@ function getFilmResultsFromName(filmname, resultRegion, dataFormatIn) {
  * @param resultRegion html div id for where results are displayed
  * @param {string} dataFormatIn data format type requested
  */
-// todo check with jc. this looks like it works
-// does this mean we can just have one generic function for all three buttons?
-// now takes in the data format value, passed in by webform
-// then adds if-else, to decide which 'show info' function to call
-// todo include this in 'code refactored' section of report if it's a goer
 function getAllFilmResults(resultRegion, dataFormatIn) {
     let servletAddress = "GetAllFilms";
     // let dataFormat = "format=json";
@@ -327,9 +313,6 @@ function getTableBody(tableRows) {
     return(body);
 }
 
-// todo written separate function for json
-// calls a different table body function
-// just check in with jc on my thinking here...
 /**
  * called by showJsonFilmInfo<br>
  * separate function to xml & string, as it calls a different table body function<br>
@@ -355,16 +338,6 @@ function getJsonTable(tableHeadings, tableRows) {
  * @returns {string} string representation of compiled html, for each table row
  */
 function getTableBodyJson(tableRows) {
-
-    // todo technically seems to work, but not sure if it's the most elegant way
-    // other methods suggest Object.entries() but I just couldn't get it to work
-    // couldn't get past value just returning the Object instance
-    // see comments below..
-
-    // approach was to loop through array of json objects
-    // create a json object variable
-    // then build up each td tag by accessing key value
-    // todo get an 'undefined' final row, due to that annoying empty object
 
     let body = "";
 
