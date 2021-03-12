@@ -62,7 +62,6 @@ public class FilmDAO {
      *     for each result, creates a Film object and adds to an array list
      * @return ArrayList of Film objects
      */
-
     public ArrayList<Film> getAllFilms() {
 
         // create array list to hold each film
@@ -81,19 +80,7 @@ public class FilmDAO {
             // for each item in result set, create new Film object and add to array list
             while (resultSet.next()) {
 
-                // todo NOTE. this is slightly different to the lab
-                // todo lab used 'getNextFilm'
-
-                int filmID = resultSet.getInt(1);
-                String filmName = resultSet.getString(2);
-                int filmYear = resultSet.getInt(3);
-                String filmDirector = resultSet.getString(4);
-                String filmStars = resultSet.getString(5);
-                String filmReview = resultSet.getString(6);
-
-                Film film = new Film(filmID, filmName, filmYear, filmDirector,
-                        filmStars, filmReview);
-
+                film = getNextFilm(resultSet);
                 allFilms.add(film);
 
             }
@@ -108,14 +95,34 @@ public class FilmDAO {
     }
 
     /**
+     * utility method, used by getAllFilms & getFilmByName
+     * @param rs sql query result set, for each film in array list
+     * @return film object values
+     */
+    private Film getNextFilm(ResultSet rs){
+        Film thisFilm = null;
+        try {
+            thisFilm = new Film(
+                    rs.getInt("id"),
+                    rs.getString("title"),
+                    rs.getInt("year"),
+                    rs.getString("director"),
+                    rs.getString("stars"),
+                    rs.getString("review"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return thisFilm;
+    }
+
+    /**
      * fetches films held in a connected MySQL db, with matching name<br>
      *     populates films into a result set<br>
      *     for each result, creates a Film object and adds to an array list
      * @param searchString name of film(s) to search for<br>
      * @return ArrayList of Film objects
      */
-
-    public ArrayList<Film> getFilm(String searchString) {
+    public ArrayList<Film> getFilmByName(String searchString) {
 
         ArrayList<Film> allFilms = new ArrayList<>();
 
@@ -132,19 +139,7 @@ public class FilmDAO {
             // for each item in result set, create new Film object and add to array list
             while (resultSet.next()) {
 
-                // todo NOTE. this is slightly different to the lab
-                // todo lab used 'getNextFilm'
-
-                int filmID = resultSet.getInt(1);
-                String filmName = resultSet.getString(2);
-                int filmYear = resultSet.getInt(3);
-                String filmDirector = resultSet.getString(4);
-                String filmStars = resultSet.getString(5);
-                String filmReview = resultSet.getString(6);
-
-                Film film = new Film(filmID, filmName, filmYear, filmDirector,
-                        filmStars, filmReview);
-
+                film = getNextFilm(resultSet);
                 allFilms.add(film);
 
             }
@@ -161,12 +156,10 @@ public class FilmDAO {
     /**
      * inserts a film into a connected MySQL db<br>
      *     performs a check to confirm if the record was inserted successfully
-     * @param f Film object
+     * @param film Film object
      * @return integer, with value of 0 (failed) or 1 (success)
      */
-
-    // todo don't think this is quite right
-    public int insertFilm(Film f) {
+    public int insertFilm(Film film) {
 
         // int value returned (0 or 1)
         int returnValue = 0;
@@ -176,21 +169,22 @@ public class FilmDAO {
 
         try {
             // extract object values from film object
-            int filmId = f.getId();
-            String filmName = f.getTitle();
-            int filmYear = f.getYear();
-            String filmDirector = f.getDirector();
-            String filmStars = f.getStars();
-            String filmReview = f.getReview();
+            int filmId = film.getId();
+            String filmName = film.getTitle();
+            int filmYear = film.getYear();
+            String filmDirector = film.getDirector();
+            String filmStars = film.getStars();
+            String filmReview = film.getReview();
 
             // write sql insert statement string
-            String insertSql = "insert into films(id, title, year, director, stars, review) values ("
+            String insertSql =
+                    "insert into films(id, title, year, director, stars, review) values ("
                     + filmId + ", "
                     + "'" + filmName + "', "
                     + filmYear + ", "
                     + "'" + filmDirector + "', "
                     + "'" + filmStars + "', "
-                    + "'" + filmReview + "')";
+                    + "'" + filmReview + "');";
 
             // execute insert statement
             returnValue = stmt.executeUpdate(insertSql);
@@ -202,13 +196,110 @@ public class FilmDAO {
             System.out.println(se);
         }
 
-        // check return value from insert
-        // todo not quite sure what's needed here
+        // return value
+        return returnValue;
+
+    }
+
+    /**
+     * fetches film object from id
+     * @param filmId
+     * @return film object
+     */
+    public Film getFilmById(int filmId) {
+
+        // open db connection
+        openConnection();
+
+        try {
+            // add db select statement string
+            String selectSQL = "select * from films where id =" + filmId;
+
+            // fetch query result set from db
+            ResultSet resultSet = stmt.executeQuery(selectSQL);
+
+            // loop through result set
+            // for each item in result set, create new Film object and add to array list
+            while (resultSet.next()) {
+                film = getNextFilm(resultSet);
+            }
+
+            // close connection
+            stmt.close();
+            closeConnection();
+
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
+
+        // return Film object
+        return film;
+    }
+
+    /**
+     * deletes film object from db
+     * @param filmId
+     * @throws SQLException
+     */
+    public void deleteFilm(int filmId) throws SQLException {
+
+        openConnection();
+
+        // add db select statement string
+        String selectSQL = "delete from films where id=" + filmId;
+
+        int returnValue = stmt.executeUpdate(selectSQL);
+
+        // close connection
+        closeConnection();
+
+    }
+
+    /**
+     * updates details of existing film object in db
+     * @param film film object to update
+     * @return success code (0 or 1) from sql update
+     */
+    public int updateFilm(Film film) {
+
+        // int value returned (0 or 1)
+        int returnValue = 0;
+
+        // open db connection
+        openConnection();
+
+        try {
+            // extract object values from film object
+            int filmId = film.getId();
+            String filmName = film.getTitle();
+            int filmYear = film.getYear();
+            String filmDirector = film.getDirector();
+            String filmStars = film.getStars();
+            String filmReview = film.getReview();
+
+            // write sql update statement string
+            String updateSql =
+                    "update films set " +
+                            "title=" + "'" + filmName + "', " +
+                            "year=" + "'" + filmYear + "', " +
+                            "director=" + "'" + filmDirector + "', " +
+                            "stars=" + "'" + filmStars + "', " +
+                            "review=" + "'" + filmReview + "'" +
+                            "where id=" + filmId;
+
+            // execute update statement
+            returnValue = stmt.executeUpdate(updateSql);
+
+            stmt.close();
+            closeConnection();
+
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
 
         // return value
         return returnValue;
 
-        // todo come back to this
-        // create suitable amend/delete methods to complete CRUD set of ops
     }
+
 }

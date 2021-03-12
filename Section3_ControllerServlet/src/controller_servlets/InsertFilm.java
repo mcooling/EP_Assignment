@@ -17,11 +17,6 @@ import java.util.ArrayList;
  *     prints validation response to browser and console
  */
 
-// todo not quite sure what the ask is here
-    // do i need to create a film object in the jsp?
-    // at the moment this isn't really doing anything...unless full film params entered in url?
-    // could i create a test method to pass an object in...how?
-
 @WebServlet(name = "InsertFilm", value = "/InsertFilm")
 public class InsertFilm extends HttpServlet {
     @Override

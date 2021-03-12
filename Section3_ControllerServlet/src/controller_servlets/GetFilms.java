@@ -33,7 +33,7 @@ public class GetFilms extends HttpServlet {
 
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = new FilmDAO();
-        ArrayList<Film> filmList = filmDAO.getFilm(searchFilmName);
+        ArrayList<Film> filmList = filmDAO.getFilmByName(searchFilmName);
 
         for (Film film : filmList) {
 
