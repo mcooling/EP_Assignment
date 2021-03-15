@@ -1,4 +1,5 @@
-// todo consolidated function. review with kaleem
+// functions called by webform
+
 function getAllFilms(servletAddress, dataFormat) {
     $.ajax({
 
@@ -9,23 +10,126 @@ function getAllFilms(servletAddress, dataFormat) {
 
         // action to take if request type is successful
         success: function(servletResponse) {                // object returned from post request
-            responseHandler(servletResponse, dataFormat);   // response handler function
+            tableResponseHandler(servletResponse, dataFormat, servletAddress);   // response handler function
         }
     });
 }
 
-// todo consolidated function. review with kaleem
-function responseHandler(servletResponse, dataFormat) {
+/**
+ * called by webform onclick<br>
+ * fetches film(s) from film name submitted<br>
+ * @param filmname film name search string, entered into form
+ * @returns {string} string value of filmname element
+ */
+// todo broken. needs fixing
+function getFilmsByName(servletAddress, dataFormat, searchString) {
 
-    /*You're treating htmlTableStructure as a string. ' +
-    'Rather than use htmlTableStructure = $("<table>"); htmlTableStructure .append("<tr><td></td></tr>")
-    just keep it as a string: htmlTableStructure = "<table>"; ' +
-    'htmlTableStructure += "<tr><td></td></tr>"; ' +
-    'htmlTableStructure += "</table>"; ' +
-    '$("#getall").append(htmlTableStructure); - ' +
-    'but you're then responsible to put closing tags in the right place
-    - so it's generally safer to build nodes and append to them ' +
-    '- just don't treat them as a string*/
+    let filmName = escape(document.getElementById(searchString).value);
+
+    $.ajax({
+
+        url: servletAddress + "?" + filmName,                     // http request URL
+        type: "POST",                                       // http request type
+        dataType : dataFormat,                              // data type expected back in the response
+        data : {format : dataFormat},                       // data format requested in servlet call
+
+        // action to take if request type is successful
+        success: function(servletResponse) {                // object returned from post request
+            tableResponseHandler(servletResponse, dataFormat,
+                servletAddress);
+        }
+    });
+}
+
+/**
+ * fetches film from db, using film id
+ * @param servletAddress GetFilmById
+ * @param dataFormat requested (xml, json, text)
+ * @param {string} film_Id
+ */
+function getFilmById(servletAddress, dataFormat, film_Id) {
+
+    let film = document.getElementById(film_Id).value;
+
+    $.ajax({
+
+        url: servletAddress,                // http request URL
+        type: "POST",                                       // http request type
+        dataType : dataFormat,                              // data type expected back in the response
+        data : {format : dataFormat, filmId : film},                       // data format requested in servlet call
+
+        // action to take if request type is successful
+        success: function(servletResponse) {                // object returned from post request
+            tableResponseHandler(servletResponse, dataFormat,
+                servletAddress);
+        }
+    });
+}
+
+
+// todo add film
+// unclear on the function body. whole data format thing has thrown me
+// probably need to address this before moving onto other ops
+function addFilm(filmName, year, cast, director, plot, servletAddress, dataFormat) {
+
+    // what do we want to do here?
+    // guess we need to physically add the film
+    // the display details on screen
+
+    // extract values from film attributes
+    let _filmName = document.getElementById(filmName).value;
+    let _year = document.getElementById(year).value;
+    let _cast = document.getElementById(cast).value;
+    let _director = document.getElementById(director).value;
+    let _plot = document.getElementById(plot).value;
+
+    $.ajax({
+
+        url: servletAddress,
+        type: "POST",
+        dataType : dataFormat,
+        data : {format : dataFormat,
+            name : _filmName,
+            year : _year,
+            stars : _cast,
+            director : _director,
+            review : _plot
+        },
+
+        // todo do i need a new response handler here?
+        // not passing format
+        success: function (servletResponse) {
+
+        }
+    });
+}
+
+// todo update film
+// unclear on the function body. whole data format thing has thrown me
+// probably need to sort add film before moving onto this
+function updateFilm() {
+
+    // update by id
+    // look at invisible controls on screen (update enabled when id added)
+    // update button on get film by id
+    // fields gets populated in update film
+    // editable text fields to update values to change
+
+
+}
+
+// todo delete film
+// todo create a new response handler for this
+// wont need data format, just return a confirmation string
+function deleteFilm() {
+
+}
+
+
+// todo create two response handlers
+// one where it returns a table (e.g. get film etc)
+// one where it doesn't, e.g. delete film
+function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
 
     // create base table structure object, with headings
     let htmlTableStructure =
@@ -108,15 +212,16 @@ function responseHandler(servletResponse, dataFormat) {
          */
 
     // if data format passed in is text
-    } else {
+    } else if (dataFormat === "text") {
 
         // append rows to html table structure
 
-        // split servlet response into rows using $ delimiter (rows 3 & 10)
-        // ignore first row (this is the header, which we've already hardcoded)
+        // split servlet response into rows using $ delimiter
+        // ignore first row (headings row is hardcoded)
         let rowString = servletResponse.split("$").slice(1);
 
         // then for each remaining row, split each field by # delimiter and wrap row in <tr>
+        // todo getting a random last row in table display. come back and fix
         $.each(rowString, function (i, rowField) {
 
             let rowParts = rowString[i].split('#');
@@ -129,7 +234,7 @@ function responseHandler(servletResponse, dataFormat) {
 
             });
             htmlTableStructure += "</tr>";
-        })
+        });
 
         // original version
         /*
@@ -141,12 +246,20 @@ function responseHandler(servletResponse, dataFormat) {
             );
         })
          */
+    }
 
-    } $("#getallfilms").append(htmlTableStructure + "</table>");
+    // todo come back here, in case === doesn't work...changed from ==
+    if (servletAddress === "GetAllFilms") {
+        $("#getallfilms").append(htmlTableStructure + "</table>");
+
+    } else if (servletAddress === "GetFilmsByName") {
+        $("#getfilmsbyname").append(htmlTableStructure + "</table>");
+
+    } else if (servletAddress === "GetFilmById") {
+        $("#getfilmbyid").append(htmlTableStructure + "</table>");
+    }
 }
 
-
-// todo not done getFilmByName yet...or the other crud ops!!
 // collection of early 'longhand' functions
 
 /*

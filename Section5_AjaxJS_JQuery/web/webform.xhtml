@@ -18,36 +18,104 @@
     </table>
 <p/>
     <fieldset>
-        <legend>Retrieve Data from GetAllFilms</legend>
+        <legend>Get All Films</legend>
         <form action="#">
             <input type="button" value="XML" onclick="getAllFilms('GetAllFilms', 'xml')"/>
             <input type="button" value="JSON" onclick="getAllFilms('GetAllFilms', 'json')"/>
             <input type="button" value="TEXT" onclick="getAllFilms('GetAllFilms', 'text')"/>
-
-            <!--<input type="button" value="XML" onclick="getAllFilmsXml('GetAllFilms')"/>
-            <input type="button" value="JSON" onclick="getAllFilmsJson('GetAllFilms')"/>
-            <input type="button" value="TEXT" onclick="getAllFilmsText('GetAllFilms')"/>-->
         </form>
         <p/>
         <div id="getallfilms"></div>
     </fieldset><br></br>
 
     <fieldset>
-        <legend>Retrieve Data from GetFilms</legend>
+        <legend>Get Films By Name</legend>
         <form action="#">
             <label>Film Name: <input type="text" id="filmname"/></label><br></br>
-            <!--<input type="button" value="XML"
-                   onclick="xmlFilmResultsFromName('filmname', 'getfilms')"/>-->
             <input type="button" value="XML"
-                   onclick="getFilmResultsFromName('filmname', 'getfilms', 'xml')"/>
+                   onclick="getFilmsByName('GetFilmsByName', 'xml', 'filmname')"/>
             <input type="button" value="JSON"
-                   onclick="jsonFilmResultsFromName('filmname', 'getfilms')"/>
+                   onclick="getFilmsByName('GetFilmsByName', 'json', 'filmname')"/>
             <input type="button" value="TEXT"
-                   onclick="stringFilmResultsFromName('filmname', 'getfilms')"/>
+                   onclick="getFilmsByName('GetFilmsByName', 'text', 'filmname')"/>
         </form>
         <p/>
-        <div id="getfilms"></div>
-    </fieldset>
-    <br/>
+        <div id="getfilmsbyname"></div>
+    </fieldset><br></br>
+
+    <fieldset>
+        <legend>Get Film By ID</legend>
+        <form action="#">
+            <label>Film ID: <input type="text" id="filmid"/></label><br></br>
+            <input type="button" value="XML"
+                   onclick="getFilmById('GetFilmById', 'xml', 'filmid')"/>
+            <input type="button" value="JSON"
+                   onclick="getFilmById('GetFilmById', 'json', 'filmid')"/>
+            <input type="button" value="TEXT"
+                   onclick="getFilmById('GetFilmById', 'text', 'filmid')"/>
+        </form>
+        <p/>
+        <div id="getfilmbyid"></div>
+    </fieldset><br></br>
+
+    <fieldset>
+        <legend>Add New Film</legend>
+        <form action="#">
+
+            <label>Film Name: <input type="text" id="newfilmname"/></label><br></br>
+            <label>Year: <input type="text" id="year"/></label><br></br>
+            <label>Cast: <input type="text" id="cast"/></label><br></br>
+            <label>Director: <input type="text" id="director"/></label><br></br>
+            <label>Plot: <input type="text" id="plot"/></label><br></br>
+
+            <input type="button" value="XML"
+                   onclick="addFilm(
+                       'newfilmname', 'year', 'cast', 'director', 'plot','AddFilm',
+                       'xml')"/>
+
+            <input type="button" value="JSON"
+                   onclick="addFilm(
+                       'newfilmname', 'year', 'cast', 'director', 'plot', 'AddFilm',
+                       'json')"/>
+
+            <input type="button" value="TEXT"
+                   onclick="addFilm(
+                       'newfilmname', 'year', 'cast', 'director', 'plot','AddFilm',
+                       'text')"/>
+        </form>
+        <p/>
+        <div id="addfilm"></div>
+    </fieldset><br></br>
+
+    <fieldset>
+        <legend>Update Film Details</legend>
+        <form action="#">
+            <label>Film Name: <input type="text" id="updatefilmname"/></label><br></br>
+            <input type="button" value="XML"
+                   onclick="updateFilm('updatefilmname', 'UpdateFilm', 'xml')"/>
+            <input type="button" value="JSON"
+                   onclick="updateFilm('updatefilmname', 'UpdateFilm')"/>
+            <input type="button" value="TEXT"
+                   onclick="updateFilm('updatefilmname', 'UpdateFilm')"/>
+        </form>
+        <p/>
+        <div id="updatefilm"></div>
+    </fieldset><br></br>
+
+    <fieldset>
+        <legend>Delete Film</legend>
+        <form action="#">
+            <label>Film ID: <input type="text" id="deletefilmid"/></label><br></br>
+            <input type="button" value="XML"
+                   onclick="deleteFilm('deletefilmid', 'DeleteFilm', 'xml')"/>
+            <input type="button" value="JSON"
+                   onclick="deleteFilm('deletefilmid', 'DeleteFilm', 'json')"/>
+            <input type="button" value="TEXT"
+                   onclick="deleteFilm('deletefilmid', 'DeleteFilm', 'json')"/>
+        </form>
+        <p/>
+        <div id="deletefilm"></div>
+    </fieldset><br></br>
+
 </body>
 </html>
