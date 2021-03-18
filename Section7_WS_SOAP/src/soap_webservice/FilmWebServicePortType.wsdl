@@ -12,7 +12,7 @@
   <message name="getAllFilmsResponse">
     <part name="parameters" element="tns:getAllFilmsResponse"/>
   </message>
-  <portType name="FilmWebService">
+  <portType name="FilmWebService_original">
     <operation name="getAllFilms">
       <input ns1:Action="http://webservice/FilmWebService/getAllFilmsRequest" message="tns:getAllFilms" xmlns:ns1="http://www.w3.org/2007/05/addressing/metadata"/>
       <output ns2:Action="http://webservice/FilmWebService/getAllFilmsResponse" message="tns:getAllFilmsResponse" xmlns:ns2="http://www.w3.org/2007/05/addressing/metadata"/>

@@ -3,6 +3,10 @@
 <endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime' version='2.0'>
     <endpoint
             name='FilmWebService'
-            implementation='soap_webservice.FilmWebService'
+            implementation='soap_webservice.FilmWebService_original'
             url-pattern='/services/FilmWebService'/>
+    <endpoint
+            name='FilmSOAPWebService'
+            implementation='soap_webservice.FilmSOAPWebService'
+            url-pattern='/services/FilmSOAPWebService'/>
 </endpoints>

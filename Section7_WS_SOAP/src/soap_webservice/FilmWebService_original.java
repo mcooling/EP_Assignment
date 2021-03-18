@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * abstracts away from FilmDAO, which contains implementation detail
  */
 @WebService()
-public class FilmWebService {
+public class FilmWebService_original {
 
     Gson gson = new Gson();
 
@@ -87,7 +87,7 @@ public class FilmWebService {
     @WebMethod
     public void insertFilm(Film film) {
         FilmDAO filmDAO = new FilmDAO();
-        filmDAO.insertFilm(film);
+        filmDAO.addFilm(film);
 
     }
 
@@ -97,7 +97,7 @@ public class FilmWebService {
     @WebMethod
     public void updateFilm(Film film) {
         FilmDAO filmDAO = new FilmDAO();
-        filmDAO.insertFilm(film);
+        filmDAO.addFilm(film);
     }
 
     // todo is this void? should we expect a return?

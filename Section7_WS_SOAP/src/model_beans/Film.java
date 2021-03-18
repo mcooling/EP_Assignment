@@ -5,30 +5,30 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * POJO model bean for creating Film objects
- */
-
-// jaxb annotations
+// jaxb annotation, sets root element for XML DOM
 @XmlRootElement(name = "film")
 @XmlAccessorType(XmlAccessType.FIELD)
+
+// set order of xml tags
 @XmlType(propOrder = { "id", "title", "year", "director", "stars", "review" })
+
 public class Film {
 
-    // overloaded no args constructor, used by jaxb
+    // added no args constructor, used by jaxb
     public Film() {
 
     }
 
     /**
      * Base Model Java bean class, for creating a Film object<br>
-     * @param id film id
-     * @param title film name
-     * @param year year made
+     * @param id
+     * @param title
+     * @param year
      * @param director
-     * @param stars main cast
-     * @param review film synopsis
+     * @param stars
+     * @param review
      */
+
     public Film(int id, String title, int year, String director, String stars,
                 String review) {
         super();
@@ -40,12 +40,10 @@ public class Film {
         this.review = review;
     }
 
-    // overloaded constructor, excludes id
-    // used by web service for insert film
     public Film(String title, int year, String director, String stars,
                 String review) {
         super();
-        this.id = id;
+        this.id = id; // default id. logic added in addFilm method, to auto-create unique id
         this.title = title;
         this.year = year;
         this.director = director;
