@@ -5,11 +5,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title>Film Search</title>
+    <script src="resources/js/jquery-3.5.1.js"
+            type="text/javascript"></script>
     <script
             src="resources/js/jquery_utils.js"
             type="text/javascript"></script>
-    <script src="resources/js/jquery-3.5.1.js"
-            type="text/javascript"></script>
+
+    <!--<script type="text/javascript">$("td").click(function() {
+        let td = $(this).parent().children().index($(this));
+        console.log(td);
+        return td;
+    });</script>-->
+
+    <style type="text/css">.ajaxTable tr:not(:first-child) { cursor: pointer; } </style>
 
 </head>
 <body>
@@ -55,67 +63,77 @@
                    onclick="getFilmById('GetFilmById', 'text', 'filmid')"/>
         </form>
         <p/>
-        <div id="getfilmbyid"></div>
-    </fieldset><br></br>
-
-    <fieldset>
-        <legend>Add New Film</legend>
-        <form action="#">
-
-            <label>Film Name: <input type="text" id="newfilmname"/></label><br></br>
-            <label>Year: <input type="text" id="year"/></label><br></br>
-            <label>Cast: <input type="text" id="cast"/></label><br></br>
-            <label>Director: <input type="text" id="director"/></label><br></br>
-            <label>Plot: <input type="text" id="plot"/></label><br></br>
-
-            <input type="button" value="XML"
-                   onclick="addFilm(
-                       'newfilmname', 'year', 'cast', 'director', 'plot','AddFilm',
-                       'xml')"/>
-
-            <input type="button" value="JSON"
-                   onclick="addFilm(
-                       'newfilmname', 'year', 'cast', 'director', 'plot', 'AddFilm',
-                       'json')"/>
-
-            <input type="button" value="TEXT"
-                   onclick="addFilm(
-                       'newfilmname', 'year', 'cast', 'director', 'plot','AddFilm',
-                       'text')"/>
-        </form>
-        <p/>
-        <div id="addfilm"></div>
     </fieldset><br></br>
 
     <fieldset>
         <legend>Update Film Details</legend>
         <form action="#">
-            <label>Film Name: <input type="text" id="updatefilmname"/></label><br></br>
+
+            <label>Film Name: <input type="text" id="u_filmname"/></label><br></br>
+            <label>Year: <input type="text" id="u_year"/></label><br></br>
+            <label>Director: <input type="text" id="u_director"/></label><br></br>
+            <label>Cast: <input type="text" id="u_stars"/></label><br></br>
+            <label>Plot: <input type="text" id="u_review"/></label><br></br>
+
             <input type="button" value="XML"
-                   onclick="updateFilm('updatefilmname', 'UpdateFilm', 'xml')"/>
+                   onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'xml')"/>
             <input type="button" value="JSON"
-                   onclick="updateFilm('updatefilmname', 'UpdateFilm')"/>
+                   onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'json')"/>
             <input type="button" value="TEXT"
-                   onclick="updateFilm('updatefilmname', 'UpdateFilm')"/>
+                   onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'text')"/><br></br>
+
         </form>
         <p/>
         <div id="updatefilm"></div>
     </fieldset><br></br>
 
     <fieldset>
+        <legend>Add New Film</legend>
+        <form action="#">
+
+            <label>Film Name: <input type="text" id="add_filmname"/></label><br></br>
+            <label>Year: <input type="text" id="add_year"/></label><br></br>
+            <label>Director: <input type="text" id="add_director"/></label><br></br>
+            <label>Cast: <input type="text" id="add_stars"/></label><br></br>
+            <label>Plot: <input type="text" id="add_review"/></label><br></br>
+
+            <input type="button" value="XML"
+                   onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'AddFilm', 'xml')"/>
+
+            <input type="button" value="JSON"
+                   onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'AddFilm', 'json')"/>
+
+            <input type="button" value="TEXT"
+                   onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'AddFilm', 'text')"/>
+        </form>
+        <p/>
+    </fieldset><br></br>
+
+    <fieldset>
         <legend>Delete Film</legend>
         <form action="#">
             <label>Film ID: <input type="text" id="deletefilmid"/></label><br></br>
-            <input type="button" value="XML"
-                   onclick="deleteFilm('deletefilmid', 'DeleteFilm', 'xml')"/>
-            <input type="button" value="JSON"
-                   onclick="deleteFilm('deletefilmid', 'DeleteFilm', 'json')"/>
-            <input type="button" value="TEXT"
-                   onclick="deleteFilm('deletefilmid', 'DeleteFilm', 'json')"/>
+            <input type="button" value="Delete Film"
+                   onclick="deleteFilm('deletefilmid', 'DeleteFilm')"/>
         </form>
         <p/>
         <div id="deletefilm"></div>
     </fieldset><br></br>
+
+    <!-- add single div id -->
+    <div id="filmtable"></div>
 
 </body>
 </html>

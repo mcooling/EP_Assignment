@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class FilmDAOTest {
 
     @Test
@@ -75,19 +73,27 @@ class FilmDAOTest {
     }
 
     @Test
-    void insertFilm() {
+    void addFilm() {
 
         Film film = new Film(
-                101,"The Adventures of Baxter",2021,"Me","Me Again",
+                "The NEW Adventures of Baxter",2021,"Me","Me Again",
                 "Load of old rubbish");
 
         FilmDAO filmDAO = new FilmDAO();
 
-        int returnValue = filmDAO.insertFilm(film);
+        Film newFilm = filmDAO.addFilm(film);
 
         System.out.println("****** TEST BEGINS ******\n");
 
-        if (returnValue == 0) {
+        System.out.println(
+                "Film ID: " + newFilm.getId() + "\n" +
+                        "Title: " + newFilm.getTitle() + "\n" +
+                        "Year: " + newFilm.getYear() + "\n" +
+                        "Director: " + newFilm.getDirector() + "\n" +
+                        "Main Cast: " + newFilm.getStars() + "\n" +
+                        "Synopsis: " + newFilm.getReview() + "\n");
+
+        /* if (returnValue == 0) {
             System.out.println("SQL insert failed: " + returnValue + " film records added \n");
 
         } else if (returnValue == 1) {
@@ -103,7 +109,7 @@ class FilmDAOTest {
 
         } else if (returnValue > 1) {
             System.out.println("SQL insert complete: " + returnValue + " film records added \n");
-        }
+        }*/
 
         System.out.println("****** TEST ENDS ******");
 

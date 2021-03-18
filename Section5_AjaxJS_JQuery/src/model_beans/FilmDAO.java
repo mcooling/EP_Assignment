@@ -148,74 +148,6 @@ public class FilmDAO {
     }
 
     /**
-     * utility method, used by getAllFilms & getFilmByName
-     * @param rs sql query result set, for each film in array list
-     * @return film object values
-     */
-    private Film getNextFilm(ResultSet rs){
-        Film thisFilm = null;
-        try {
-            thisFilm = new Film(
-                    rs.getInt("id"),
-                    rs.getString("title"),
-                    rs.getInt("year"),
-                    rs.getString("director"),
-                    rs.getString("stars"),
-                    rs.getString("review"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return thisFilm;
-    }
-
-    /**
-     * inserts a film into a connected MySQL db<br>
-     *     performs a check to confirm if the record was inserted successfully
-     * @param film Film object
-     * @return integer, with value of 0 (failed) or 1 (success)
-     */
-    public int insertFilm(Film film) {
-
-        // int value returned (0 or 1)
-        int returnValue = 0;
-
-        // open db connection
-        openConnection();
-
-        try {
-            // extract object values from film object
-            int filmId = film.getId();
-            String filmName = film.getTitle();
-            int filmYear = film.getYear();
-            String filmDirector = film.getDirector();
-            String filmStars = film.getStars();
-            String filmReview = film.getReview();
-
-            // write sql insert statement string
-            String insertSql =
-                    "insert into mmufilms.films(id, title, year, director, stars, review) values ("
-                            + filmId + ", "
-                            + "'" + filmName + "', "
-                            + filmYear + ", "
-                            + "'" + filmDirector + "', "
-                            + "'" + filmStars + "', "
-                            + "'" + filmReview + "');";
-
-            // execute insert statement
-            returnValue = stmt.executeUpdate(insertSql);
-            
-            stmt.close();
-            closeConnection();
-
-        } catch (SQLException se) {
-            System.out.println(se);
-        }
-
-        // return value
-        return returnValue;
-    }
-
-    /**
      * fetches film object from id
      * @param filmId
      * @return film object
@@ -227,7 +159,7 @@ public class FilmDAO {
 
         try {
             // add db select statement string
-            String selectSQL = "select * from films where id =" + filmId;
+            String selectSQL = "select * from mmufilms.films where id =" + filmId;
 
             // fetch query result set from db
             ResultSet resultSet = stmt.executeQuery(selectSQL);
@@ -251,21 +183,102 @@ public class FilmDAO {
     }
 
     /**
+     * utility method, used by getAllFilms & getFilmByName
+     * @param rs sql query result set, for each film in array list
+     * @return film object values
+     */
+    private Film getNextFilm(ResultSet rs){
+        Film thisFilm = null;
+        try {
+            thisFilm = new Film(
+                    rs.getInt("id"),
+                    rs.getString("title"),
+                    rs.getInt("year"),
+                    rs.getString("director"),
+                    rs.getString("stars"),
+                    rs.getString("review"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return thisFilm;
+    }
+
+    /**
+     * adds a film into a connected MySQL db<br>
+     *     performs a check to confirm if the record was inserted successfully
+     * @param film Film object
+     * @return integer, with value of 0 (failed) or 1 (success)
+     */
+    public Film addFilm(Film film) {
+
+        // todo not sure on the use of this now...had to change method sig from int to film
+        // int value returned (0 or 1)
+        int returnValue = 0;
+
+        Film displayFilm = null;
+        int newId = 0;
+
+        // open db connection
+        openConnection();
+
+        try {
+
+            // logic to automatically assign unique film id
+            // add sql query to fetch last id and add to result set
+            ResultSet lastId = stmt.executeQuery(
+                    "select MAX(id) from mmufilms.films;");
+
+            // convert result into an integer, then add 1
+
+            // loop through result set
+            // for each item in result set, create new Film object and add to array list
+            while (lastId.next()) {
+                newId = lastId.getInt(1) + 1;
+            }
+
+            // write sql insert statement string
+            String insertSql = "insert into mmufilms.films" +
+                    "(id, title, year, director, stars, review) values(" +
+                    newId + ", " +
+                    "'" + film.getTitle() + "', " +
+                    film.getYear() + ", " +
+                    "'" + film.getDirector() + "', " +
+                    "'" + film.getStars() + "', " +
+                    "'" + film.getReview() + "'" +
+                    ");";
+
+            // execute insert statement
+            returnValue = stmt.executeUpdate(insertSql);
+
+            stmt.close();
+            closeConnection();
+
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
+
+        // return the response from the select statement, not the insert
+        return getFilmById(newId);
+    }
+
+    /**
      * deletes film object from db
      * @param filmId
      * @throws SQLException
      */
-    public void deleteFilm(int filmId) throws SQLException {
+    public int deleteFilm(int filmId) throws SQLException {
 
         openConnection();
 
         // add db select statement string
-        String selectSQL = "delete from films where id=" + filmId;
+        String selectSQL = "delete from mmufilms.films where id=" + filmId;
 
         int returnValue = stmt.executeUpdate(selectSQL);
 
         // close connection
         closeConnection();
+
+        return returnValue;
 
     }
 
@@ -293,16 +306,19 @@ public class FilmDAO {
 
             // write sql update statement string
             String updateSql =
-                    "update films set " +
+                    "update mmufilms.films set " +
                             "title=" + "'" + filmName + "', " +
                             "year=" + "'" + filmYear + "', " +
                             "director=" + "'" + filmDirector + "', " +
                             "stars=" + "'" + filmStars + "', " +
                             "review=" + "'" + filmReview + "'" +
-                            "where id=" + filmId;
+                    "where id=" + filmId;
 
             // execute update statement
             returnValue = stmt.executeUpdate(updateSql);
+
+            // select statement to fetch updated record
+            // this is the thing that gets displayed back to user NOT return value
 
             stmt.close();
             closeConnection();

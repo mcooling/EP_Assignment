@@ -40,6 +40,17 @@ public class Film {
         this.review = review;
     }
 
+    public Film(String title, int year, String director, String stars,
+                String review) {
+        super();
+        this.id = id; // todo default id
+        this.title = title;
+        this.year = year;
+        this.director = director;
+        this.stars = stars;
+        this.review = review;
+    }
+
     int id;
     String title;
     int year;
