@@ -260,33 +260,33 @@ public class FilmDAO {
         return getFilmById(newId);
     }
 
+
     /**
      * deletes film object from db
      * @param filmId
+     * @return SQL db response code
      * @throws SQLException
      */
-    public int deleteFilm(int filmId) throws SQLException {
+public int deleteFilm(int filmId) throws SQLException {
 
-        openConnection();
+    openConnection();
 
-        // add db select statement string
-        String selectSQL = "delete from mmufilms.films where id=" + filmId;
+    // add db select statement string
+    String selectSQL = "delete from mmufilms.films where id=" + filmId;
+    int returnValue = stmt.executeUpdate(selectSQL);
 
-        int returnValue = stmt.executeUpdate(selectSQL);
+    // close connection
+    closeConnection();
 
-        // close connection
-        closeConnection();
-
-        return returnValue;
-
-    }
+    return returnValue;
+}
 
     /**
      * updates details of existing film object in db
      * @param film film object to update
      * @return success code (0 or 1) from sql update
      */
-    public int updateFilm(Film film) {
+public int updateFilm(Film film) {
 
         // int value returned (0 or 1)
         int returnValue = 0;

@@ -217,12 +217,14 @@ $.ajax({
     });
 }
 
-
-// todo create a new response handler for this
-// wont need data format, just return a confirmation string
+/**
+ * called from webform<br>
+ * handles ajax call to servlet<br>
+ * handles success action from servlet response<br>
+ * @param {number|string} deleteFilmId
+ * @param {*} servletAddress
+ */
 function deleteFilm(deleteFilmId, servletAddress) {
-
-        // let film = document.getElementById(deleteFilmId).value;
 
     $.ajax({
 
@@ -237,8 +239,11 @@ function deleteFilm(deleteFilmId, servletAddress) {
     });
 }
 
-// used by update & delete film flows
-// returns success / failed message, based on sql response code
+/**
+ * used by update & delete film flows<br>
+ * called by JQuery function<br>
+ * returns success / failed message, based on sql response code
+ */
 function responseHandler(servletAddress, servletResponse) {
     if (servletAddress === "DeleteFilm") {
         $("#deletefilm").append("<p>" + servletResponse + "</p>");

@@ -100,17 +100,16 @@ class FilmDAOTest {
         FilmDAO filmDAO = new FilmDAO();
         // ArrayList<Film> films = filmDAO.getFilmByName("wars");
 
-        int filmId = 101;
+        int filmId = 11312;
         Film film = filmDAO.getFilmById(filmId);
 
         System.out.println("****** TEST BEGINS ******\n");
 
-        filmDAO.deleteFilm(101);
-
-        // filmDAO.deleteFilm(filmId);
+        filmDAO.deleteFilm(filmId);
 
         System.out.println(
                 "The following film has been removed from the database: \n" +
+                        "Film ID: " + filmId +
                         "Film title: " + film.getTitle() + "\n");
 
         System.out.println("****** TEST ENDS ******");

@@ -11,8 +11,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-// todo code to be added
-
+/**
+ * Web servlet controller<br>
+ * called by ajax JQuery function
+ * interacts with FilmDAO model bean<br>
+ * deletes film record from connected MySQL db<br>
+ * returns success / failed message<br>
+ * message based on SQL response code (0 or 1)
+ */
 @WebServlet(name = "DeleteFilm", value = "/DeleteFilm")
 public class DeleteFilm extends HttpServlet {
     @Override
@@ -52,9 +58,7 @@ public class DeleteFilm extends HttpServlet {
         } else {
             returnMessage = "Delete request successful";
         }
-
         response.getWriter().write(returnMessage);
-
     }
 
     @Override
