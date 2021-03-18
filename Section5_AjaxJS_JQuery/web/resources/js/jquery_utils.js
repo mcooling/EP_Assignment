@@ -56,6 +56,11 @@ function getFilmsByName(servletAddress, dataFormat, searchString) {
     });
 }
 
+/**
+ * called when user clicks 'Update' button, from film results table<br>
+ * scrapes data from 'getfilm' results table<br>
+ * populates details into Update Film fields
+ */
 function populateUpdateFilm(thisObject) {
 
     // fetch value for each td cell in getfilmbyid div
@@ -104,10 +109,25 @@ function scrollToForm() {
 
 // todo update film. not quite working
 // seems to be writing to disk ok, but doesn't display message in div as expected?
-function updateFilm(filmId, filmName, year, director, stars, review,
-                        servletAddress, dataFormat) {
+/**
+ * called from webform<br>
+ * takes film object attributes<br>
+ * handles ajax call to servlet<br>
+ * handles success action from servlet response<br>
+ * @param {string} filmId
+ * @param {string} filmName
+ * @param {string} year
+ * @param {string} director
+ * @param {string} stars
+ * @param {string} review
+ * @param {*} servletAddress
+ * @param {string} dataFormat
+ */
+function updateFilm(filmId, filmName, year, director,
+                    stars, review, servletAddress, dataFormat) {
 
     // writes the updated film values to disk
+    // todo some refactoring comments to consider
     // effectively 'add film'
     // using standard xml / json / txt buttons
     // will require servlet / server side code
@@ -116,7 +136,6 @@ function updateFilm(filmId, filmName, year, director, stars, review,
     // should also disable the update film button again
 
     $.ajax({
-
         url: servletAddress,    // todo not quite working; expect a 'success / fail' message back
         type: "POST",
         dataType: dataFormat,
@@ -148,7 +167,6 @@ function getFilmById(servletAddress, dataFormat, film_Id) {
     let film = document.getElementById(film_Id).value;
 
     $.ajax({
-
         url: servletAddress,                                // http request URL
         type: "POST",                                       // http request type
         dataType: dataFormat,                               // data type expected back in the response

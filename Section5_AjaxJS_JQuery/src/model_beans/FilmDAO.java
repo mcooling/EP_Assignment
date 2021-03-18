@@ -316,18 +316,12 @@ public class FilmDAO {
             // execute update statement
             returnValue = stmt.executeUpdate(updateSql);
 
-            // select statement to fetch updated record
-            // this is the thing that gets displayed back to user NOT return value
-
             stmt.close();
             closeConnection();
 
         } catch (SQLException se) {
             System.out.println(se);
         }
-
-        // return value
         return returnValue;
-
     }
 }

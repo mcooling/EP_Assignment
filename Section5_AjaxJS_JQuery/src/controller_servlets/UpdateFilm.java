@@ -12,8 +12,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-// todo code to be added
-
+/**
+ * called by JQuery ajax function<br>
+ * updates existing db Film record, via FilmDAO method<br>
+ * returns SQL success code (0 or 1)
+ */
 @WebServlet(name = "UpdateFilm", value = "/UpdateFilm")
 public class UpdateFilm extends HttpServlet {
     @Override
@@ -29,10 +32,6 @@ public class UpdateFilm extends HttpServlet {
 
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
-
-        // access parameter for format. Set default to json if none is sent
-        // String dataFormat = request.getParameter("format");
-        // if (dataFormat == null) dataFormat = "xml";
 
         // extract film object parameters from request body
         int filmId = Integer.parseInt(request.getParameter("filmid"));
@@ -63,9 +62,7 @@ public class UpdateFilm extends HttpServlet {
         } else {
             returnMessage = "Film updated";
         }
-
-        response.getWriter().write(returnMessage);  // this should get returned to JQ updateFilm fnc
-
+        response.getWriter().write(returnMessage);  // todo this should get returned to JQ updateFilm fnc
     }
 
     @Override
