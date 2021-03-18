@@ -43,7 +43,7 @@ public class Film {
     public Film(String title, int year, String director, String stars,
                 String review) {
         super();
-        this.id = id; // todo default id
+        this.id = id; // default id. logic added in addFilm method, to auto-create unique id
         this.title = title;
         this.year = year;
         this.director = director;

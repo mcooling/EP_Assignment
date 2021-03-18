@@ -1,8 +1,5 @@
-
-// functions called by webform
-$(document).on( "click",
-        ".ajaxTable td",
-        function(e) {
+// called when clicking update or delete button in table results
+$(document).on( "click", ".ajaxTable td", function(e) {
 
     let td = $(this).parent().children().index($(this));
     let tableRow = $(this).closest("tr");
@@ -18,8 +15,6 @@ $(document).on( "click",
     }
     e.preventDefault();
 });
-
-//$(".ajaxTable td").trigger(temp());
 
 function getAllFilms(servletAddress, dataFormat) {
     $.ajax({
@@ -60,8 +55,6 @@ function getFilmsByName(servletAddress, dataFormat, searchString) {
         }
     });
 }
-// $(".ajaxTable td").trigger(populateUpdateFilm);
-// $(".ajaxTable td").trigger(temp());
 
 function populateUpdateFilm(thisObject) {
 
@@ -109,7 +102,8 @@ function scrollToForm() {
      */
 
 
-// todo update film
+// todo update film. not quite working
+// seems to be writing to disk ok, but doesn't display message in div as expected?
 function updateFilm(filmId, filmName, year, director, stars, review,
                         servletAddress, dataFormat) {
 
@@ -136,6 +130,7 @@ function updateFilm(filmId, filmName, year, director, stars, review,
                 review: document.getElementById(review).value
         },
 
+        // todo not quite working; expect a 'success / fail' message back as servlet response
         success: function (servletResponse) {
                 responseHandler(servletResponse, servletAddress);
         }
@@ -156,27 +151,33 @@ function getFilmById(servletAddress, dataFormat, film_Id) {
 
         url: servletAddress,                                // http request URL
         type: "POST",                                       // http request type
-        dataType: dataFormat,                              // data type expected back in the response
-        data: {format: dataFormat, filmId: film},        // data requested in servlet call
+        dataType: dataFormat,                               // data type expected back in the response
+        data: {format: dataFormat, filmId: film},           // data requested in servlet call
 
         // action to take if request type is successful
         // todo not working as expected
-        success: function (servletResponse) {                // object returned from post request
+        success: function (servletResponse) {               // object returned from post request
                 tableResponseHandler(servletResponse, dataFormat,
                     servletAddress);
         }
     });
 }
 
-
-// todo add film
-function addFilm(filmName, year, stars, director, review,
-                     servletAddress, dataFormat) {
-
-// make ajax post request to servlet
-// make function call to response handler, using servlet response
-
-// extract values from film attributes
+/**
+ * called from webform<br>
+ * takes film object attributes<br>
+ * handles ajax call to servlet<br>
+ * handles success action from servlet response<br>
+ * @param {string} filmName
+ * @param {string} year
+ * @param {string} stars
+ * @param {string} director
+ * @param {string} review
+ * @param {*} servletAddress
+ * @param {*} dataFormat
+ */
+function addFilm(filmName, year, stars, director,
+                 review, servletAddress, dataFormat) {
 
 $.ajax({
 
@@ -237,14 +238,9 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
         let htmlTableStructure =
             "<table border='1' class='ajaxTable'>" +
             "<tr>" +
-                "<th>Film Id</th>" +
-                "<th>Name</th>" +
-                "<th>Year</th>" +
-                "<th>Director</th>" +
-                "<th>Cast</th>" +
-                "<th>Plot</th>" +
-                "<th></th>" +
-                "<th></th>" +
+                "<th>Film Id</th><th>Name</th><th>Year</th>" +
+                "<th>Director</th><th>Cast</th><th>Plot</th>" +
+                "<th></th><th></th>" +
             "</tr>";
 
         // if data format passed in is json
@@ -257,12 +253,8 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                     htmlTableStructure += "<td>" + value + "</td>";
                 });
                 htmlTableStructure +=
-                        "<td>" +
-                            "<button id='updateButton'>Update</button>" +
-                        "</td>" +
-                        "<td>" +
-                            "<button id='deleteButton'>Delete</button>" +
-                        "</td>" +
+                        "<td><button id='updateButton'>Update</button></td>" +
+                        "<td><button id='deleteButton'>Delete</button></td>" +
                     "</tr>";
             });
 
@@ -302,20 +294,16 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                 htmlTableStructure += "<tr>";
 
                 $.each(rowParts, function (i, data) {
-                    htmlTableStructure +=
-
-                        "<td>" + data + "</td>";
-
+                    htmlTableStructure += "<td>" + data + "</td>";
                 });
+                // todo not rendering properly
                 htmlTableStructure +=
                         "<td><button id='updateButton'>Update</button></td>" +
                         "<td><button id='deleteButton'>Delete</button></td>" +
                     "</tr>";
             });
         }
-
         $("#filmtable").append(htmlTableStructure + "</table>");
-
 }
 
 

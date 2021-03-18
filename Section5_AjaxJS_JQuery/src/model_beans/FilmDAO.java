@@ -204,10 +204,9 @@ public class FilmDAO {
     }
 
     /**
-     * adds a film into a connected MySQL db<br>
-     *     performs a check to confirm if the record was inserted successfully
-     * @param film Film object
-     * @return integer, with value of 0 (failed) or 1 (success)
+     * Adds a new Film object to the database<br>
+     * @param film takes Film object in from AddFilm servlet
+     * @return Film object, via call to getFilmById
      */
     public Film addFilm(Film film) {
 

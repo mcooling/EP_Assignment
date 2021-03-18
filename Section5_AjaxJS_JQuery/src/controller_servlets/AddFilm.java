@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Web servlet controller<br>
  *     interacts with FilmDAO model bean<br>
  *     inserts film record into connected MySQL db<br>
- *     prints validation response to browser and console
+ *     displays new film in browser
  */
 @WebServlet(name = "AddFilm", value = "/AddFilm")
 public class AddFilm extends HttpServlet {

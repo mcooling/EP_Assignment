@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 class FilmDAOTest {
-
     @Test
     void getAllFilms() {
 
@@ -80,7 +79,6 @@ class FilmDAOTest {
                 "Load of old rubbish");
 
         FilmDAO filmDAO = new FilmDAO();
-
         Film newFilm = filmDAO.addFilm(film);
 
         System.out.println("****** TEST BEGINS ******\n");
@@ -93,26 +91,7 @@ class FilmDAOTest {
                         "Main Cast: " + newFilm.getStars() + "\n" +
                         "Synopsis: " + newFilm.getReview() + "\n");
 
-        /* if (returnValue == 0) {
-            System.out.println("SQL insert failed: " + returnValue + " film records added \n");
-
-        } else if (returnValue == 1) {
-            System.out.println("SQL insert complete: " + returnValue + " film record added \n");
-
-            System.out.println(
-                    "Film ID: " + film.getId() + "\n" +
-                            "Title: " + film.getTitle() + "\n" +
-                            "Year: " + film.getYear() + "\n" +
-                            "Director: " + film.getDirector() + "\n" +
-                            "Main Cast: " + film.getStars() + "\n" +
-                            "Synopsis: " + film.getReview() + "\n");
-
-        } else if (returnValue > 1) {
-            System.out.println("SQL insert complete: " + returnValue + " film records added \n");
-        }*/
-
         System.out.println("****** TEST ENDS ******");
-
     }
 
     @Test
