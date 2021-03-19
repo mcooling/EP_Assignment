@@ -5,11 +5,10 @@ import java.util.ArrayList;
 
 /**
  * Data Accessor Object class (DAO)<br>
+ *     implemented as Singleton<br>
  *     interacts with Film base class and remote MySQL db connection<br>
  *     includes several methods, to perform various db CRUD operations
  */
-
-// todo refactor class as singleton
 
 public class FilmDAO {
 
@@ -39,7 +38,17 @@ public class FilmDAO {
     String googleSQLUrl = baseUrl + dbname + "?cloudSqlInstance=" + connectionName +
             socketFactoryParam + "&user=" + username + "&password=" + password;
 
-    public FilmDAO() {
+    private static FilmDAO filmDAO;
+
+    private FilmDAO() {
+    }
+
+    public static FilmDAO getInstance() {
+
+        if (filmDAO == null) {
+            filmDAO = new FilmDAO();
+        }
+        return filmDAO;
     }
 
     /**

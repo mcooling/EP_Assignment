@@ -41,7 +41,7 @@ public class AddFilm extends HttpServlet {
         // todo refactor FilmDAO call, to handle new FilmDAO singleton class
 
         // instantiate FilmDAO
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
 
         // create Film object, passing request params
         Film film = new Film(filmName, filmYear, filmStars,

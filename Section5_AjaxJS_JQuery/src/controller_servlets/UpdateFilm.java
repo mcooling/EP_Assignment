@@ -37,7 +37,7 @@ public class UpdateFilm extends HttpServlet {
         // todo refactor FilmDAO call, to handle new FilmDAO singleton class
 
         // instantiate FilmDAO
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
 
         int updatedFilm = 0;
 

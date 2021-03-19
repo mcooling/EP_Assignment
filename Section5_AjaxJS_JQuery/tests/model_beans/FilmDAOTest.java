@@ -11,7 +11,7 @@ class FilmDAOTest {
     @Test
     void getAllFilms() {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         ArrayList<Film> films = filmDAO.getAllFilms();
 
         System.out.println("****** TEST BEGINS ******\n");
@@ -33,7 +33,7 @@ class FilmDAOTest {
     @Test
     void getFilmByName() {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         ArrayList<Film> films = filmDAO.getFilmByName("bronx");
 
         System.out.println("****** TEST BEGINS ******\n");
@@ -55,7 +55,7 @@ class FilmDAOTest {
     @Test
     void getFilmById() {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         Film film = filmDAO.getFilmById(10008);
 
         System.out.println("****** TEST BEGINS ******\n");
@@ -80,7 +80,7 @@ class FilmDAOTest {
                 "The NEW Adventures of Baxter",2021,"Me","Me Again",
                 "Load of old rubbish");
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         Film newFilm = filmDAO.addFilm(film);
 
         System.out.println("****** TEST BEGINS ******\n");
@@ -99,8 +99,7 @@ class FilmDAOTest {
     @Test
     void deleteFilm() throws SQLException {
 
-        FilmDAO filmDAO = new FilmDAO();
-
+        FilmDAO filmDAO = FilmDAO.getInstance();
         int filmId = 11312;
         Film film = filmDAO.getFilmById(filmId);
 
@@ -120,7 +119,7 @@ class FilmDAOTest {
     @Test
     void updateFilm() {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         Film film = filmDAO.getFilmById(10009);
         film.setDirector("Test Director");
         int returnValue = filmDAO.updateFilm(film);

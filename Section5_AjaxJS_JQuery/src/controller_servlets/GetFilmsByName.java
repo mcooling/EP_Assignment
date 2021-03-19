@@ -40,7 +40,7 @@ public class GetFilmsByName extends HttpServlet {
         // todo refactor FilmDAO call, to handle new FilmDAO singleton class
 
         // create array list and populate with db films, using FilmDAO
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         ArrayList<Film> allFilms = filmDAO.getFilmByName(searchFilmName);
 
         // pass films array into request object
