@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import model_beans.Film;
 import model_beans.FilmDAO;
 import model_beans.Output;
+import org.jetbrains.annotations.NotNull;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.Endpoint;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebService()
@@ -19,9 +21,9 @@ public class FilmSOAPWebService {
     Output output = new Output();
 
     /**
-     * web method - gets all films, via FilmDAO<br>
-     * @param dataFormat data format required to be sent back in web service
-     * @return either formatted data string, or error message
+     * webmethod: gets all films held in db<br>
+     * @param dataFormat required to be sent back in web service
+     * @return film objects in formatted data string, or error message
      */
     @WebMethod
     public String getAllFilms(String dataFormat)
@@ -50,6 +52,13 @@ public class FilmSOAPWebService {
         return "Format unsupported";
     }
 
+    /**
+     * webmethod: gets all films from search name<br>
+     * @param dataFormat required to be sent back in web service
+     * @param searchString film name to search
+     * @return film objects in formatted data string, or error message
+     * @throws JAXBException
+     */
     @WebMethod
     public String getFilmByName(String dataFormat, String searchString)
             throws JAXBException {
@@ -80,6 +89,13 @@ public class FilmSOAPWebService {
         return "Data format unsupported";
     }
 
+    /**
+     * webmethod: gets film from ID<br>
+     * @param dataFormat required to be sent back in web service
+     * @param filmId to search
+     * @return film object in formatted data string, or error message
+     * @throws JAXBException
+     */
     @WebMethod
     public String getFilmById(String dataFormat, int filmId)
             throws JAXBException {
@@ -112,8 +128,18 @@ public class FilmSOAPWebService {
         return "Data format unsupported";
     }
 
+    /**
+     * webmethod: adds film object to db<br>
+     * @param dataFormat required to be sent back in web service
+     * @param name
+     * @param year
+     * @param director
+     * @param stars
+     * @param review
+     * @return film object in formatted data string, or error message
+     */
     @WebMethod
-    public String addFilm(String dataFormat, String name, int year,
+    public String addFilm(@NotNull String dataFormat, String name, int year,
                           String director, String stars, String review) {
 
         // add film dao & call FilmDAO method
@@ -143,14 +169,17 @@ public class FilmSOAPWebService {
         }
 
         return "Data format unsupported";
-
-
     }
 
-
-    /*/ todo doesn't like this - deployment error
-    // takes in Film object attributes as params
-    // requests response code back from updateFilm method call
+    /**
+     * webmethod: update film in db<br>
+     * @param name
+     * @param year
+     * @param director
+     * @param stars
+     * @param review
+     * @return success or fail message, based on sql response code
+     */
     @WebMethod
     public String updateFilm(String name, int year, String director,
                            String stars, String review) {
@@ -164,28 +193,33 @@ public class FilmSOAPWebService {
 
         if (responseCode == 0) {
             return "Film update failed";
-        } else
-            return "Film update complete";
+        }
 
+        return "Film update complete";
     }
 
-    // todo doesn't like this - deployment error
-    // takes in Film object attributes as params
-    // requests response code back from deleteFilm method call
+    /**
+     * webmethod: delete film record from db<br>
+     * @param filmId
+     * @return success or fail message, based on sql response code
+     */
     @WebMethod
-    public String deleteFilm(String name, int year, String director,
-                             String stars, String review) {
+    public String deleteFilm(int filmId) {
 
         // name, year(int), director, stars, review
         // add film dao & call FilmDAO method
         FilmDAO filmDAO = new FilmDAO();
-        Film filmToAdd = new Film(name, year, director, stars, review);
 
-        int responseCode = filmDAO.updateFilm(filmToAdd);
+        int responseCode = 0;
+        try {
+            responseCode = filmDAO.deleteFilm(filmId);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         if (responseCode == 0) {
             return "Film delete request failed";
         } else
             return "Film deleted";
-    }*/
+    }
 }

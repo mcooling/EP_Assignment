@@ -15,11 +15,63 @@
   <message name="JAXBException">
     <part name="fault" element="tns:JAXBException"/>
   </message>
+  <message name="getFilmByName">
+    <part name="parameters" element="tns:getFilmByName"/>
+  </message>
+  <message name="getFilmByNameResponse">
+    <part name="parameters" element="tns:getFilmByNameResponse"/>
+  </message>
+  <message name="getFilmById">
+    <part name="parameters" element="tns:getFilmById"/>
+  </message>
+  <message name="getFilmByIdResponse">
+    <part name="parameters" element="tns:getFilmByIdResponse"/>
+  </message>
+  <message name="addFilm">
+    <part name="parameters" element="tns:addFilm"/>
+  </message>
+  <message name="addFilmResponse">
+    <part name="parameters" element="tns:addFilmResponse"/>
+  </message>
+  <message name="updateFilm">
+    <part name="parameters" element="tns:updateFilm"/>
+  </message>
+  <message name="updateFilmResponse">
+    <part name="parameters" element="tns:updateFilmResponse"/>
+  </message>
+  <message name="deleteFilm">
+    <part name="parameters" element="tns:deleteFilm"/>
+  </message>
+  <message name="deleteFilmResponse">
+    <part name="parameters" element="tns:deleteFilmResponse"/>
+  </message>
   <portType name="FilmSOAPWebService">
     <operation name="getAllFilms">
       <input ns1:Action="http://soap_webservice/FilmSOAPWebService/getAllFilmsRequest" message="tns:getAllFilms" xmlns:ns1="http://www.w3.org/2007/05/addressing/metadata"/>
       <output ns2:Action="http://soap_webservice/FilmSOAPWebService/getAllFilmsResponse" message="tns:getAllFilmsResponse" xmlns:ns2="http://www.w3.org/2007/05/addressing/metadata"/>
       <fault message="tns:JAXBException" name="JAXBException" ns3:Action="http://soap_webservice/FilmSOAPWebService/getAllFilms/Fault/JAXBException" xmlns:ns3="http://www.w3.org/2007/05/addressing/metadata"/>
+    </operation>
+    <operation name="getFilmByName">
+      <input ns4:Action="http://soap_webservice/FilmSOAPWebService/getFilmByNameRequest" message="tns:getFilmByName" xmlns:ns4="http://www.w3.org/2007/05/addressing/metadata"/>
+      <output ns5:Action="http://soap_webservice/FilmSOAPWebService/getFilmByNameResponse" message="tns:getFilmByNameResponse" xmlns:ns5="http://www.w3.org/2007/05/addressing/metadata"/>
+      <fault message="tns:JAXBException" name="JAXBException" ns6:Action="http://soap_webservice/FilmSOAPWebService/getFilmByName/Fault/JAXBException" xmlns:ns6="http://www.w3.org/2007/05/addressing/metadata"/>
+    </operation>
+    <operation name="getFilmById">
+      <input ns7:Action="http://soap_webservice/FilmSOAPWebService/getFilmByIdRequest" message="tns:getFilmById" xmlns:ns7="http://www.w3.org/2007/05/addressing/metadata"/>
+      <output ns8:Action="http://soap_webservice/FilmSOAPWebService/getFilmByIdResponse" message="tns:getFilmByIdResponse" xmlns:ns8="http://www.w3.org/2007/05/addressing/metadata"/>
+      <fault message="tns:JAXBException" name="JAXBException" ns9:Action="http://soap_webservice/FilmSOAPWebService/getFilmById/Fault/JAXBException" xmlns:ns9="http://www.w3.org/2007/05/addressing/metadata"/>
+    </operation>
+    <operation name="addFilm">
+      <input ns10:Action="http://soap_webservice/FilmSOAPWebService/addFilmRequest" message="tns:addFilm" xmlns:ns10="http://www.w3.org/2007/05/addressing/metadata"/>
+      <output ns11:Action="http://soap_webservice/FilmSOAPWebService/addFilmResponse" message="tns:addFilmResponse" xmlns:ns11="http://www.w3.org/2007/05/addressing/metadata"/>
+    </operation>
+    <operation name="updateFilm">
+      <input ns12:Action="http://soap_webservice/FilmSOAPWebService/updateFilmRequest" message="tns:updateFilm" xmlns:ns12="http://www.w3.org/2007/05/addressing/metadata"/>
+      <output ns13:Action="http://soap_webservice/FilmSOAPWebService/updateFilmResponse" message="tns:updateFilmResponse" xmlns:ns13="http://www.w3.org/2007/05/addressing/metadata"/>
+    </operation>
+    <operation name="deleteFilm">
+      <input ns14:Action="http://soap_webservice/FilmSOAPWebService/deleteFilmRequest" message="tns:deleteFilm" xmlns:ns14="http://www.w3.org/2007/05/addressing/metadata"/>
+      <output ns15:Action="http://soap_webservice/FilmSOAPWebService/deleteFilmResponse" message="tns:deleteFilmResponse" xmlns:ns15="http://www.w3.org/2007/05/addressing/metadata"/>
     </operation>
   </portType>
 </definitions>

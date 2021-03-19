@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Section7_WS_SOAP:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Section7_WS_SOAP_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Section7_WS_SOAP" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="JAX-WS-Glassfish / JAX-WS 2.2 RI / Metro 1.X / JWSDP 2.2" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../JARs/gson-2.8.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../JARs/mysql-connector-java-8.0.23.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../JARs/mysql-socket-factory-connector-j-8-1.2.1-jar-with-driver-and-dependencies.jar" />
+          <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="Section7_WS_SOAP/web/Web" />
+    </root>
+  </artifact>
+</component>
