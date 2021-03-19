@@ -30,7 +30,7 @@ public class FilmSOAPWebService {
             throws JAXBException {
 
         // Add film dao
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
 
         // Add array list, call get all films
         ArrayList<Film> films = filmDAO.getAllFilms();
@@ -64,7 +64,7 @@ public class FilmSOAPWebService {
             throws JAXBException {
 
         // Add film dao
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
 
         // Add array list, call get all films
         ArrayList<Film> films = filmDAO.getFilmByName(searchString);
@@ -101,7 +101,7 @@ public class FilmSOAPWebService {
             throws JAXBException {
 
         // Add film dao & call FilmDAO method
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         Film film = filmDAO.getFilmById(filmId);
 
         // add returned film object to array list
@@ -143,7 +143,7 @@ public class FilmSOAPWebService {
                           String director, String stars, String review) {
 
         // add film dao & call FilmDAO method
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         Film filmToAdd = new Film(name, year, director, stars, review);
         Film newFilm = filmDAO.addFilm(filmToAdd);
 
@@ -186,7 +186,7 @@ public class FilmSOAPWebService {
 
         // name, year(int), director, stars, review
         // add film dao & call FilmDAO method
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         Film filmToAdd = new Film(name, year, director, stars, review);
 
         int responseCode = filmDAO.updateFilm(filmToAdd);
@@ -208,7 +208,7 @@ public class FilmSOAPWebService {
 
         // name, year(int), director, stars, review
         // add film dao & call FilmDAO method
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
 
         int responseCode = 0;
         try {
