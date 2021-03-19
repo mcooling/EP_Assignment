@@ -43,7 +43,7 @@ public class FilmRestWebService extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         Gson gson = new Gson();
 
         PrintWriter printWriter = response.getWriter();
@@ -115,7 +115,7 @@ public class FilmRestWebService extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         PrintWriter printWriter = response.getWriter();
 
         String title = request.getParameter("title");
@@ -144,7 +144,7 @@ public class FilmRestWebService extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         PrintWriter printWriter = response.getWriter();
 
         int id = Integer.valueOf(request.getParameter("id"));
@@ -172,7 +172,7 @@ public class FilmRestWebService extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        FilmDAO filmDAO = new FilmDAO();
+        FilmDAO filmDAO = FilmDAO.getInstance();
         PrintWriter printWriter = response.getWriter();
         int id = Integer.valueOf(request.getParameter("id"));
 

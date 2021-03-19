@@ -37,7 +37,17 @@ public class FilmDAO {
     String googleSQLUrl = baseUrl + dbname + "?cloudSqlInstance=" + connectionName +
             socketFactoryParam + "&user=" + username + "&password=" + password;
 
-    public FilmDAO() {
+    private static FilmDAO filmDAO;
+
+    private FilmDAO() {
+    }
+
+    public static FilmDAO getInstance() {
+
+        if (filmDAO == null) {
+            filmDAO = new FilmDAO();
+        }
+        return filmDAO;
     }
 
     /**
