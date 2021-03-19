@@ -1,10 +1,6 @@
 package controller_servlets;
 
-import com.google.gson.Gson;
-import model_beans.Film;
-import model_beans.FilmDAO;
-import model_beans.FilmList;
-import model_beans.Output;
+import model_beans.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,12 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
@@ -37,14 +29,15 @@ public class GetAllFilms extends HttpServlet {
         // response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
-        String jspDisplayString = "";
-
         // access parameter for format. Set default to json if none is sent
         String dataFormat = request.getParameter("format");
         if (dataFormat == null) dataFormat = "json";
 
+        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
+
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = new FilmDAO();
+        // FilmDAOSingleton filmDAO = FilmDAOSingleton.getInstance();
         ArrayList<Film> allFilms = filmDAO.getAllFilms();
 
         // pass films array into request object
@@ -52,33 +45,18 @@ public class GetAllFilms extends HttpServlet {
 
         String viewJspFilePath = "";
 
-        Output output = new Output();
-
         // set content type in response object, depending on format sent
         if (dataFormat.equals("json")) {
             response.setContentType("application/json");
             viewJspFilePath = "/WEB-INF/results/films-json.jsp";
 
-            // calls gson json generator method
-            jspDisplayString = output.jsonGenerator(allFilms);
-
         } else if (dataFormat.equals("xml")) {
             response.setContentType("text/xml");
             viewJspFilePath = "/WEB-INF/results/films-xml.jsp";
 
-            // calls jaxb xml generator method
-            try {
-                jspDisplayString = output.xmlGenerator(allFilms);
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            }
-
         } else {
             response.setContentType("text/plain");
             viewJspFilePath = "/WEB-INF/results/films-string.jsp";
-
-            // calls string generator method
-            jspDisplayString = output.stringGenerator(allFilms);
         }
 
         // add dispatcher, to forward content to view jsp

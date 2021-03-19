@@ -1,9 +1,7 @@
 package controller_servlets;
 
-import com.google.gson.Gson;
 import model_beans.Film;
 import model_beans.FilmDAO;
-import model_beans.Output;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -41,6 +38,8 @@ public class AddFilm extends HttpServlet {
         String filmDirector = request.getParameter("director");
         String filmReview = request.getParameter("review");
 
+        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
+
         // instantiate FilmDAO
         FilmDAO filmDAO = new FilmDAO();
 
@@ -57,31 +56,19 @@ public class AddFilm extends HttpServlet {
         request.setAttribute("films", filmList);
 
         String viewJspFilePath = "";            // string object to pass into jsp
-        Output displayOutput = new Output();    // instantiate output generator class
-        String jspDisplayString = "";           // new object to store output
 
         if (dataFormat.equals("json")) {
             response.setContentType("application/json");
             viewJspFilePath = "/WEB-INF/results/films-json.jsp";
-            jspDisplayString = displayOutput.jsonGenerator(filmList);
 
         } else if (dataFormat.equals("xml")) {
             response.setContentType("text/xml");
             viewJspFilePath = "/WEB-INF/results/films-xml.jsp";
 
-            // calls jaxb xml generator method
-            try {
-                jspDisplayString = displayOutput.xmlGenerator(filmList);
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            }
-
         } else if (dataFormat.equals("text")){
             response.setContentType("text/plain");
             viewJspFilePath = "/WEB-INF/results/films-string.jsp";
 
-            // calls string generator method
-            jspDisplayString = displayOutput.stringGenerator(filmList);
         }
 
         // add dispatcher, to forward content to view jsp

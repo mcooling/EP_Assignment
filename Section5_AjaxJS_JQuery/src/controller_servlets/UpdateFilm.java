@@ -2,15 +2,11 @@ package controller_servlets;
 
 import model_beans.Film;
 import model_beans.FilmDAO;
-import model_beans.Output;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * called by JQuery ajax function<br>
@@ -22,13 +18,6 @@ public class UpdateFilm extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // todo not quite got this working
-        // probably don't want to display updated table, just a message
-        // compiles film object from values in the request
-        // passes into filmUpdate dao method
-        // gets return code back
-        // displays that return code in webform div
 
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
@@ -45,6 +34,8 @@ public class UpdateFilm extends HttpServlet {
         Film film = new Film(filmId, filmName, filmYear, filmDirector,
                 filmStars, filmReview);
 
+        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
+
         // instantiate FilmDAO
         FilmDAO filmDAO = new FilmDAO();
 
@@ -55,14 +46,14 @@ public class UpdateFilm extends HttpServlet {
 
         String returnMessage = "";
 
-        // todo this is the response expected back to jquery updateFilm function
+        // response expected back to jquery updateFilm function
         if (updatedFilm == 0) {
             returnMessage = "Film update failed";
 
         } else {
             returnMessage = "Film updated";
         }
-        response.getWriter().write(returnMessage);  // todo this should get returned to JQ updateFilm fnc
+        response.getWriter().write(returnMessage);
     }
 
     @Override

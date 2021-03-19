@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// todo refactor to handle new FilmDAO singleton class
+
 class FilmDAOTest {
     @Test
     void getAllFilms() {
@@ -98,7 +100,6 @@ class FilmDAOTest {
     void deleteFilm() throws SQLException {
 
         FilmDAO filmDAO = new FilmDAO();
-        // ArrayList<Film> films = filmDAO.getFilmByName("wars");
 
         int filmId = 11312;
         Film film = filmDAO.getFilmById(filmId);
@@ -119,11 +120,9 @@ class FilmDAOTest {
     @Test
     void updateFilm() {
 
-        Film film = new Film(
-                11311,"The Adventures of Baxter",2021,"Daddy Cooling","Baxter Cooling",
-                "Load of old rubbish");
-
         FilmDAO filmDAO = new FilmDAO();
+        Film film = filmDAO.getFilmById(10009);
+        film.setDirector("Test Director");
         int returnValue = filmDAO.updateFilm(film);
 
         System.out.println("****** TEST BEGINS ******\n");

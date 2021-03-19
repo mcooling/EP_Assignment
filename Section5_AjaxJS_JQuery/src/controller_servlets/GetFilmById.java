@@ -1,20 +1,12 @@
 package controller_servlets;
 
-import com.google.gson.Gson;
 import model_beans.Film;
 import model_beans.FilmDAO;
-import model_beans.FilmList;
-import model_beans.Output;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 @WebServlet(name = "GetFilmById", value = "/GetFilmById")
@@ -26,8 +18,6 @@ public class GetFilmById extends HttpServlet {
         // response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
-        String jspDisplayString = "";
-
         String temp = request.getParameter("filmId");
 
         int filmId = Integer.parseInt(request.getParameter("filmId"));
@@ -35,6 +25,8 @@ public class GetFilmById extends HttpServlet {
         // access parameter for format. Set default to json if none is sent
         String dataFormat = request.getParameter("format");
         if (dataFormat == null) dataFormat = "xml";
+
+        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
 
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = new FilmDAO();
@@ -49,42 +41,24 @@ public class GetFilmById extends HttpServlet {
         // string object to pass into jsp
         String viewJspFilePath = "";
 
-        Output dataOutput = new Output();
-
         // test json generator method call
         if (dataFormat.equals("json")) {
             response.setContentType("application/json");
             viewJspFilePath = "/WEB-INF/results/films-json.jsp";
-            // jspDisplayString = jsonGenerator(allFilms);
-            jspDisplayString = dataOutput.jsonGenerator(allFilms);
 
         } else if (dataFormat.equals("xml")) {
             response.setContentType("text/xml");
             viewJspFilePath = "/WEB-INF/results/films-xml.jsp";
 
-            // calls jaxb xml generator method
-            try {
-                // jspDisplayString = xmlGenerator(allFilms);
-                jspDisplayString = dataOutput.xmlGenerator(allFilms);
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            }
-
         } else if (dataFormat.equals("text")) {
             response.setContentType("text/plain");
             viewJspFilePath = "/WEB-INF/results/films-string.jsp";
-
-            // calls string generator method
-            // jspDisplayString = stringGenerator(allFilms);
-            jspDisplayString = dataOutput.stringGenerator(allFilms);
-
         }
 
         // add dispatcher, to forward content to view jsp
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher(viewJspFilePath);
         dispatcher.include(request, response);
-
     }
 
     @Override

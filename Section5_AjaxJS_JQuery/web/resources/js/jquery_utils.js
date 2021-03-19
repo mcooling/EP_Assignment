@@ -1,5 +1,7 @@
 // called when clicking update or delete button in table results
-$(document).on( "click", ".ajaxTable td", function(e) {
+$(document).on( "click",
+    ".ajaxTable td",
+    function(e) {
 
     let td = $(this).parent().children().index($(this));
     let tableRow = $(this).closest("tr");
@@ -136,9 +138,8 @@ function updateFilm(filmId, filmName, year, director,
     // should also disable the update film button again
 
     $.ajax({
-        url: servletAddress,    // todo not quite working; expect a 'success / fail' message back
+        url: servletAddress,
         type: "POST",
-        dataType: dataFormat,
         data: {
                 format: dataFormat, // reconfirm where 'format' is pointing to.....the request.getparam vals in servlet
                 filmid: document.getElementById(filmId).value,
@@ -149,9 +150,36 @@ function updateFilm(filmId, filmName, year, director,
                 review: document.getElementById(review).value
         },
 
-        // todo not quite working; expect a 'success / fail' message back as servlet response
         success: function (servletResponse) {
-                responseHandler(servletResponse, servletAddress);
+                responseHandler(servletAddress, servletResponse);
+        },
+
+        // todo add these throughout. Good practice
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus); alert("Error: " + errorThrown);
+        }
+    });
+}
+
+
+/**
+ * called from webform<br>
+ * handles ajax call to servlet<br>
+ * handles success action from servlet response<br>
+ * @param {number|string} deleteFilmId
+ * @param {*} servletAddress
+ */
+function deleteFilm(deleteFilmId, servletAddress) {
+
+    $.ajax({
+
+        url: servletAddress,                                    // http request URL
+        type: "POST",                                           // http request type
+        data: {filmId: deleteFilmId},                           // data requested in servlet call
+
+        // action to take if request type is successful
+        success: function (servletResponse) {                   // object returned from post request
+            responseHandler(servletAddress, servletResponse);
         }
     });
 }
@@ -197,47 +225,26 @@ function getFilmById(servletAddress, dataFormat, film_Id) {
 function addFilm(filmName, year, stars, director,
                  review, servletAddress, dataFormat) {
 
-$.ajax({
-
-    url: servletAddress,
-    type: "POST",
-    dataType: dataFormat,
-    data: {
-        format: dataFormat, // reconfirm where 'format' is pointing to.....the request.getparam vals in servlet
-        name: document.getElementById(filmName).value, // reconfirm where prefix values are pointing
-        year: document.getElementById(year).value,
-        stars: document.getElementById(stars).value,
-        director: document.getElementById(director).value,
-        review: document.getElementById(review).value
-    },
-
-    success: function (servletResponse) {
-            tableResponseHandler(servletResponse, dataFormat, servletAddress);
-        }
-    });
-}
-
-/**
- * called from webform<br>
- * handles ajax call to servlet<br>
- * handles success action from servlet response<br>
- * @param {number|string} deleteFilmId
- * @param {*} servletAddress
- */
-function deleteFilm(deleteFilmId, servletAddress) {
-
     $.ajax({
 
-        url: servletAddress,                                    // http request URL
-        type: "POST",                                           // http request type
-        data: {filmId: deleteFilmId},                           // data requested in servlet call
+        url: servletAddress,
+        type: "POST",
+        dataType: dataFormat,
+        data: {
+            format: dataFormat, // reconfirm where 'format' is pointing to.....the request.getparam vals in servlet
+            name: document.getElementById(filmName).value, // reconfirm where prefix values are pointing
+            year: document.getElementById(year).value,
+            stars: document.getElementById(stars).value,
+            director: document.getElementById(director).value,
+            review: document.getElementById(review).value
+        },
 
-        // action to take if request type is successful
-        success: function (servletResponse) {                   // object returned from post request
-            responseHandler(servletAddress, servletResponse);
-        }
-    });
+        success: function (servletResponse) {
+                tableResponseHandler(servletResponse, dataFormat, servletAddress);
+            }
+        });
 }
+
 
 /**
  * used by update & delete film flows<br>
@@ -245,6 +252,7 @@ function deleteFilm(deleteFilmId, servletAddress) {
  * returns success / failed message, based on sql response code
  */
 function responseHandler(servletAddress, servletResponse) {
+
     if (servletAddress === "DeleteFilm") {
         $("#deletefilm").append("<p>" + servletResponse + "</p>");
 

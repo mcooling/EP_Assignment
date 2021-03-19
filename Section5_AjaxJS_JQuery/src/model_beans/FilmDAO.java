@@ -9,6 +9,8 @@ import java.util.ArrayList;
  *     includes several methods, to perform various db CRUD operations
  */
 
+// todo refactor class as singleton
+
 public class FilmDAO {
 
     // mudfoot database connection details
@@ -223,16 +225,11 @@ public class FilmDAO {
         try {
 
             // logic to automatically assign unique film id
-            // add sql query to fetch last id and add to result set
-            ResultSet lastId = stmt.executeQuery(
+            ResultSet lastId = stmt.executeQuery(                   // create result set and add sql query, to fetch last id
                     "select MAX(id) from mmufilms.films;");
 
-            // convert result into an integer, then add 1
-
-            // loop through result set
-            // for each item in result set, create new Film object and add to array list
-            while (lastId.next()) {
-                newId = lastId.getInt(1) + 1;
+            while (lastId.next()) {                                 // loop through result set
+                newId = lastId.getInt(1) + 1;         // update newId, as lastId + 1, convert to int
             }
 
             // write sql insert statement string
@@ -260,68 +257,67 @@ public class FilmDAO {
         return getFilmById(newId);
     }
 
+        /**
+         * deletes film object from db
+         * @param filmId
+         * @return SQL db response code
+         * @throws SQLException
+         */
+    public int deleteFilm(int filmId) throws SQLException {
 
-    /**
-     * deletes film object from db
-     * @param filmId
-     * @return SQL db response code
-     * @throws SQLException
-     */
-public int deleteFilm(int filmId) throws SQLException {
-
-    openConnection();
-
-    // add db select statement string
-    String selectSQL = "delete from mmufilms.films where id=" + filmId;
-    int returnValue = stmt.executeUpdate(selectSQL);
-
-    // close connection
-    closeConnection();
-
-    return returnValue;
-}
-
-    /**
-     * updates details of existing film object in db
-     * @param film film object to update
-     * @return success code (0 or 1) from sql update
-     */
-public int updateFilm(Film film) {
-
-        // int value returned (0 or 1)
-        int returnValue = 0;
-
-        // open db connection
         openConnection();
 
-        try {
-            // extract object values from film object
-            int filmId = film.getId();
-            String filmName = film.getTitle();
-            int filmYear = film.getYear();
-            String filmDirector = film.getDirector();
-            String filmStars = film.getStars();
-            String filmReview = film.getReview();
+        // add db select statement string
+        String selectSQL = "delete from mmufilms.films where id=" + filmId;
+        int returnValue = stmt.executeUpdate(selectSQL);
 
-            // write sql update statement string
-            String updateSql =
-                    "update mmufilms.films set " +
-                            "title=" + "'" + filmName + "', " +
-                            "year=" + "'" + filmYear + "', " +
-                            "director=" + "'" + filmDirector + "', " +
-                            "stars=" + "'" + filmStars + "', " +
-                            "review=" + "'" + filmReview + "'" +
-                    "where id=" + filmId;
+        // close connection
+        closeConnection();
 
-            // execute update statement
-            returnValue = stmt.executeUpdate(updateSql);
-
-            stmt.close();
-            closeConnection();
-
-        } catch (SQLException se) {
-            System.out.println(se);
-        }
         return returnValue;
     }
-}
+
+        /**
+         * updates details of existing film object in db
+         * @param film film object to update
+         * @return success code (0 or 1) from sql update
+         */
+    public int updateFilm(Film film) {
+
+            // int value returned (0 or 1)
+            int returnValue = 0;
+
+            // open db connection
+            openConnection();
+
+            try {
+                // extract object values from film object
+                int filmId = film.getId();
+                String filmName = film.getTitle();
+                int filmYear = film.getYear();
+                String filmDirector = film.getDirector();
+                String filmStars = film.getStars();
+                String filmReview = film.getReview();
+
+                // write sql update statement string
+                String updateSql =
+                        "update mmufilms.films set " +
+                                "title=" + "'" + filmName + "', " +
+                                "year=" + "'" + filmYear + "', " +
+                                "director=" + "'" + filmDirector + "', " +
+                                "stars=" + "'" + filmStars + "', " +
+                                "review=" + "'" + filmReview + "'" +
+                        "where id=" + filmId;
+
+                // execute update statement
+                returnValue = stmt.executeUpdate(updateSql);
+
+                stmt.close();
+                closeConnection();
+
+            } catch (SQLException se) {
+                System.out.println(se);
+            }
+            return returnValue;
+        }
+    }

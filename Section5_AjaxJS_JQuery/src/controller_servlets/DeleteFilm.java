@@ -28,14 +28,10 @@ public class DeleteFilm extends HttpServlet {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
-        // String jspDisplayString = "";
-
-        // access parameter for format. Set default to json if none is sent
-        // String dataFormat = request.getParameter("format");
-        // if (dataFormat == null) dataFormat = "json";
-
         int filmId = Integer.parseInt(request.getParameter("filmId"));
         int filmToDelete = 0;
+
+        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
 
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = new FilmDAO();
@@ -45,10 +41,6 @@ public class DeleteFilm extends HttpServlet {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        // ArrayList<Film> allFilms = filmDAO.getAllFilms();
-
-        // pass films array into request object
-        // request.setAttribute("films", allFilms);
 
         String returnMessage = "";
 
