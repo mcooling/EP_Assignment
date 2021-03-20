@@ -16,7 +16,7 @@
         <soap:fault name="JAXBException" use="literal"/>
       </fault>
     </operation>
-    <operation name="getFilmByName">
+    <operation name="addFilm">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -24,9 +24,6 @@
       <output>
         <soap:body use="literal"/>
       </output>
-      <fault name="JAXBException">
-        <soap:fault name="JAXBException" use="literal"/>
-      </fault>
     </operation>
     <operation name="getFilmById">
       <soap:operation soapAction=""/>
@@ -40,7 +37,7 @@
         <soap:fault name="JAXBException" use="literal"/>
       </fault>
     </operation>
-    <operation name="addFilm">
+    <operation name="deleteFilm">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -48,17 +45,20 @@
       <output>
         <soap:body use="literal"/>
       </output>
+    </operation>
+    <operation name="getFilmByName">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="JAXBException">
+        <soap:fault name="JAXBException" use="literal"/>
+      </fault>
     </operation>
     <operation name="updateFilm">
-      <soap:operation soapAction=""/>
-      <input>
-        <soap:body use="literal"/>
-      </input>
-      <output>
-        <soap:body use="literal"/>
-      </output>
-    </operation>
-    <operation name="deleteFilm">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

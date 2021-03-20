@@ -7,6 +7,7 @@ import model_beans.Output;
 import org.jetbrains.annotations.NotNull;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.bind.JAXBException;
 import javax.xml.ws.Endpoint;
@@ -26,7 +27,7 @@ public class FilmSOAPWebService {
      * @return film objects in formatted data string, or error message
      */
     @WebMethod
-    public String getAllFilms(String dataFormat)
+    public String getAllFilms(@WebParam(name = "dataFormat") String dataFormat)
             throws JAXBException {
 
         // Add film dao
@@ -55,19 +56,20 @@ public class FilmSOAPWebService {
     /**
      * webmethod: gets all films from search name<br>
      * @param dataFormat required to be sent back in web service
-     * @param searchString film name to search
+     * @param filmName film name to search
      * @return film objects in formatted data string, or error message
      * @throws JAXBException
      */
     @WebMethod
-    public String getFilmByName(String dataFormat, String searchString)
+    public String getFilmByName(@WebParam(name = "dataFormat") String dataFormat,
+                                @WebParam(name = "filmName") String filmName)
             throws JAXBException {
 
         // Add film dao
         FilmDAO filmDAO = FilmDAO.getInstance();
 
         // Add array list, call get all films
-        ArrayList<Film> films = filmDAO.getFilmByName(searchString);
+        ArrayList<Film> films = filmDAO.getFilmByName(filmName);
 
         // add conditions for data formats
         if (dataFormat.equals("json")) {
@@ -97,7 +99,8 @@ public class FilmSOAPWebService {
      * @throws JAXBException
      */
     @WebMethod
-    public String getFilmById(String dataFormat, int filmId)
+    public String getFilmById(@WebParam(name = "dataFormat") String dataFormat,
+                              @WebParam(name = "filmId") int filmId)
             throws JAXBException {
 
         // Add film dao & call FilmDAO method
@@ -139,8 +142,10 @@ public class FilmSOAPWebService {
      * @return film object in formatted data string, or error message
      */
     @WebMethod
-    public String addFilm(@NotNull String dataFormat, String name, int year,
-                          String director, String stars, String review) {
+    public String addFilm(@NotNull @WebParam(name = "dataFormat") String dataFormat,
+                          @WebParam(name = "name") String name, @WebParam(name = "year") int year,
+                          @WebParam(name = "director") String director, @WebParam(name = "stars") String stars,
+                          @WebParam(name = "plot") String review) {
 
         // add film dao & call FilmDAO method
         FilmDAO filmDAO = FilmDAO.getInstance();
@@ -181,15 +186,16 @@ public class FilmSOAPWebService {
      * @return success or fail message, based on sql response code
      */
     @WebMethod
-    public String updateFilm(String name, int year, String director,
-                           String stars, String review) {
+    public String updateFilm(@WebParam(name = "filmId") int filmId, @WebParam(name = "filmName") String name,
+                             @WebParam(name = "year") int year, @WebParam(name = "director") String director,
+                             @WebParam(name = "stars") String stars, @WebParam(name = "review") String review) {
 
         // name, year(int), director, stars, review
         // add film dao & call FilmDAO method
         FilmDAO filmDAO = FilmDAO.getInstance();
-        Film filmToAdd = new Film(name, year, director, stars, review);
+        Film updatedFilm = new Film(filmId, name, year, director, stars, review);
 
-        int responseCode = filmDAO.updateFilm(filmToAdd);
+        int responseCode = filmDAO.updateFilm(updatedFilm);
 
         if (responseCode == 0) {
             return "Film update failed";
@@ -204,7 +210,7 @@ public class FilmSOAPWebService {
      * @return success or fail message, based on sql response code
      */
     @WebMethod
-    public String deleteFilm(int filmId) {
+    public String deleteFilm(@WebParam(name = "filmId") int filmId) {
 
         // name, year(int), director, stars, review
         // add film dao & call FilmDAO method
