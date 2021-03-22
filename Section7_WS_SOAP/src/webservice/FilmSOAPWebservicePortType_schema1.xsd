@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://webservice/" xmlns:tns="http://webservice/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="JAXBException" type="tns:JAXBException"/>
+
+  <xs:element name="addFilm" type="tns:addFilm"/>
+
+  <xs:element name="addFilmResponse" type="tns:addFilmResponse"/>
+
+  <xs:element name="deleteFilm" type="tns:deleteFilm"/>
+
+  <xs:element name="deleteFilmResponse" type="tns:deleteFilmResponse"/>
+
+  <xs:element name="getAllFilms" type="tns:getAllFilms"/>
+
+  <xs:element name="getAllFilmsResponse" type="tns:getAllFilmsResponse"/>
+
+  <xs:element name="getFilmById" type="tns:getFilmById"/>
+
+  <xs:element name="getFilmByIdResponse" type="tns:getFilmByIdResponse"/>
+
+  <xs:element name="getFilmByName" type="tns:getFilmByName"/>
+
+  <xs:element name="getFilmByNameResponse" type="tns:getFilmByNameResponse"/>
+
+  <xs:element name="updateFilm" type="tns:updateFilm"/>
+
+  <xs:element name="updateFilmResponse" type="tns:updateFilmResponse"/>
+
+  <xs:complexType name="deleteFilm">
+    <xs:sequence>
+      <xs:element name="filmId" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteFilmResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateFilm">
+    <xs:sequence>
+      <xs:element name="filmId" type="xs:int"/>
+      <xs:element name="filmName" type="xs:string" minOccurs="0"/>
+      <xs:element name="year" type="xs:int"/>
+      <xs:element name="director" type="xs:string" minOccurs="0"/>
+      <xs:element name="stars" type="xs:string" minOccurs="0"/>
+      <xs:element name="review" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateFilmResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getAllFilms">
+    <xs:sequence>
+      <xs:element name="dataFormat" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getAllFilmsResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="JAXBException">
+    <xs:sequence>
+      <xs:element name="errorCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="linkedException" type="tns:throwable" minOccurs="0"/>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="throwable">
+    <xs:sequence>
+      <xs:element name="stackTrace" type="tns:stackTraceElement" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="stackTraceElement" final="extension restriction">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="getFilmByName">
+    <xs:sequence>
+      <xs:element name="dataFormat" type="xs:string" minOccurs="0"/>
+      <xs:element name="filmName" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getFilmByNameResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getFilmById">
+    <xs:sequence>
+      <xs:element name="dataFormat" type="xs:string" minOccurs="0"/>
+      <xs:element name="filmId" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getFilmByIdResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addFilm">
+    <xs:sequence>
+      <xs:element name="dataFormat" type="xs:string" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="year" type="xs:int"/>
+      <xs:element name="director" type="xs:string" minOccurs="0"/>
+      <xs:element name="stars" type="xs:string" minOccurs="0"/>
+      <xs:element name="plot" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addFilmResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+
