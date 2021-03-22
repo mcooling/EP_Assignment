@@ -38,8 +38,6 @@ public class AddFilm extends HttpServlet {
         String filmDirector = request.getParameter("director");
         String filmReview = request.getParameter("review");
 
-        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
-
         // instantiate FilmDAO
         FilmDAO filmDAO = FilmDAO.getInstance();
 

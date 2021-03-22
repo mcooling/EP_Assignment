@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-// todo refactor to handle new FilmDAO singleton class
-
 class FilmDAOTest {
     @Test
     void getAllFilms() {

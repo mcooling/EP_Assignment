@@ -33,8 +33,6 @@ public class GetAllFilms extends HttpServlet {
         String dataFormat = request.getParameter("format");
         if (dataFormat == null) dataFormat = "json";
 
-        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
-
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = FilmDAO.getInstance();
 

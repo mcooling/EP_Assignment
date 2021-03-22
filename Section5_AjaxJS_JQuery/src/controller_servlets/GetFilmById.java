@@ -26,8 +26,6 @@ public class GetFilmById extends HttpServlet {
         String dataFormat = request.getParameter("format");
         if (dataFormat == null) dataFormat = "xml";
 
-        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
-
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = FilmDAO.getInstance();
         Film film = filmDAO.getFilmById(filmId);

@@ -31,8 +31,6 @@ public class DeleteFilm extends HttpServlet {
         int filmId = Integer.parseInt(request.getParameter("filmId"));
         int filmToDelete = 0;
 
-        // todo refactor FilmDAO call, to handle new FilmDAO singleton class
-
         // create array list and populate with db films, using FilmDAO
         FilmDAO filmDAO = FilmDAO.getInstance();
 
