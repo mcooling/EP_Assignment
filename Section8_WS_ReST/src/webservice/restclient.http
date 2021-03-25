@@ -7,57 +7,57 @@
 // Handles the three request types included in doGet: getAllFilms, getFilmsByName, getFilmById
 
 ### GETALLFILMS (default)
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getallfilms
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getallfilms
 Accept: application/json
 
 ### json
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getallfilms&format=json
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getallfilms&format=json
 Accept: application/json
 
 ### xml
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getallfilms&format=xml
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getallfilms&format=xml
 Accept: application/xml
 
 ### text
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getallfilms&format=text
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getallfilms&format=text
 Accept: application/text
 
 
 ### GETFILMSBYNAME (default)
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars
 Accept: application/json
 
 ### json
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars&format=json
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars&format=json
 Accept: application/json
 
 ### xml
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars&format=xml
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars&format=xml
 Accept: application/xml
 
 ### text
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars&format=text
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getfilmsbyname&filmName=wars&format=text
 Accept: application/text
 
 
 ### GETFILMBYID
-GET http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?action=getfilmbyid&id=10002
+GET http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getfilmbyid&id=10002&format=xml
 Accept: application/json
 
 
 ### POST REQUEST
 // Handles addFilm request, included in doPost
-POST http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice
+POST http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?format=json&film=%7B%22id%22%3A10001%2C%22title%22%3A%221492%20-%20CONQUEST%20OF%20PARADISE%22%2C%22year%22%3A1992%2C%22director%22%3A%22RIDLEY%20SCOTT%22%2C%22stars%22%3A%22GERARD%20DEPARDIEU%2C%20ARMAND%20ASSANTE%22%2C%22review%22%3A%22The%20story%20of%20Columbus%20discovering%20America%2C%20beautifully%20shot%20in%20Costa%20Rica%20and%20excellently%20played%20by%20an%20top-notch%20cast%20including%20Tcheky%20Karyo%2C%20Michael%20Wincott%20and%20Sigourney%20Weaver%20as%20the%20Queen%20of%20Spain.%20Interestingly%20the%20script%20shows%20Columbus%20mercenary%20side%20by%20detailing%20the%20deals%20he%20wanted%20in%20return%20for%20discovering%20this%20new%20world%20before%20eventually%20having%20to%20return%20home%20in%20disgrace.%22%7D
 Content-Type: application/x-www-form-urlencoded
 
 title=newfilm&year=2020&director=marc&stars=marc&review=brilliant
 
 ### PUT REQUEST
 // Handles updateFilm request, included in doPut
-PUT http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?id=11314&title=newfilm&year=2021&director=MARC COOLING&stars=marc&review=average
+PUT http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?id=11314&title=newfilm&year=2021&director=MARC COOLING&stars=marc&review=average
 Content-Type: application/x-www-form-urlencoded
 
 
 ### DELETE REQUEST
 // Handles deleteFilm request, included in doDelete
-DELETE http://localhost:8080/REST_03_22_war_exploded/FilmRESTWebservice?id=11315
+DELETE http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?id=11315

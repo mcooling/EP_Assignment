@@ -5,7 +5,9 @@ import com.google.gson.Gson;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.FileNotFoundException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ public class Output {
 
     // todo - make sure this gets added into 'refactored code' section
     // previously rewritten in each servlet. shipped out to a dedicated class
+
 
     /**
      * converts array list of films into json string representation<br>
@@ -30,6 +33,7 @@ public class Output {
         return jsonResult;
     }
 
+
     /**
      * uses JAXB library, to generate xml for Film result set<br>
      * @param allFilms Arraylist of Film objects
@@ -37,7 +41,7 @@ public class Output {
      * @throws JAXBException
      * @throws FileNotFoundException
      */
-    public String xmlGenerator(ArrayList<Film> allFilms)
+    public String xmlToStringGenerator(ArrayList<Film> allFilms)
             throws JAXBException, FileNotFoundException {
 
         // adds new FilmList, then populate with arraylist passed in
@@ -57,6 +61,55 @@ public class Output {
 
         return stringWriter.toString();
     }
+
+
+    // todo write new method for creating xml from string....
+    //  see commented code @line 152 webservice
+
+    // todo currently throwing error
+    public Film stringToXmlGenerator(String xmlInput) {
+
+        try {
+
+            JAXBContext context = JAXBContext.newInstance(FilmList.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            StringReader reader = new StringReader(xmlInput);
+
+            // todo npe currently being thrown here
+            FilmList newFilmList = (FilmList) unmarshaller.unmarshal(reader);
+
+            Film newFilm = newFilmList.getFilmList().get(0);
+
+            return newFilm;
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /* else if (dataFormat.equals("xml")) {
+
+            // read in the xml body content passed in film
+            String xmlInput = request.getParameter("film");
+
+            // convert to xml
+            try {
+                JAXBContext context = JAXBContext.newInstance(Film.class);
+                Unmarshaller unmarshaller = context.createUnmarshaller();
+
+                StringReader reader = new StringReader(xmlInput);
+
+                Film newFilm = (Film) unmarshaller.unmarshal(reader);
+
+                return newFilm
+
+                );
+
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            } */
 
     /**
      * converts array list of films into string representation<br>

@@ -43,7 +43,7 @@ public class Film {
     public Film(String title, int year, String director, String stars,
                 String review) {
         super();
-        this.id = id; // default id. logic added in addFilm method, to auto-create unique id
+        // this.id = id; // default id. logic added in addFilm method, to auto-create unique id
         this.title = title;
         this.year = year;
         this.director = director;
@@ -51,12 +51,12 @@ public class Film {
         this.review = review;
     }
 
-    int id;
-    String title;
-    int year;
-    String director;
-    String stars;
-    String review;
+    private int id;
+    private String title;
+    private int year;
+    private String director;
+    private String stars;
+    private String review;
 
     public int getId() {
         return id;

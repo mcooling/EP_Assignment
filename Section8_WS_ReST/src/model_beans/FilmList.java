@@ -12,15 +12,9 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.FIELD)
 
 public class FilmList {
-    @XmlElementWrapper(name = "filmList")
-    @XmlElement(name = "film")
+    @XmlElementWrapper(name = "filmList")   // add wrapper element around XML
+    @XmlElement(name = "film")              // set the name of the xml entities
     private ArrayList<Film> filmList;
-
-    // add wrapper element around XML
-
-
-    // set the name of the xml entities
-    // @XmlElement(name = "film")
 
     public ArrayList<Film> getFilmList() {
         return filmList;
