@@ -13,7 +13,8 @@ $(document).on( "click",
         let filmId = parseInt(
                 tableRow.find("td:eq(0)").text(),10);
 
-        deleteFilm(filmId,'DeleteFilm');
+        // todo null value in deleteFilm
+        deleteFilm(filmId,'restwebservice');
     }
     e.preventDefault();
 });
@@ -193,7 +194,13 @@ function updateFilm(filmId, filmName, year, director,
  */
 function deleteFilm(deleteFilmId, servletAddress) {
 
-    let filmId = document.getElementById(deleteFilmId).value;
+    let filmId = null;
+
+    // todo check added, to handle film id passed as string or number
+    // passed as string from 'Delete Film', but passed as int when deleted from table
+    if (isNaN(deleteFilmId)) {
+        filmId = document.getElementById(deleteFilmId).value;
+    } else filmId = deleteFilmId;
 
     $.ajax({
 
