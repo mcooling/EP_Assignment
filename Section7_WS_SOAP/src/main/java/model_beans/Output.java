@@ -14,8 +14,9 @@ public class Output {
     public Output() {
     }
 
-    // todo - make sure this gets added into 'refactored code' section
+    // todo - make sure this gets added into 'refactored code' report section
     // previously rewritten in each servlet. shipped out to a dedicated class
+    // not used in MVC project though, only web service projects
 
     /**
      * converts array list of films into json string representation<br>

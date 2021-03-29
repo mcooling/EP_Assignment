@@ -51,12 +51,12 @@ public class Film {
         this.review = review;
     }
 
-    int id;
-    String title;
-    int year;
-    String director;
-    String stars;
-    String review;
+    private int id;
+    private String title;
+    private int year;
+    private String director;
+    private String stars;
+    private String review;
 
     public int getId() {
         return id;
