@@ -90,6 +90,7 @@
     <legend>Update Film Details</legend>
     <form action="#">
 
+        <label>Film ID: <input type="text" id="u_filmid" readonly/></label><br></br>
         <label>Film Name: <input type="text" id="u_filmname"/></label><br></br>
         <label>Year: <input type="text" id="u_year"/></label><br></br>
         <label>Director: <input type="text" id="u_director"/></label><br></br>
@@ -98,15 +99,15 @@
 
         <input type="button" value="XML"
                onclick="updateFilm(
-                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'u_filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
                        'restwebservice', 'xml')"/>
         <input type="button" value="JSON"
                onclick="updateFilm(
-                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'u_filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
                        'restwebservice', 'json')"/>
         <input type="button" value="TEXT"
                onclick="updateFilm(
-                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'u_filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
                        'restwebservice', 'text')"/><br></br>
 
     </form>

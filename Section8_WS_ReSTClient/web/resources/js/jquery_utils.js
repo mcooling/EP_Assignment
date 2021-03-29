@@ -13,7 +13,6 @@ $(document).on( "click",
         let filmId = parseInt(
                 tableRow.find("td:eq(0)").text(),10);
 
-        // todo null value in deleteFilm
         deleteFilm(filmId,'restwebservice');
     }
     e.preventDefault();
@@ -38,7 +37,12 @@ function getAllFilms(servletAddress, action, dataFormat) {
         // action to take if request type is successful
         success: function(servletResponse) {                    // object returned from post request
             tableResponseHandler(servletResponse, dataFormat, servletAddress);   // response handler function
-            //responseHandler(servletAddress, servletResponse);
+
+        },
+
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
         }
     });
 }
@@ -64,6 +68,11 @@ function getFilmsByName(servletAddress, action, dataFormat, searchString) {
         success: function(servletResponse) {
             tableResponseHandler(servletResponse, dataFormat,
                 servletAddress);
+        },
+
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
         }
     });
 }
@@ -89,6 +98,11 @@ function getFilmById(servletAddress, action, dataFormat, film_Id) {
         success: function (servletResponse) {
             tableResponseHandler(servletResponse, dataFormat,
                 servletAddress);
+        },
+
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
         }
     });
 }
@@ -126,6 +140,11 @@ function addFilm(filmName, year, stars, director,
 
         success: function (servletResponse) {
             responseHandler(servletResponse);
+        },
+
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
         }
     });
 }
@@ -147,15 +166,6 @@ function addFilm(filmName, year, stars, director,
 function updateFilm(filmId, filmName, year, director,
                     stars, review, servletAddress, dataFormat) {
 
-    // writes the updated film values to disk
-    // todo some refactoring comments to consider
-    // effectively 'add film'
-    // using standard xml / json / txt buttons
-    // will require servlet / server side code
-    // could use either response handler - depends whether I want to display updated table or not
-
-    // should also disable the update film button again
-
     // todo have had to change app server to Wildfly. Tomcat doesn't support PUT as standard
     // may need to work out how to configure Tomcat to support
 
@@ -169,15 +179,14 @@ function updateFilm(filmId, filmName, year, director,
                 year: document.getElementById(year).value,
                 director: document.getElementById(director).value,
                 stars: document.getElementById(stars).value,
-                review: document.getElementById(review).value
-                //format: dataFormat
+                review: document.getElementById(review).value,
+                format: dataFormat
         },
 
         success: function (servletResponse) {
                 responseHandler(servletResponse);
         },
 
-        // todo add these throughout. Good practice
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("Status: " + textStatus);
             alert("Error: " + errorThrown);
@@ -196,8 +205,7 @@ function deleteFilm(deleteFilmId, servletAddress) {
 
     let filmId = null;
 
-    // todo check added, to handle film id passed as string or number
-    // passed as string from 'Delete Film', but passed as int when deleted from table
+    // check added, to handle film id passed as string or number
     if (isNaN(deleteFilmId)) {
         filmId = document.getElementById(deleteFilmId).value;
     } else filmId = deleteFilmId;
@@ -214,6 +222,11 @@ function deleteFilm(deleteFilmId, servletAddress) {
 
             // $("#deletefilm").append("<p>" + servletResponse + "</p>");
             responseHandler(servletResponse);
+        },
+
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
         }
     });
 }
@@ -232,14 +245,14 @@ function populateUpdateFilm(thisObject) {
 
     let tableRow = $(thisObject).closest("tr");
 
-    // let u_filmid = tableRow.find("td:eq(0)").text();
+    let u_filmid = tableRow.find("td:eq(0)").text();
     let u_filmname = tableRow.find("td:eq(1)").text();
     let u_year = tableRow.find("td:eq(2)").text();
     let u_director = tableRow.find("td:eq(3)").text();
     let u_stars = tableRow.find("td:eq(4)").text();
     let u_review = tableRow.find("td:eq(5)").text();
 
-    // $("#u_filmid").val(u_filmid);
+    $("#u_filmid").val(u_filmid);
     $("#u_filmname").val(u_filmname);
     $("#u_year").val(u_year);
     $("#u_director").val(u_director);
@@ -356,7 +369,6 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                 $.each(rowParts, function (i, data) {
                     htmlTableStructure += "<td>" + data + "</td>";
                 });
-                // todo not rendering properly
                 htmlTableStructure +=
                         "<td><button id='updateButton'>Update</button></td>" +
                         "<td><button id='deleteButton'>Delete</button></td>" +
@@ -371,14 +383,13 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
 
 /*
 
-// todo refactored table function...this feels like a lot more code than before
+// todo refactored table function...factor this into report
 // even if the 3 js functions were merged, i think there would be less code than here
 // am i over-engineering this?
 function getTable(tableHeadings, tableRows) {
 
     // overarching container for the table
     // gets built up through appends
-    // todo lots of appending going on here!
     let htmlTableStructure = $("");
 
     // table header
