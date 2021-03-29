@@ -124,7 +124,7 @@ public class Output {
         // add each film from array list, to buffer
         for (Film f : allFilms) {
             stringBuffer.append(f);
-            stringBuffer.append("");
+            stringBuffer.append("$");
         }
 
         // convert string buffer object to string
