@@ -16,10 +16,6 @@ public class Output {
     public Output() {
     }
 
-    // todo - make sure this gets added into 'refactored code' section
-    // previously rewritten in each servlet. shipped out to a dedicated class
-
-
     /**
      * converts array list of films into json string representation<br>
      * uses Gson library
@@ -62,11 +58,6 @@ public class Output {
         return stringWriter.toString();
     }
 
-
-    // todo write new method for creating xml from string....
-    //  see commented code @line 152 webservice
-
-    // todo currently throwing error
     public Film stringToXmlGenerator(String xmlInput) {
 
         try {
@@ -75,7 +66,6 @@ public class Output {
             Unmarshaller unmarshaller = context.createUnmarshaller();
             StringReader reader = new StringReader(xmlInput);
 
-            // todo npe currently being thrown here
             FilmList newFilmList = (FilmList) unmarshaller.unmarshal(reader);
 
             Film newFilm = newFilmList.getFilmList().get(0);

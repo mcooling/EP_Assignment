@@ -125,7 +125,6 @@ public class FilmRESTWebservice extends HttpServlet {
         // c. xml / json object sent as a body (raw)
 
         // wrapper if, i.e if invalid data format is passed, return error message
-        // todo client code errors here
         if (dataFormat.equals("json") || dataFormat.equals("xml")
             || dataFormat.equals("text")) {
 
@@ -151,9 +150,6 @@ public class FilmRESTWebservice extends HttpServlet {
             }
 
             // pattern c parse code: checks if param key 'film' and any standard film param are empty
-            // todo check in with jc. added 'title' to validation
-            //  without it, i assume if film was empty but title wasn't, this would still fire...which i don't want?
-            // think i need an extra check here for a standard param, e.g. title
             else if ((request.getParameter("film") == null ||
                     request.getParameter("film").isEmpty())
                     && (request.getParameter("title") == null ||
@@ -241,7 +237,6 @@ public class FilmRESTWebservice extends HttpServlet {
         // c. xml / json object sent as a body (raw)
 
         // wrapper if, i.e if invalid data format is passed, return error message
-        // todo client code errors here
         if (dataFormat.equals("json") || dataFormat.equals("xml")
                 || dataFormat.equals("text")) {
 
@@ -359,7 +354,6 @@ public class FilmRESTWebservice extends HttpServlet {
             while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
                 payloadString.append(charBuffer, 0, bytesRead);
             } */
-// todo will this also include the 'format:json' kvp?
 // if it does, i assume we want to extract that in some way?
 /*while (bufferedReader.readLine() != null) {
                 payloadString.append(body);
