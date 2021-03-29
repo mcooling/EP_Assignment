@@ -221,7 +221,6 @@ public class FilmDAO {
      */
     public Film addFilm(Film film) {
 
-        // todo not sure on the use of this now...had to change method sig from int to film
         // int value returned (0 or 1)
         int returnValue = 0;
 
