@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FilmDB Application</title>
+
+    <script src="resources/js/jquery-3.5.1.js"
+            type="text/javascript"></script>
+    <script
+            src="resources/js/jquery_utils.js"
+            type="text/javascript"></script>
+
+</head>
+<body>
+<table border="1" bgcolor="#20b2aa">
+    <tr><th><big></big>Film Search Application</th></tr>
+</table>
+
+<br><label>Base Webservice URL: <input type="text" id="restwebservice"
+                                value="http://localhost:8080/Section8_WS_ReST_war_exploded/FilmRESTWebservice"/></label><br><br>
+<fieldset>
+
+    <!--
+    kaleem confirmed we can 'recycle' the web app code
+    just need to change the endpoint, i.e. point to web service, not servlet
+    current ui is based purely on params
+    does it need to add field for 'body' then as well? POST/PUT only?
+    -->
+
+
+    <legend>Get All Films</legend>
+    <form action="#">
+        <!-- http://localhost:8080/Section8_WS_ReSTClient_war_exploded/FilmRESTWebservice?action=getallfilms -->
+
+        <!--
+        need to think through interaction with JQuery
+        current JQuery interacts with servlets; we need to point to the webservice
+        means we need to parameterise and populate WS URL
+        not quite sure what I need to pass
+        also bear in mind this isn't factoring in any rebuilt ui
+        -->
+
+        <!-- need to work out how to create URL as a param. currently hardcoded, lots of times -->
+        <!-- this isn't working -->
+
+        <input type="button" value="XML" onclick="getAllFilms(
+            'restwebservice', 'getallfilms', 'xml')"/>
+
+        <input type="button" value="JSON" onclick="getAllFilms(
+            'restwebservice', 'getallfilms', 'json')"/>
+
+        <input type="button" value="TEXT" onclick="getAllFilms(
+            'restwebservice', 'getallfilms', 'text')"/>
+    </form>
+    <p/>
+    <div id="getallfilms"></div>
+</fieldset><br></br>
+
+<fieldset>
+    <legend>Get Films By Name</legend>
+    <form action="#">
+        <label>Film Name: <input type="text" id="filmname"/></label><br></br>
+        <input type="button" value="XML"
+               onclick="getFilmsByName('restwebservice', 'getfilmsbyname', 'xml', 'filmname')"/>
+        <input type="button" value="JSON"
+               onclick="getFilmsByName('restwebservice', 'getfilmsbyname', 'json', 'filmname')"/>
+        <input type="button" value="TEXT"
+               onclick="getFilmsByName('restwebservice', 'getfilmsbyname', 'text', 'filmname')"/>
+    </form>
+    <p/>
+    <div id="getfilmsbyname"></div>
+</fieldset><br></br>
+
+<fieldset>
+    <legend>Get Film By ID</legend>
+    <form action="#">
+        <label>Film ID: <input type="text" id="filmid"/></label><br></br>
+        <input type="button" value="XML"
+               onclick="getFilmById('restwebservice', 'getfilmbyid', 'xml', 'filmid')"/>
+        <input type="button" value="JSON"
+               onclick="getFilmById('restwebservice', 'getfilmbyid', 'json', 'filmid')"/>
+        <input type="button" value="TEXT"
+               onclick="getFilmById('restwebservice', 'getfilmbyid', 'text', 'filmid')"/>
+    </form>
+</fieldset><br></br>
+
+<!-- does add and update need to add in UI fields for 'body'? -->
+
+<fieldset>
+    <legend>Update Film Details</legend>
+    <form action="#">
+
+        <label>Film Name: <input type="text" id="u_filmname"/></label><br></br>
+        <label>Year: <input type="text" id="u_year"/></label><br></br>
+        <label>Director: <input type="text" id="u_director"/></label><br></br>
+        <label>Cast: <input type="text" id="u_stars"/></label><br></br>
+        <label>Plot: <input type="text" id="u_review"/></label><br></br>
+
+        <input type="button" value="XML"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'restwebservice', 'xml')"/>
+        <input type="button" value="JSON"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'restwebservice', 'json')"/>
+        <input type="button" value="TEXT"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'restwebservice', 'text')"/><br></br>
+
+    </form>
+    <div id="updatefilm"></div>
+</fieldset><br></br>
+
+<fieldset>
+    <legend>Add New Film</legend>
+    <form action="#">
+
+        <label>Film Name: <input type="text" id="add_filmname"/></label><br></br>
+        <label>Year: <input type="text" id="add_year"/></label><br></br>
+        <label>Director: <input type="text" id="add_director"/></label><br></br>
+        <label>Cast: <input type="text" id="add_stars"/></label><br></br>
+        <label>Plot: <input type="text" id="add_review"/></label><br></br>
+
+        <input type="button" value="XML"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'restwebservice', 'xml')"/>
+
+        <input type="button" value="JSON"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'restwebservice', 'json')"/>
+
+        <input type="button" value="TEXT"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'restwebservice', 'text')"/>
+    </form>
+</fieldset><br></br>
+
+<fieldset>
+    <legend>Delete Film</legend>
+    <form action="#">
+        <label>Film ID: <input type="text" id="deletefilmid"/></label><br></br>
+        <input type="button" value="Delete Film"
+               onclick="deleteFilm('deletefilmid', 'restwebservice')"/>
+    </form>
+    <div id="deletefilm"></div>
+</fieldset><br></br>
+
+<!-- add single div id for table results -->
+<div id="filmtable"></div>
+</body>
+</html>
