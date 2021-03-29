@@ -214,8 +214,7 @@ public class FilmRESTWebservice extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        FilmDAO filmDAO = FilmDAO.getInstance();
-
+        /*FilmDAO filmDAO = FilmDAO.getInstance();
         PrintWriter printWriter = response.getWriter();
 
         int id = Integer.parseInt(request.getParameter("id"));
@@ -228,7 +227,94 @@ public class FilmRESTWebservice extends HttpServlet {
         Film film = new Film(id, title, year, director, stars, review);
         filmDAO.updateFilm(film);
 
-        printWriter.write("Film updated. Check the database to confirm, if required");
+        printWriter.write("Film updated. Check the database to confirm, if required");*/
+
+        FilmDAO filmDAO = FilmDAO.getInstance();
+
+        PrintWriter printWriter = response.getWriter();
+        String dataFormat = request.getParameter("format");
+
+        // pseudocode for data parsing patterns. three patterns
+
+        // a. each value sent as a parameter, e.g. title, year etc
+        // b. xml / json object sent as a parameter (where param key 'film' is present)
+        // c. xml / json object sent as a body (raw)
+
+        // wrapper if, i.e if invalid data format is passed, return error message
+        // todo client code errors here
+        if (dataFormat.equals("json") || dataFormat.equals("xml")
+                || dataFormat.equals("text")) {
+
+            // pattern b parse code: checks if param key 'film' is present
+            if (request.getParameter("film") != null
+                    && !request.getParameter("film").isEmpty()) {
+
+                // if json, read in parameter, parse to Film object and pass to addFilm
+                if (dataFormat.equals("json")) {
+
+                    String jsonInput = request.getParameter("film");
+                    Film jsonFilm = gson.fromJson(jsonInput, Film.class);
+                    filmDAO.updateFilm(jsonFilm);
+                }
+
+                // if xml, read in parameter, parse to Film object and pass to addFilm
+                if (dataFormat.equals("xml")) {
+
+                    String xmlInput = request.getParameter("film");
+                    Film xmlFilm = output.stringToXmlGenerator(xmlInput);
+                    filmDAO.updateFilm(xmlFilm);
+                }
+            }
+
+            // pattern c parse code: checks if param key 'film' and any standard film param are empty
+            else if ((request.getParameter("film") == null ||
+                    request.getParameter("film").isEmpty())
+                    && (request.getParameter("title") == null ||
+                    request.getParameter("title").isEmpty())) {
+
+                String line = null;
+                BufferedReader bufferedReader = request.getReader();
+                StringBuilder payloadString = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    payloadString.append(line);
+                }
+
+                bufferedReader.close();
+
+                // if json, parse to Film object and pass to addFilm
+                if (dataFormat.equals("json")) {
+
+                    Film film = gson.fromJson(payloadString.toString(), Film.class);
+                    filmDAO.updateFilm(film);
+
+                    // if xml, parse to Film object and pass to addFilm
+                } else if (dataFormat.equals("xml")) {
+
+                    Film film = output.stringToXmlGenerator(String.valueOf(payloadString));
+                    filmDAO.updateFilm(film);
+                }
+
+            }
+
+            // pattern a parse code: everything passed as parameter
+            // data format not required
+            else {
+
+                int id = Integer.parseInt(request.getParameter("id"));
+                String title = request.getParameter("title");
+                int year = Integer.parseInt(request.getParameter("year"));
+                String director = request.getParameter("director");
+                String stars = request.getParameter("stars");
+                String review = request.getParameter("review");
+
+                Film film = new Film(id, title, year, director, stars, review);
+                filmDAO.updateFilm(film);
+            }
+            // print success response
+            printWriter.write("Film updated. Check the database to confirm, if required");
+
+        } else printWriter.write("Data format unsupported. Please provide xml or json");
     }
 
     /**
