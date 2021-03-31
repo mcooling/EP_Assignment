@@ -43,10 +43,10 @@ public class DeleteFilm extends HttpServlet {
         String returnMessage = "";
 
         if (filmToDelete == 0) {
-            returnMessage = "Delete request failed";
+            returnMessage = "Delete request failed. Please try again";
 
         } else {
-            returnMessage = "Delete request successful";
+            returnMessage = "Film deleted. Please check database if required";
         }
         response.getWriter().write(returnMessage);
     }

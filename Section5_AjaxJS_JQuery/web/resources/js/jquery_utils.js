@@ -226,11 +226,19 @@ function updateFilm(filmId, filmName, year, director,
  */
 function deleteFilm(deleteFilmId, servletAddress) {
 
+    let filmId = null;
+
+    // check added, to handle film id passed as string or number
+    if (isNaN(deleteFilmId)) {
+        filmId = document.getElementById(deleteFilmId).value;
+    } else filmId = deleteFilmId;
+
     $.ajax({
 
         url: servletAddress,                                    // http request URL
-        type: "POST",                                           // http request type
-        data: {filmId: deleteFilmId},                           // data requested in servlet call
+        type: "POST",
+        dataType: "text",
+        data: {filmId: filmId},                           // data requested in servlet call
 
         // action to take if request type is successful
         success: function (servletResponse) {                   // object returned from post request
