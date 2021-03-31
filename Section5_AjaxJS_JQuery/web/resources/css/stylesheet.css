@@ -9,12 +9,22 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 .button1 {background-color: #4CAF50;} /* Green */
-.button2 {background-color: #008CBA;
-        width: 160px;
+
+.button2 {
+    background-color: #008CBA;
+    width: 160px;
 } /* Blue */
+
+.button2:hover {
+    background-color: #176780;
+    color: white;
+}
+
 .button3 {background-color: #1f5032;
             width: 200px;
 } /* Red */

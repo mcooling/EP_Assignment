@@ -34,6 +34,7 @@
         <input type="radio" id="text" name="format" value="text">
         <label for="text" class="label label2">PLAIN TEXT</label>
 
+        <!-- come back to these. ideally get these into results table -->
         <button class="button button4"><i class="fas fa-edit"></i></button>
         <button class="button button5"><i class="fas fa-trash-alt"></i></button>
     </form>
@@ -43,42 +44,13 @@
     <legend>GET ALL FILMS</legend>
     <form action="#">
 
-        <!-- new single search button. needs to get data format value -->
+        <!-- new single search button -->
         <input type="button" class="button button2" value="Get All Films"
                onclick="getAllFilms('GetAllFilms')"/><br><br>
 
         <div id="getallfilms"></div>
-
-        <!-- obsolete controls -->
-        <p>### OBSOLETE  CONTROLS ###</p>
-        <input type="button" value="XML" onclick="getAllFilms('GetAllFilms', 'xml')"/>
-        <input type="button" value="JSON" onclick="getAllFilms('GetAllFilms', 'json')"/>
-        <input type="button" value="TEXT" onclick="getAllFilms('GetAllFilms', 'text')"/>
-
     </form>
 </fieldset><br>
-
-<!-- just a test table to test css. delete when finished -->
-<table>
-    <tr>
-        <th>FILM ID</th><th>TITLE</th><th>YEAR</th>
-        <th>CAST</th><th>DIRECTOR</th><th>PLOT</th>
-    </tr>
-    <tr>
-        <td>10009</td><td>A Few Good Men</td><td>1998</td>
-        <td>Kevin Costner, Marc Cooling, Baxter Cooling,
-            Robert de Niro, Al Pacino</td>
-        <td>Marc Cooling</td>
-        <td>Blah blah blah blah, blah blah blah,  blah blah blah,
-            blah blah blah, blah blah blah, blah blah blah, blah blah blah,
-            blah blah blah, blah blah blah, blah blah blah, blah blah blah,
-            blah blah blah, blah blah blah, blah blah blah,</td>
-
-        <td><button class="button button4"><i class="fas fa-edit"></i></button></td>
-        <td><button class="button button5"><i class="fas fa-trash-alt"></i></button>
-        </td>
-    </tr>
-</table>
 
 <fieldset>
     <!-- new unified search -->
