@@ -22,6 +22,7 @@
 <div class="header">
     <h1>FILM DATABASE APPLICATION</h1>
 </div><BR>
+
 <fieldset>
     <legend>DATA FORMAT (Mandatory for all requests)</legend>
     <form action="#">
@@ -37,8 +38,8 @@
         <label for="text" class="label label2">PLAIN TEXT</label>
 
         <!-- come back to these. ideally get these into results table -->
-        <button class="button button4"><i class="fas fa-edit"></i></button>
-        <button class="button button5"><i class="fas fa-trash-alt"></i></button>
+        <button class="button button7"><i class="fas fa-edit"></i></button>
+        <button class="button button8"><i class="fas fa-trash-alt"></i></button>
     </form>
 </fieldset><br>
 
@@ -58,7 +59,7 @@
     <!-- new unified search -->
     <legend>GET FILMS BY NAME / ID</legend>
     <form action="#">
-        <input type="text" id="searchValue" size="34" value="Enter film name or ID"/><br><br>
+        <label>Film Name or ID: <input type="text" id="searchValue"/></label><br></br>
 
         <!-- new controls -->
         <input type="button" class=" button button3" value="Get Films By Name"
@@ -73,30 +74,26 @@
     </form>
 </fieldset><br>
 
-<p>### NEW 'ADD FILM' FLOW ###</p>
-// displayed dynamically when user clicks 'add film' button<br>
-// populated automatically on entry
-<p></p>
 <fieldset>
     <legend>ADD NEW FILM</legend>
-    <form action="#">
-
+    <button class="button button6">Show Form</button>
+    <form action="#" id="addForm" hidden>
         <label>Film Name: <input type="text" id="add_filmname"/></label><br></br>
         <label>Year: <input type="text" id="add_year"/></label><br></br>
         <label>Cast: <input type="text" id="add_stars"/></label><br></br>
         <label>Director: <input type="text" id="add_director"/></label><br></br>
-        <label>Plot: </label><br>
-        <textarea rows="4" id="add_plot"></textarea><br><br>
+        <label>Plot: </label>
+        <textarea rows="4" id="add_plot"></textarea><br>
 
         <!-- new control. need to bind to add film function based on input -->
-        <input type="button" value="Add Film" class="button button2"
+        <input type="button" value="Add" class="button button4"
                onclick="addFilm(
                        'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_plot',
                        'AddFilm')"/>
 
         <div id="addfilm"></div>
     </form>
-</fieldset><br></br>
+</fieldset>
 
 <!-- hidden on entry -->
 <!-- displayed & populated, if user selects 'Update' from results table -->
@@ -124,12 +121,13 @@
 <fieldset>
     <legend>DELETE FILM</legend>
     <form action="#">
-        <input type="text" id="deletefilmid" value="Enter Film ID"/><br></br>
-        <input type="button" class="button button2" value="Delete Film"
+
+        <label>Film ID: <input type="text" id="deletefilmid"/></label><br>
+        <input type="button" class="button button5" value="Delete"
                onclick="deleteFilm('deletefilmid', 'DeleteFilm')"/>
     </form>
     <div id="deletefilm"></div>
-</fieldset><br></br>
+</fieldset><br>
 
 <!-- add single div id for table results -->
 </body>

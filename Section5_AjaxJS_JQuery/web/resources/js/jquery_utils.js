@@ -244,6 +244,10 @@ function deleteFilm(deleteFilmId, servletAddress) {
     });
 }
 
+$(document).on("click",function () {
+    $("#addForm").show();
+})
+
 /**
  * called from webform<br>
  * adds film to database<br>
