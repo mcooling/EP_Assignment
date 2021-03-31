@@ -18,8 +18,13 @@ $(document).on( "click",
     e.preventDefault();
 });
 
-// todo note the format is no longer passed in
-//  value is checked inside the function, then passed into the ajax call
+// todo check with jc. format no longer passed in from webform
+// radio button value now checked from inside JQ function
+// then passed into the ajax call
+/**
+ * Fetches all films from db
+ * @param servletAddress GetAllFilms servlet
+ */
 function getAllFilms(servletAddress) {
 
     // checks the value of the radio button clicked in html
@@ -38,6 +43,7 @@ function getAllFilms(servletAddress) {
         }
     });
 }
+
 /**
  * called by webform onclick<br>
  * fetches film(s) from film name submitted<br>
@@ -63,7 +69,6 @@ function getFilmsByName(servletAddress, searchString) {
         }
     });
 }
-
 
 /**
  * fetches film from db, using film id
@@ -140,7 +145,6 @@ function scrollToForm() {
     }
      */
 
-
 // todo update film. not quite working
 // seems to be writing to disk ok, but doesn't display message in div as expected?
 /**
@@ -192,7 +196,6 @@ function updateFilm(filmId, filmName, year, director,
         }
     });
 }
-
 
 /**
  * called from webform<br>
@@ -252,7 +255,6 @@ function addFilm(filmName, year, stars, director,
         });
 }
 
-
 /**
  * used by update & delete film flows<br>
  * called by JQuery function<br>
@@ -271,6 +273,8 @@ function responseHandler(servletAddress, servletResponse) {
 // used by get and add film flows
 // returns a populated table of films
 function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
+
+    $("#getallfilms").html(''); // clear any previous content
 
         // create base table structure object, with headings
         let htmlTableStructure =
