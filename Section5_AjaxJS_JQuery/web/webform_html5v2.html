@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FilmDB Application</title>
+
+    <script src="resources/js/jquery-3.5.1.js"
+            type="text/javascript"></script>
+
+    <script src="resources/js/jquery_utils.js"
+            type="text/javascript"></script>
+
+    <script src="https://kit.fontawesome.com/a9097369c2.js"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href=resources/css/stylesheet.css>
+
+</head>
+<body>
+
+<div class="header">
+    <h1>FILM DATABASE APPLICATION</h1>
+</div><BR>
+<fieldset>
+    <legend>DATA FORMAT (Mandatory for all 'Get Film' requests)</legend>
+    <form action="#">
+        <input type="radio" id="json" name="format" value="json">
+        <label for="json" class="label label2">JSON</label>
+
+        <input type="radio" id="xml" name="format" value="xml">
+        <label for="xml" class="label label2">XML</label>
+
+        <input type="radio" id="text" name="format" value="text">
+        <label for="text" class="label label2">PLAIN TEXT</label>
+
+        <button class="button button4"><i class="fas fa-edit"></i></button>
+        <button class="button button5"><i class="fas fa-trash-alt"></i></button>
+    </form>
+</fieldset><br>
+
+<fieldset>
+    <legend>GET ALL FILMS</legend>
+    <form action="#">
+
+        <!-- new single search button. needs to get data format value -->
+        <input type="button" class="button button2" value="Get All Films"
+               onclick="getAllFilms('GetAllFilms')"/><br><br>
+
+        <!-- obsolete controls -->
+        <p>### OBSOLETE  CONTROLS ###</p>
+        <input type="button" value="XML" onclick="getAllFilms('GetAllFilms', 'xml')"/>
+        <input type="button" value="JSON" onclick="getAllFilms('GetAllFilms', 'json')"/>
+        <input type="button" value="TEXT" onclick="getAllFilms('GetAllFilms', 'text')"/>
+
+    </form>
+    <div id="getallfilms"></div>
+</fieldset><br>
+
+<!-- just a test table to test css. delete when finished -->
+<table>
+    <tr>
+        <th>FILM ID</th><th>TITLE</th><th>YEAR</th>
+        <th>CAST</th><th>DIRECTOR</th><th>PLOT</th>
+    </tr>
+    <tr>
+        <td>10009</td><td>A Few Good Men</td><td>1998</td>
+        <td>Kevin Costner, Marc Cooling, Baxter Cooling,
+            Robert de Niro, Al Pacino</td>
+        <td>Marc Cooling</td>
+        <td>Blah blah blah blah, blah blah blah,  blah blah blah,
+            blah blah blah, blah blah blah, blah blah blah, blah blah blah,
+            blah blah blah, blah blah blah, blah blah blah, blah blah blah,
+            blah blah blah, blah blah blah, blah blah blah,</td>
+
+        <td><button class="button button4"><i class="fas fa-edit"></i></button></td>
+        <td><button class="button button5"><i class="fas fa-trash-alt"></i></button>
+        </td>
+    </tr>
+</table>
+
+<fieldset>
+    <!-- new unified search -->
+    <legend>GET FILMS BY NAME / ID</legend>
+    <form action="#">
+        <input type="text" id="searchValue" size="34" value="Enter film name or ID"/><br><br>
+
+        <!-- new controls. need to bind to function based on input -->
+        <input type="button" class=" button button3" value="Get Films By Name"
+               onclick="getFilmsByName('GetFilmsByName', 'searchValue')"/>
+        <input type="button" class=" button button3" value="Get Film By ID"
+               onclick="getFilmsByName('GetFilmsByName', 'searchValue')"/>
+
+        <br><br>
+        <!-- obsolete controls -->
+        <p>### OBSOLETE  CONTROLS ###</p>
+        <input type="button" value="XML"
+               onclick="getFilmsByName('GetFilmsByName', 'xml', 'filmname')"/>
+        <input type="button" value="JSON"
+               onclick="getFilmsByName('GetFilmsByName', 'json', 'filmname')"/>
+        <input type="button" value="TEXT"
+               onclick="getFilmsByName('GetFilmsByName', 'text', 'filmname')"/>
+    </form>
+    <div id="getfilmsbyname"></div>
+</fieldset><br>
+
+<p>### OBSOLETE  FIELDSET ###</p>
+<fieldset>
+    <legend>Get Film By ID</legend>
+    <form action="#">
+        <label>Film ID: <input type="text" id="filmid"/></label><br></br>
+        <input type="button" value="XML"
+               onclick="getFilmById('GetFilmById', 'xml', 'filmid')"/>
+        <input type="button" value="JSON"
+               onclick="getFilmById('GetFilmById', 'json', 'filmid')"/>
+        <input type="button" value="TEXT"
+               onclick="getFilmById('GetFilmById', 'text', 'filmid')"/>
+    </form>
+</fieldset><br>
+
+<p>### NEW 'UPDATE FILM' FLOW ###</p>
+// displayed dynamically when user clicks 'update' button from results<br>
+// populated automatically on entry<br>
+// 'Update Film' button calls updateFilm function
+<p></p>
+<fieldset>
+    <legend>UPDATE FILM DETAILS</legend>
+    <form action="#">
+
+        <label>Film Name: <input type="text" id="u_filmname"/></label><br></br>
+        <label>Year: <input type="text" id="u_year"/></label><br></br>
+        <label>Director: <input type="text" id="u_director"/></label><br></br>
+        <label>Cast: <input type="text" id="u_stars"/></label><br></br>
+        <label>Plot: <input type="text" id="u_review"/></label><br></br>
+
+        <!-- new control. need to bind to update film function based on input -->
+        <input type="button" class="button button2" value="Update Film"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'xml')"/>
+        <br><br>
+        <p>### OBSOLETE CONTROLS ###</p>
+
+        <input type="button" value="XML"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'xml')"/>
+        <input type="button" value="JSON"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'json')"/>
+        <input type="button" value="TEXT"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'text')"/><br></br>
+
+    </form>
+    <div id="updatefilm"></div>
+</fieldset></br>
+
+<p>### NEW 'ADD FILM' FLOW ###</p>
+// displayed dynamically when user clicks 'add film' button<br>
+// populated automatically on entry
+<p></p>
+<fieldset>
+    <legend>ADD NEW FILM</legend>
+    <form action="#">
+
+        <label>Film Name: <input type="text" id="add_filmname"/></label><br></br>
+        <label>Year: <input type="text" id="add_year"/></label><br></br>
+        <label>Director: <input type="text" id="add_director"/></label><br></br>
+        <label>Cast: <input type="text" id="add_stars"/></label><br></br>
+        <label>Plot: <input type="text" id="add_review"/></label><br></br>
+
+        <!-- new control. need to bind to add film function based on input -->
+        <input type="button" value="Add Film" class="button button2"
+               onclick="updateFilm(
+                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
+                       'UpdateFilm', 'xml')"/>
+
+
+        <p>### OBSOLETE CONTROLS ###</p>
+        <input type="button" value="XML"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'AddFilm', 'xml')"/>
+
+        <input type="button" value="JSON"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'AddFilm', 'json')"/>
+
+        <input type="button" value="TEXT"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
+                       'AddFilm', 'text')"/>
+    </form>
+</fieldset><br></br>
+
+<fieldset>
+    <legend>DELETE FILM</legend>
+    <form action="#">
+        <input type="text" id="deletefilmid" value="Enter Film ID"/><br></br>
+        <input type="button" class="button button2" value="Delete Film"
+               onclick="deleteFilm('deletefilmid', 'DeleteFilm')"/>
+    </form>
+    <div id="deletefilm"></div>
+</fieldset><br></br>
+
+<!-- add single div id for table results -->
+</body>
+</html>

@@ -160,7 +160,7 @@ public class FilmDAO {
 
     /**
      * fetches film object from id
-     * @param filmId
+     * @param filmId film id
      * @return film object
      */
     public Film getFilmById(int filmId) {
@@ -223,8 +223,6 @@ public class FilmDAO {
 
         // int value returned (0 or 1)
         int returnValue = 0;
-
-        Film displayFilm = null;
         int newId = 0;
 
         // open db connection
@@ -267,7 +265,7 @@ public class FilmDAO {
 
         /**
          * deletes film object from db
-         * @param filmId
+         * @param filmId film id
          * @return SQL db response code
          * @throws SQLException
          */

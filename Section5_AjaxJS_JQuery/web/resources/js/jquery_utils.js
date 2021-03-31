@@ -18,17 +18,23 @@ $(document).on( "click",
     e.preventDefault();
 });
 
-function getAllFilms(servletAddress, dataFormat) {
+// todo note the format is no longer passed in
+//  value is checked inside the function, then passed into the ajax call
+function getAllFilms(servletAddress) {
+
+    // checks the value of the radio button clicked in html
+    let radioValue = $('input[name="format"]:checked').val();
+
     $.ajax({
 
         url: servletAddress,                                // http request URL
         type: "POST",                                       // http request type
-        dataType : dataFormat,                              // data type expected back in the response
-        data : {format : dataFormat},                       // data format requested in servlet call
+        dataType : radioValue,                              // data type expected back in the response
+        data : {format : radioValue},                       // data format requested in servlet call
 
         // action to take if request type is successful
         success: function(servletResponse) {                // object returned from post request
-            tableResponseHandler(servletResponse, dataFormat, servletAddress);   // response handler function
+            tableResponseHandler(servletResponse, radioValue, servletAddress);   // response handler function
         }
     });
 }
@@ -38,21 +44,47 @@ function getAllFilms(servletAddress, dataFormat) {
  * @param filmname film name search string, entered into form
  * @returns {string} string value of filmname element
  */
-// todo broken. needs fixing
-function getFilmsByName(servletAddress, dataFormat, searchString) {
+function getFilmsByName(servletAddress, searchString) {
 
-    let filmName = escape(document.getElementById(searchString).value);
+    let filmName = document.getElementById(searchString).value;
+    let radioFormat = $('input[name="format"]:checked').val();
 
     $.ajax({
 
         url: servletAddress,                     // http request URL
         type: "POST",                                       // http request type
-        dataType : dataFormat,                              // data type expected back in the response
-        data : {format : dataFormat, filmname: filmName},                       // data format requested in servlet call
+        dataType : radioFormat,                              // data type expected back in the response
+        data : {format : radioFormat, filmname: filmName},                       // data format requested in servlet call
 
         // action to take if request type is successful
         success: function(servletResponse) {                // object returned from post request
-            tableResponseHandler(servletResponse, dataFormat,
+            tableResponseHandler(servletResponse, radioFormat,
+                servletAddress);
+        }
+    });
+}
+
+
+/**
+ * fetches film from db, using film id
+ * @param servletAddress GetFilmById
+ * @param dataFormat requested (xml, json, text)
+ * @param {string} film_Id
+ */
+function getFilmById(servletAddress, film_Id) {
+
+    let film = document.getElementById(film_Id).value;
+    let radioFormat = $('input[name="format"]:checked').val();
+
+    $.ajax({
+        url: servletAddress,                                // http request URL
+        type: "POST",                                       // http request type
+        dataType: radioFormat,                               // data type expected back in the response
+        data: {format: radioFormat, filmId: film},           // data requested in servlet call
+
+        // action to take if request type is successful
+        success: function (servletResponse) {               // object returned from post request
+            tableResponseHandler(servletResponse, radioFormat,
                 servletAddress);
         }
     });
@@ -185,31 +217,6 @@ function deleteFilm(deleteFilmId, servletAddress) {
 }
 
 /**
-* fetches film from db, using film id
-* @param servletAddress GetFilmById
-* @param dataFormat requested (xml, json, text)
-* @param {string} film_Id
-*/
-function getFilmById(servletAddress, dataFormat, film_Id) {
-
-    let film = document.getElementById(film_Id).value;
-
-    $.ajax({
-        url: servletAddress,                                // http request URL
-        type: "POST",                                       // http request type
-        dataType: dataFormat,                               // data type expected back in the response
-        data: {format: dataFormat, filmId: film},           // data requested in servlet call
-
-        // action to take if request type is successful
-        // todo not working as expected
-        success: function (servletResponse) {               // object returned from post request
-                tableResponseHandler(servletResponse, dataFormat,
-                    servletAddress);
-        }
-    });
-}
-
-/**
  * called from webform<br>
  * takes film object attributes<br>
  * handles ajax call to servlet<br>
@@ -267,7 +274,7 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
 
         // create base table structure object, with headings
         let htmlTableStructure =
-            "<table border='1' class='ajaxTable'>" +
+            "<table class='ajaxTable'>" +
             "<tr>" +
                 "<th>Film Id</th><th>Name</th><th>Year</th>" +
                 "<th>Director</th><th>Cast</th><th>Plot</th>" +
@@ -284,8 +291,12 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                     htmlTableStructure += "<td>" + value + "</td>";
                 });
                 htmlTableStructure +=
-                        "<td><button id='updateButton'>Update</button></td>" +
-                        "<td><button id='deleteButton'>Delete</button></td>" +
+
+                //"<td><button className='button button4' id='updateButton'><i className='fas fa-edit'></i></button></td>" +
+                //"<td><button className='button button5' id='deleteButton'><i className='fas fa-trash-alt'></i></button></td>" +
+
+                        "<td><button className='button button4'><i className='fas fa-edit'></i></button></td>" +
+                        "<td><button className='button button5'><i className='fas fa-trash-alt'></i></button></td>" +
                     "</tr>";
             });
 
@@ -334,7 +345,7 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                     "</tr>";
             });
         }
-        $("#filmtable").append(htmlTableStructure + "</table>");
+        $("#getallfilms").append(htmlTableStructure + "</table>");
 }
 
 

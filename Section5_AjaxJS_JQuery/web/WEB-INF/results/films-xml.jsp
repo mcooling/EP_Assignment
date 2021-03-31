@@ -3,12 +3,12 @@
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <films>
   <headings>
-    <heading>Film ID</heading>
-    <heading>Title</heading>
-    <heading>Year</heading>
-    <heading>Director</heading>
-    <heading>Stars</heading>
-    <heading>Review</heading>
+    <heading>FILM ID</heading>
+    <heading>TITLE</heading>
+    <heading>YEAR</heading>
+    <heading>DIRECTOR</heading>
+    <heading>CAST</heading>
+    <heading>PLOT</heading>
   </headings>
   <c:forEach items="${films}" var="f">
     <film>

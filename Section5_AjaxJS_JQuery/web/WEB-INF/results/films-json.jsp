@@ -1,7 +1,7 @@
 <%--@elvariable id="films" type="model_beans.Film"--%>
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 {
-    "headings": ["Film ID", "Title", "Year", "Director", "Stars", "Review"],
+    "headings": ["FILM ID", "TITLE", "YEAR", "DIRECTOR", "CAST", "PLOT"],
     "films": [
             <c:forEach items="${films}" var="f" varStatus="status">
             {
