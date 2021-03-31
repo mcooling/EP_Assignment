@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +54,9 @@ public class AddFilm extends HttpServlet {
         // pass films array into request object
         request.setAttribute("films", filmList);
 
-        String viewJspFilePath = "";            // string object to pass into jsp
+        // todo do i even need this now, as i'm displaying message not results table?
+
+        /*String viewJspFilePath = "";            // string object to pass into jsp
 
         if (dataFormat.equals("json")) {
             response.setContentType("application/json");
@@ -72,8 +75,18 @@ public class AddFilm extends HttpServlet {
         // add dispatcher, to forward content to view jsp
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher(viewJspFilePath);
-        dispatcher.include(request, response);
+        dispatcher.include(request, response);*/
 
+        PrintWriter printWriter = response.getWriter();
+
+        if (dataFormat.equals("json") || dataFormat.equals("xml")
+                || dataFormat.equals("text")) {
+
+            printWriter.write("Film added. Check the database to confirm, if required");
+
+        } else {
+            printWriter.write("Data format unsupported. Please select json, xml or text");
+        }
     }
 
     @Override

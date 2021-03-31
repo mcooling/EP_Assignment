@@ -46,10 +46,10 @@ public class UpdateFilm extends HttpServlet {
 
         // response expected back to jquery updateFilm function
         if (updatedFilm == 0) {
-            returnMessage = "Film update failed";
+            returnMessage = "Film update failed. Please check film details and resubmit";
 
         } else {
-            returnMessage = "Film updated";
+            returnMessage = "Film update complete. Please check the database update if required";
         }
         response.getWriter().write(returnMessage);
     }

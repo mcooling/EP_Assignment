@@ -223,7 +223,7 @@ public class FilmDAO {
 
         // int value returned (0 or 1)
         int returnValue = 0;
-        int newId = 0;
+        int uniqueFilmId = 0;
 
         // open db connection
         openConnection();
@@ -235,13 +235,13 @@ public class FilmDAO {
                     "select MAX(id) from mmufilms.films;");
 
             while (lastId.next()) {                                 // loop through result set
-                newId = lastId.getInt(1) + 1;         // update newId, as lastId + 1, convert to int
+                uniqueFilmId = lastId.getInt(1) + 1;         // update newId, as lastId + 1, convert to int
             }
 
             // write sql insert statement string
             String insertSql = "insert into mmufilms.films" +
                     "(id, title, year, director, stars, review) values(" +
-                    newId + ", " +
+                    uniqueFilmId + ", " +
                     "'" + film.getTitle() + "', " +
                     film.getYear() + ", " +
                     "'" + film.getDirector() + "', " +
@@ -260,7 +260,7 @@ public class FilmDAO {
         }
 
         // return the response from the select statement, not the insert
-        return getFilmById(newId);
+        return getFilmById(uniqueFilmId);
     }
 
         /**

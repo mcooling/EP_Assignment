@@ -236,6 +236,7 @@ function deleteFilm(deleteFilmId, servletAddress) {
 
 /**
  * called from webform<br>
+ * adds film to database<br>
  * takes film object attributes<br>
  * handles ajax call to servlet<br>
  * handles success action from servlet response<br>
@@ -245,27 +246,30 @@ function deleteFilm(deleteFilmId, servletAddress) {
  * @param {string} director
  * @param {string} review
  * @param {*} servletAddress
- * @param {*} dataFormat
  */
 function addFilm(filmName, year, stars, director,
-                 review, servletAddress, dataFormat) {
+                 review, servletAddress) {
+
+    let dataFormat = $('input[name="format"]:checked').val();
 
     $.ajax({
 
         url: servletAddress,
         type: "POST",
-        dataType: dataFormat,
+        dataType: "text",
         data: {
-            format: dataFormat, // reconfirm where 'format' is pointing to.....the request.getparam vals in servlet
             name: document.getElementById(filmName).value, // reconfirm where prefix values are pointing
             year: document.getElementById(year).value,
             stars: document.getElementById(stars).value,
             director: document.getElementById(director).value,
-            review: document.getElementById(review).value
+            review: document.getElementById(review).value,
+            format: dataFormat
         },
 
+        // want to return message, not table
         success: function (servletResponse) {
-                tableResponseHandler(servletResponse, dataFormat, servletAddress);
+            responseHandler(servletAddress, servletResponse);
+                //tableResponseHandler(servletResponse, dataFormat, servletAddress)
             }
         });
 }
@@ -277,11 +281,19 @@ function addFilm(filmName, year, stars, director,
  */
 function responseHandler(servletAddress, servletResponse) {
 
-    if (servletAddress === "DeleteFilm") {
-        $("#deletefilm").append("<p>" + servletResponse + "</p>");
+    // clear any previous div content
+    $("#addfilm").html('');
+    $("#updatefilm").html('');
+    $("#deletefilm").html('');
+
+    if (servletAddress === "AddFilm") {
+        $("#addfilm").append("<p>" + servletResponse + "</p>");
 
     } else if (servletAddress === "UpdateFilm") {
-            $("#updatefilm").append("<p>" + servletResponse + "</p>");
+        $("#updatefilm").append("<p>" + servletResponse + "</p>");
+
+    } else if (servletAddress === "DeleteFilm") {
+        $("#deletefilm").append("<p>" + servletResponse + "</p>");
     }
 }
 
@@ -375,6 +387,7 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
         } else if (servletAddress === 'GetFilmById') {
             $("#getfilmbyid").append(htmlTableStructure + "</table>");
         }
+
 }
 
 

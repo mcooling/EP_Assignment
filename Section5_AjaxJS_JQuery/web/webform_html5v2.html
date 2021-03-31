@@ -23,7 +23,7 @@
     <h1>FILM DATABASE APPLICATION</h1>
 </div><BR>
 <fieldset>
-    <legend>DATA FORMAT (Mandatory for all 'Get Film' requests)</legend>
+    <legend>DATA FORMAT (Mandatory for all requests)</legend>
     <form action="#">
 
         <!-- radio button values checked in JQuery function -->
@@ -73,6 +73,31 @@
     </form>
 </fieldset><br>
 
+<p>### NEW 'ADD FILM' FLOW ###</p>
+// displayed dynamically when user clicks 'add film' button<br>
+// populated automatically on entry
+<p></p>
+<fieldset>
+    <legend>ADD NEW FILM</legend>
+    <form action="#">
+
+        <label>Film Name: <input type="text" id="add_filmname"/></label><br></br>
+        <label>Year: <input type="text" id="add_year"/></label><br></br>
+        <label>Cast: <input type="text" id="add_stars"/></label><br></br>
+        <label>Director: <input type="text" id="add_director"/></label><br></br>
+        <label>Plot: </label><br>
+        <textarea rows="4" id="add_plot"></textarea><br><br>
+
+        <!-- new control. need to bind to add film function based on input -->
+        <input type="button" value="Add Film" class="button button2"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_plot',
+                       'AddFilm')"/>
+
+        <div id="addfilm"></div>
+    </form>
+</fieldset><br></br>
+
 <p>### NEW 'UPDATE FILM' FLOW ###</p>
 // displayed dynamically when user clicks 'update' button from results<br>
 // populated automatically on entry<br>
@@ -112,45 +137,6 @@
     </form>
     <div id="updatefilm"></div>
 </fieldset></br>
-
-<p>### NEW 'ADD FILM' FLOW ###</p>
-// displayed dynamically when user clicks 'add film' button<br>
-// populated automatically on entry
-<p></p>
-<fieldset>
-    <legend>ADD NEW FILM</legend>
-    <form action="#">
-
-        <label>Film Name: <input type="text" id="add_filmname"/></label><br></br>
-        <label>Year: <input type="text" id="add_year"/></label><br></br>
-        <label>Director: <input type="text" id="add_director"/></label><br></br>
-        <label>Cast: <input type="text" id="add_stars"/></label><br></br>
-        <label>Plot: <input type="text" id="add_review"/></label><br></br>
-
-        <!-- new control. need to bind to add film function based on input -->
-        <input type="button" value="Add Film" class="button button2"
-               onclick="updateFilm(
-                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
-                       'UpdateFilm', 'xml')"/>
-
-
-        <p>### OBSOLETE CONTROLS ###</p>
-        <input type="button" value="XML"
-               onclick="addFilm(
-                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
-                       'AddFilm', 'xml')"/>
-
-        <input type="button" value="JSON"
-               onclick="addFilm(
-                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
-                       'AddFilm', 'json')"/>
-
-        <input type="button" value="TEXT"
-               onclick="addFilm(
-                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_review',
-                       'AddFilm', 'text')"/>
-    </form>
-</fieldset><br></br>
 
 <fieldset>
     <legend>DELETE FILM</legend>
