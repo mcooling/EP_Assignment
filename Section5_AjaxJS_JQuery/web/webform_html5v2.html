@@ -107,17 +107,19 @@
     <legend>UPDATE FILM DETAILS</legend>
     <form action="#">
 
+        <label>Film ID: <input type="text" id="u_filmid" readonly/></label><br></br>
         <label>Film Name: <input type="text" id="u_filmname"/></label><br></br>
         <label>Year: <input type="text" id="u_year"/></label><br></br>
         <label>Director: <input type="text" id="u_director"/></label><br></br>
         <label>Cast: <input type="text" id="u_stars"/></label><br></br>
-        <label>Plot: <input type="text" id="u_review"/></label><br></br>
+        <label>Plot: </label><br>
+        <textarea rows="4" id="u_plot"></textarea><br><br>
 
         <!-- new control. need to bind to update film function based on input -->
         <input type="button" class="button button2" value="Update Film"
                onclick="updateFilm(
-                       'filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_review',
-                       'UpdateFilm', 'xml')"/>
+                       'u_filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_plot',
+                       'UpdateFilm')"/>
         <br><br>
         <p>### OBSOLETE CONTROLS ###</p>
 

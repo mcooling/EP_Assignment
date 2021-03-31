@@ -124,17 +124,19 @@ function populateUpdateFilm(thisObject) {
 
     let tableRow = $(thisObject).closest("tr");
 
+    let u_filmid = tableRow.find("td:eq(0)").text();
     let u_filmname = tableRow.find("td:eq(1)").text();
     let u_year = tableRow.find("td:eq(2)").text();
     let u_director = tableRow.find("td:eq(3)").text();
     let u_stars = tableRow.find("td:eq(4)").text();
     let u_review = tableRow.find("td:eq(5)").text();
 
+    $("#u_filmid").val(u_filmid);
     $("#u_filmname").val(u_filmname);
     $("#u_year").val(u_year);
     $("#u_director").val(u_director);
     $("#u_stars").val(u_stars);
-    $("#u_review").val(u_review);
+    $("#u_plot").val(u_review);
 
         // scrollToForm();
 
@@ -177,7 +179,7 @@ function scrollToForm() {
  * @param {string} dataFormat
  */
 function updateFilm(filmId, filmName, year, director,
-                    stars, review, servletAddress, dataFormat) {
+                    stars, review, servletAddress) {
 
     // writes the updated film values to disk
     // todo some refactoring comments to consider
@@ -188,17 +190,20 @@ function updateFilm(filmId, filmName, year, director,
 
     // should also disable the update film button again
 
+    let dataFormat = $('input[name="format"]:checked').val();
+
     $.ajax({
         url: servletAddress,
         type: "POST",
+        dataType: "text",
         data: {
-                format: dataFormat, // reconfirm where 'format' is pointing to.....the request.getparam vals in servlet
                 filmid: document.getElementById(filmId).value,
                 name: document.getElementById(filmName).value, // reconfirm where prefix values are pointing
                 year: document.getElementById(year).value,
                 director: document.getElementById(director).value,
                 stars: document.getElementById(stars).value,
-                review: document.getElementById(review).value
+                review: document.getElementById(review).value,
+                format: dataFormat
         },
 
         success: function (servletResponse) {
