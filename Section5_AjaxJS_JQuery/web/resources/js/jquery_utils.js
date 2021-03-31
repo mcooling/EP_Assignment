@@ -55,7 +55,7 @@ function getFilmsByName(servletAddress, searchString) {
     let filmName = null;
 
     // logic added to handle unified search input field
-    // needs to handle text (name) or number (id)
+    // needs to handle text or number
     if (isNaN(searchString)) {
         filmName = document.getElementById(searchString).value;
     } else filmName = searchString;
@@ -81,19 +81,26 @@ function getFilmsByName(servletAddress, searchString) {
 /**
  * fetches film from db, using film id
  * @param servletAddress GetFilmById
- * @param dataFormat requested (xml, json, text)
- * @param {string} film_Id
+ * @param {string} film_Id film id
  */
-function getFilmById(servletAddress, film_Id) {
+function getFilmById(servletAddress, filmIdIn) {
 
-    let film = document.getElementById(film_Id).value;
+    let filmId = null;
+
+    // logic added to handle unified search input field
+    // needs to handle text or number
+    if (isNaN(filmIdIn)) {
+        filmId = document.getElementById(filmIdIn).value;
+    } else filmId = filmIdIn;
+
+    // let film = document.getElementById(film_Id).value;
     let radioFormat = $('input[name="format"]:checked').val();
 
     $.ajax({
         url: servletAddress,                                // http request URL
         type: "POST",                                       // http request type
         dataType: radioFormat,                               // data type expected back in the response
-        data: {format: radioFormat, filmId: film},           // data requested in servlet call
+        data: {format: radioFormat, filmId: filmId},           // data requested in servlet call
 
         // action to take if request type is successful
         success: function (servletResponse) {               // object returned from post request
@@ -365,8 +372,8 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
             $("#getallfilms").append(htmlTableStructure + "</table>");
         } else if (servletAddress === 'GetFilmsByName') {
             $("#getfilmsbyname").append(htmlTableStructure + "</table>");
-        } else if (servletAddress === 'GetFilmsByName') {
-            $("#getallfilms").append(htmlTableStructure + "</table>");
+        } else if (servletAddress === 'GetFilmById') {
+            $("#getfilmbyid").append(htmlTableStructure + "</table>");
         }
 }
 
