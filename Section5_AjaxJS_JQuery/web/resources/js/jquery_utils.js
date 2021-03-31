@@ -117,10 +117,7 @@ function getFilmById(servletAddress, filmIdIn) {
  */
 function populateUpdateFilm(thisObject) {
 
-    // fetch value for each td cell in getfilmbyid div
-    // add to update film fields
-
-    // console.log("Hi");
+    $("#updateForm").show(); // enable hidden 'Update Film' fieldset in HTML
 
     let tableRow = $(thisObject).closest("tr");
 
@@ -338,13 +335,8 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                     htmlTableStructure += "<td>" + value + "</td>";
                 });
                 htmlTableStructure +=
-
-                //"<td><button className='button button4' id='updateButton'><i className='fas fa-edit'></i></button></td>" +
-                //"<td><button className='button button5' id='deleteButton'><i className='fas fa-trash-alt'></i></button></td>" +
-
-                        "<td><button className='button button4'><i className='fas fa-edit'></i></button></td>" +
-                        "<td><button className='button button5'><i className='fas fa-trash-alt'></i></button></td>" +
-                    "</tr>";
+                    "<td><input type='button' className='button button5' value='Edit'/></td>" +
+                    "<td><input type='button' className='button button5' value='Delete'/></td></tr>";
             });
 
             // if data format passed in is xml

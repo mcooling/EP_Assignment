@@ -98,12 +98,9 @@
     </form>
 </fieldset><br></br>
 
-<p>### NEW 'UPDATE FILM' FLOW ###</p>
-// displayed dynamically when user clicks 'update' button from results<br>
-// populated automatically on entry<br>
-// 'Update Film' button calls updateFilm function
-<p></p>
-<fieldset>
+<!-- hidden on entry -->
+<!-- displayed & populated, if user selects 'Update' from results table -->
+<fieldset id="updateForm" hidden>
     <legend>UPDATE FILM DETAILS</legend>
     <form action="#">
 
@@ -115,7 +112,6 @@
         <label>Plot: </label><br>
         <textarea rows="4" id="u_plot"></textarea><br><br>
 
-        <!-- new control. need to bind to update film function based on input -->
         <input type="button" class="button button2" value="Update Film"
                onclick="updateFilm(
                        'u_filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_plot',
