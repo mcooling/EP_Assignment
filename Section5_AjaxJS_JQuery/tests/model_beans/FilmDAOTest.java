@@ -1,6 +1,6 @@
 package model_beans;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

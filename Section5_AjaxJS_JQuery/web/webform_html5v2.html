@@ -25,6 +25,8 @@
 <fieldset>
     <legend>DATA FORMAT (Mandatory for all 'Get Film' requests)</legend>
     <form action="#">
+
+        <!-- radio button values checked in JQuery function -->
         <input type="radio" id="json" name="format" value="json">
         <label for="json" class="label label2">JSON</label>
 
@@ -58,11 +60,15 @@
     <form action="#">
         <input type="text" id="searchValue" size="34" value="Enter film name or ID"/><br><br>
 
-        <!-- new controls. need to bind to function based on input -->
+        <!-- new controls -->
         <input type="button" class=" button button3" value="Get Films By Name"
                onclick="getFilmsByName('GetFilmsByName', 'searchValue')"/>
+
         <input type="button" class=" button button3" value="Get Film By ID"
-               onclick="getFilmsByName('GetFilmsByName', 'searchValue')"/>
+               onclick="getFilmById('GetFilmById', 'searchValue')"/>
+
+        <br><br>
+        <div id="getfilmsbyname"></div>
 
         <br><br>
         <!-- obsolete controls -->
@@ -74,7 +80,6 @@
         <input type="button" value="TEXT"
                onclick="getFilmsByName('GetFilmsByName', 'text', 'filmname')"/>
     </form>
-    <div id="getfilmsbyname"></div>
 </fieldset><br>
 
 <p>### OBSOLETE  FIELDSET ###</p>

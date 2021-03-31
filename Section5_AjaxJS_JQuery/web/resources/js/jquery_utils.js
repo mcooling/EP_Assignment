@@ -48,11 +48,19 @@ function getAllFilms(servletAddress) {
  * called by webform onclick<br>
  * fetches film(s) from film name submitted<br>
  * @param filmname film name search string, entered into form
- * @returns {string} string value of filmname element
+ * @returns {string} string value of film objects
  */
 function getFilmsByName(servletAddress, searchString) {
 
-    let filmName = document.getElementById(searchString).value;
+    let filmName = null;
+
+    // logic added to handle unified search input field
+    // needs to handle text (name) or number (id)
+    if (isNaN(searchString)) {
+        filmName = document.getElementById(searchString).value;
+    } else filmName = searchString;
+
+    // let filmName = document.getElementById(searchString).value;
     let radioFormat = $('input[name="format"]:checked').val();
 
     $.ajax({
@@ -274,7 +282,10 @@ function responseHandler(servletAddress, servletResponse) {
 // returns a populated table of films
 function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
 
-    $("#getallfilms").html(''); // clear any previous content
+    // clear any previous div content
+    $("#getallfilms").html('');
+    $("#getfilmsbyname").html('');
+    $("#getfilmbyid").html('');
 
         // create base table structure object, with headings
         let htmlTableStructure =
@@ -349,7 +360,14 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                     "</tr>";
             });
         }
-        $("#getallfilms").append(htmlTableStructure + "</table>");
+
+        if (servletAddress === 'GetAllFilms') {
+            $("#getallfilms").append(htmlTableStructure + "</table>");
+        } else if (servletAddress === 'GetFilmsByName') {
+            $("#getfilmsbyname").append(htmlTableStructure + "</table>");
+        } else if (servletAddress === 'GetFilmsByName') {
+            $("#getallfilms").append(htmlTableStructure + "</table>");
+        }
 }
 
 

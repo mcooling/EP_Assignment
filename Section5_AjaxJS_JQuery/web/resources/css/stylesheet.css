@@ -13,29 +13,41 @@
     cursor: pointer;
 }
 
-.button1 {background-color: #4CAF50;} /* Green */
+.button1 {
+    background-color: #4CAF50;
+}
 
 .button2 {
     background-color: #008CBA;
     width: 160px;
-} /* Blue */
+}
 
 .button2:hover {
     background-color: #176780;
     color: white;
 }
 
-.button3 {background-color: #1f5032;
-            width: 200px;
-} /* Red */
-.button4 {background-color: #4e9922;
-            color: #ffffff;
-            padding: 10px 10px 10px 10px;
-} /* Gray */
-.button5 {background-color: #d90c0c;
-            color: #ffffff;
-            padding: 10px 12px 10px 12px;
-} /* Black */
+.button3 {
+    background-color: #1f5032;
+    width: 200px;
+}
+
+.button3:hover {
+    background-color: #677b6a;
+    color: white;
+}
+
+.button4 {
+    background-color: #4e9922;
+    color: #ffffff;
+    padding: 10px 10px 10px 10px;
+}
+
+.button5 {
+    background-color: #d90c0c;
+    color: #ffffff;
+    padding: 10px 12px 10px 12px;
+}
 
 legend {
     font-family: Arial, Helvetica, sans-serif;
@@ -45,19 +57,22 @@ legend {
     padding: 8px 10px;
 }
 
-h1 { color: white;
+h1 {
+    color: white;
     font-weight: bold;
     font-size: 24px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-h2 { color: #440000;
+h2 {
+    color: #440000;
     font-weight: bold;
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.error { background-color: yellow;
+.error {
+    background-color: yellow;
     color: red;
     font-weight: bold;
     font-size: 20px;
@@ -65,7 +80,8 @@ h2 { color: #440000;
     border-style: inset;
 }
 
-label { color: #440000;
+label {
+    color: #440000;
     font-weight: bold;
     font-size: 16px;
     color: darkslategray;
@@ -104,12 +120,14 @@ table {
     width: 100%;
 }
 
-th.title   { background-color: #d5708c;
+th.title {
+    background-color: #d5708c;
     font-size: 28px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-th { background-color: #254222;
+th {
+    background-color: #254222;
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
@@ -121,7 +139,8 @@ tr:nth-child(even) {
     background-color: #ebf1eb;
 }
 
-td { font-size: 14px;
+td {
+    font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
