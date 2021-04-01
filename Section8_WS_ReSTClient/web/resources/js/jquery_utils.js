@@ -19,40 +19,39 @@ $(document).on( "click",
     e.preventDefault();
 });
 
-// todo most bootstrap tutorials use .on click listener in JQ, rather than onclick= in html
-// can't get either to work, but guessing using .on click will require more refactoring
+/**
+ * fetches all film records from database
+ * @param {string|number} servletAddressIn rest web service address
+ * @param {*} action getall, getbyname or getbyid
+ */
+function getAllFilms(servletAddressIn, action) {
 
-// suggested on click pattern
-// doesn't recognise function params though...out of context
-// only way is to include within the function, but doesn't feel right..
+    // checks the value of the radio button clicked in html
+    let radioValue = $('input[name="format"]:checked').val();
 
-$('#allfilms').on('click', function(event) {
-    event.preventDefault(); // To prevent following the link (optional)
-    getAllFilms(document.getElementById('restwebservice').value,
-        'getallfilms', 'xml'); // add function call
-});
+    let servletAddress = null;
 
-
-function getAllFilms(servletAddress, action, dataFormat) {
-
-    // test function being called
-    console.log(servletAddress.toString());
-    console.log(document.getElementById(servletAddress).value);
+    // unified input field used. can pass number or text
+    // logic required, to handle either
+    if (isNaN(servletAddressIn)) {
+        servletAddress = document.getElementById(servletAddressIn).value;
+    } else servletAddress = servletAddressIn;
 
     $.ajax({
 
-        url: document.getElementById(servletAddress).value,     // http request URL
+        url: servletAddress,     // http request URL
         // type: "POST",                                        // http request type
         type: "GET",
-        dataType : dataFormat,                                  // data type expected back in the response
-        data : {action : action,
-                format : dataFormat},                           // data format requested in servlet call
+        dataType: radioValue,                                  // data type expected back in the response
+        data: {action: action,
+                format: radioValue
+        },                           // data format requested in servlet call
 
         // action to take if request type is successful
         success: function(servletResponse) {
             console.log("We are here");
             // object returned from post request
-            tableResponseHandler(servletResponse, dataFormat, servletAddress);   // response handler function
+            tableResponseHandler(servletResponse, radioValue, action);   // response handler function
 
         },
 
@@ -70,10 +69,10 @@ function getFilmsByName(servletAddress, action, dataFormat, searchString) {
     $.ajax({
         url: document.getElementById(servletAddress).value,
         type: "GET",
-        dataType : dataFormat,
-        data : {action : action,
+        dataType: dataFormat,
+        data: {action: action,
                 filmName: filmName,
-                format : dataFormat},
+                format: dataFormat},
 
         success: function(servletResponse) {
             tableResponseHandler(servletResponse, dataFormat,
@@ -95,7 +94,7 @@ function getFilmById(servletAddress, action, dataFormat, film_Id) {
         url: document.getElementById(servletAddress).value,
         type: "GET",
         dataType: dataFormat,
-        data: {action : action,
+        data: {action: action,
                 id: filmId,
                 format: dataFormat},
 
@@ -248,15 +247,22 @@ function responseHandler(servletResponse) {
     }*/
 }
 
-// used by get and add film flows
-// returns a populated table of films
-function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
+/**
+ * builds html for search results table
+ * @param servletResponse doGet response from web service
+ * @param dataFormat data format
+ * @param action doGet action; getall, getbyname or getbyid
+ */
+function tableResponseHandler(servletResponse, dataFormat, action) {
 
-    $("#filmtable").html('');
+    // clear any previous div content
+    $("#getallfilms").html('');
+    $("#getfilmsbyname").html('');
+    $("#getfilmbyid").html('');
 
         // create base table structure object, with headings
         let htmlTableStructure =
-            "<table border='1' class='ajaxTable'>" +
+            "<table class='ajaxTable'>" +
             "<tr>" +
                 "<th>Film Id</th><th>Name</th><th>Year</th>" +
                 "<th>Director</th><th>Cast</th><th>Plot</th>" +
@@ -322,9 +328,16 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                     "</tr>";
             });
         }
-    $("#test").append(htmlTableStructure + "</table>");
 
-    //$("#filmtable").append(htmlTableStructure + "</table>");
+    // todo this won't work, not using these servlet addresses
+    // 'action' is the unique identifier
+    if (action === 'getallfilms') {
+        $("#getallfilms").append(htmlTableStructure + "</table>");
+    } else if (action === 'getfilmsbyname') {
+        $("#getfilmsbyname").append(htmlTableStructure + "</table>");
+    } else if (action === 'getfilmbyid') {
+        $("#getfilmbyid").append(htmlTableStructure + "</table>");
+    }
 }
 
 function scrollToForm() {
