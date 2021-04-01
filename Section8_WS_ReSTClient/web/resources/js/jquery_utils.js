@@ -103,21 +103,37 @@ function getFilmsByName(servletAddressIn, action, searchString) {
     });
 }
 
-function getFilmById(servletAddress, action, dataFormat, film_Id) {
+/**
+ * fetches film records from film id
+ * @param {string|number} servletAddressIn rest web service address
+ * @param {*} action getfilmbyid
+ * @param {string} film_Id
+ */
+function getFilmById(servletAddressIn, action, film_Id) {
+
+    // checks the value of the radio button clicked in html
+    let radioValue = $('input[name="format"]:checked').val();
+
+    let servletAddress = null;
+
+    // unified input field used. can pass number or text
+    // logic required, to handle either
+    if (isNaN(servletAddressIn)) {
+        servletAddress = document.getElementById(servletAddressIn).value;
+    } else servletAddress = servletAddressIn;
 
     let filmId = document.getElementById(film_Id).value;
 
     $.ajax({
-        url: document.getElementById(servletAddress).value,
+        url: servletAddress,
         type: "GET",
-        dataType: dataFormat,
+        dataType: radioValue,
         data: {action: action,
                 id: filmId,
-                format: dataFormat},
+                format: radioValue},
 
         success: function (servletResponse) {
-            tableResponseHandler(servletResponse, dataFormat,
-                servletAddress);
+            tableResponseHandler(servletResponse, radioValue, action);
         },
 
         error: function(XMLHttpRequest, textStatus, errorThrown) {
