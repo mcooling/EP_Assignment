@@ -10,6 +10,7 @@ $(document).on( "click",
         populateUpdateFilm($(this));
 
     } else if (td === 7) {
+
         let filmId = parseInt(
                 tableRow.find("td:eq(0)").text(),10);
 
@@ -18,13 +19,26 @@ $(document).on( "click",
     e.preventDefault();
 });
 
-/**
- * called by webform onclick<br>
- * fetches all films from db<br>
- * @param servletAddress
- * @param dataFormat
- */
+// todo most bootstrap tutorials use .on click listener in JQ, rather than onclick= in html
+// can't get either to work, but guessing using .on click will require more refactoring
+
+// suggested on click pattern
+// doesn't recognise function params though...out of context
+// only way is to include within the function, but doesn't feel right..
+
+$('#allfilms').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    getAllFilms(document.getElementById('restwebservice').value,
+        'getallfilms', 'xml'); // add function call
+});
+
+
 function getAllFilms(servletAddress, action, dataFormat) {
+
+    // test function being called
+    console.log(servletAddress.toString());
+    console.log(document.getElementById(servletAddress).value);
+
     $.ajax({
 
         url: document.getElementById(servletAddress).value,     // http request URL
@@ -35,7 +49,9 @@ function getAllFilms(servletAddress, action, dataFormat) {
                 format : dataFormat},                           // data format requested in servlet call
 
         // action to take if request type is successful
-        success: function(servletResponse) {                    // object returned from post request
+        success: function(servletResponse) {
+            console.log("We are here");
+            // object returned from post request
             tableResponseHandler(servletResponse, dataFormat, servletAddress);   // response handler function
 
         },
@@ -47,12 +63,6 @@ function getAllFilms(servletAddress, action, dataFormat) {
     });
 }
 
-/**
- * called by webform onclick<br>
- * fetches film(s) from film name submitted<br>
- * @param filmname film name search string, entered into form
- * @returns {string} string value of filmname element
- */
 function getFilmsByName(servletAddress, action, dataFormat, searchString) {
 
     let filmName = document.getElementById(searchString).value;
@@ -77,12 +87,6 @@ function getFilmsByName(servletAddress, action, dataFormat, searchString) {
     });
 }
 
-/**
- * fetches film from db, using film id
- * @param servletAddress GetFilmById
- * @param dataFormat requested (xml, json, text)
- * @param {string} film_Id
- */
 function getFilmById(servletAddress, action, dataFormat, film_Id) {
 
     let filmId = document.getElementById(film_Id).value;
@@ -106,20 +110,6 @@ function getFilmById(servletAddress, action, dataFormat, film_Id) {
         }
     });
 }
-
-/**
- * called from webform<br>
- * takes film object attributes<br>
- * handles ajax call to servlet<br>
- * handles success action from servlet response<br>
- * @param {string} filmName
- * @param {string} year
- * @param {string} stars
- * @param {string} director
- * @param {string} review
- * @param {*} servletAddress
- * @param {*} dataFormat
- */
 
 function addFilm(filmName, year, stars, director,
                  review, servletAddress, dataFormat) {
@@ -149,93 +139,6 @@ function addFilm(filmName, year, stars, director,
     });
 }
 
-/**
- * called from webform<br>
- * takes film object attributes<br>
- * handles ajax call to servlet<br>
- * handles success action from servlet response<br>
- * @param {string} filmId
- * @param {string} filmName
- * @param {string} year
- * @param {string} director
- * @param {string} stars
- * @param {string} review
- * @param {*} servletAddress
- * @param {string} dataFormat
- */
-function updateFilm(filmId, filmName, year, director,
-                    stars, review, servletAddress, dataFormat) {
-
-    // todo have had to change app server to Wildfly. Tomcat doesn't support PUT as standard
-    // may need to work out how to configure Tomcat to support
-
-    $.ajax({
-        url: document.getElementById(servletAddress).value,
-        type: "PUT",
-        dataType: "text",
-        data: {
-                id: document.getElementById(filmId).value,
-                title: document.getElementById(filmName).value,
-                year: document.getElementById(year).value,
-                director: document.getElementById(director).value,
-                stars: document.getElementById(stars).value,
-                review: document.getElementById(review).value,
-                format: dataFormat
-        },
-
-        success: function (servletResponse) {
-                responseHandler(servletResponse);
-        },
-
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("Status: " + textStatus);
-            alert("Error: " + errorThrown);
-        }
-    });
-}
-
-/**
- * called from webform<br>
- * handles ajax call to servlet<br>
- * handles success action from servlet response<br>
- * @param {number|string} deleteFilmId
- * @param {*} servletAddress
- */
-function deleteFilm(deleteFilmId, servletAddress) {
-
-    let filmId = null;
-
-    // check added, to handle film id passed as string or number
-    if (isNaN(deleteFilmId)) {
-        filmId = document.getElementById(deleteFilmId).value;
-    } else filmId = deleteFilmId;
-
-    $.ajax({
-
-        url: document.getElementById(servletAddress).value,
-        type: "DELETE",
-        dataType: "text",
-        data: {id: filmId},
-
-        // action to take if request type is successful
-        success: function (servletResponse) {
-
-            // $("#deletefilm").append("<p>" + servletResponse + "</p>");
-            responseHandler(servletResponse);
-        },
-
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("Status: " + textStatus);
-            alert("Error: " + errorThrown);
-        }
-    });
-}
-
-/**
- * called when user clicks 'Update' button, from film results table<br>
- * scrapes data from 'getfilm' results table<br>
- * populates details into Update Film fields
- */
 function populateUpdateFilm(thisObject) {
 
     // fetch value for each td cell in getfilmbyid div
@@ -271,23 +174,67 @@ function populateUpdateFilm(thisObject) {
 
 }
 
-function scrollToForm() {
-    $([document.documentElement, document.body]).animate({
-        scrollTop: $("form").offset().top
-    }, 1000);
+function updateFilm(filmId, filmName, year, director,
+                    stars, review, servletAddress, dataFormat) {
+
+    // todo have had to change app server to Wildfly. Tomcat doesn't support PUT as standard
+    // may need to work out how to configure Tomcat to support
+
+    $.ajax({
+        url: document.getElementById(servletAddress).value,
+        type: "PUT",
+        dataType: "text",
+        data: {
+                id: document.getElementById(filmId).value,
+                title: document.getElementById(filmName).value,
+                year: document.getElementById(year).value,
+                director: document.getElementById(director).value,
+                stars: document.getElementById(stars).value,
+                review: document.getElementById(review).value,
+                format: dataFormat
+        },
+
+        success: function (servletResponse) {
+                responseHandler(servletResponse);
+        },
+
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
+        }
+    });
 }
 
-/*
-.ajaxTable tr:not(:first-child) {
-    cursor: pointer;
-}
- */
+function deleteFilm(deleteFilmId, servletAddress) {
 
-/**
- * used by update & delete film flows<br>
- * called by JQuery function<br>
- * returns success / failed message, based on sql response code
- */
+    let filmId = null;
+
+    // check added, to handle film id passed as string or number
+    if (isNaN(deleteFilmId)) {
+        filmId = document.getElementById(deleteFilmId).value;
+    } else filmId = deleteFilmId;
+
+    $.ajax({
+
+        url: document.getElementById(servletAddress).value,
+        type: "DELETE",
+        dataType: "text",
+        data: {id: filmId},
+
+        // action to take if request type is successful
+        success: function (servletResponse) {
+
+            // $("#deletefilm").append("<p>" + servletResponse + "</p>");
+            responseHandler(servletResponse);
+        },
+
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("Status: " + textStatus);
+            alert("Error: " + errorThrown);
+        }
+    });
+}
+
 function responseHandler(servletResponse) {
 
     $("#filmtable").html('');
@@ -375,9 +322,22 @@ function tableResponseHandler(servletResponse, dataFormat, servletAddress) {
                     "</tr>";
             });
         }
-        $("#filmtable").append(htmlTableStructure + "</table>");
+    $("#test").append(htmlTableStructure + "</table>");
+
+    //$("#filmtable").append(htmlTableStructure + "</table>");
 }
 
+function scrollToForm() {
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("form").offset().top
+    }, 1000);
+}
+
+/*
+.ajaxTable tr:not(:first-child) {
+    cursor: pointer;
+}
+ */
 
 // collection of early 'longhand' functions
 

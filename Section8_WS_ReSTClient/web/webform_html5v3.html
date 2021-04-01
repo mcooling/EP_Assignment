@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>FilmDB Application</title>
+
+    <script src="resources/js/jquery-3.5.1.js"
+            type="text/javascript"></script>
+
+    <script src="resources/js/jquery_utils.js"
+            type="text/javascript"></script>
+
+    <script src="https://kit.fontawesome.com/a9097369c2.js"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href=resources/css/stylesheet.css>
+
+</head>
+<body>
+<div class="content"><!-- page container -->
+
+<div class="header">
+    <h1>FILM DATABASE APPLICATION: REST WEBSERVICE CLIENT</h1>
+</div><br>
+    <br><label>BASE WEBSERVICE URL (change if required):
+        <input type="text" id="restwebservice"
+               value="http://localhost:8080/Section8_WS_ReST_war_exploded/FilmRESTWebservice"/></label><br><br>
+
+<fieldset>
+    <legend>DATA FORMAT (Mandatory for all requests)</legend>
+    <form action="#">
+
+        <!-- radio button values checked in JQuery function -->
+        <input type="radio" id="json" name="format" value="json">
+        <label for="json" class="label label2">JSON</label>
+
+        <input type="radio" id="xml" name="format" value="xml">
+        <label for="xml" class="label label2">XML</label>
+
+        <input type="radio" id="text" name="format" value="text">
+        <label for="text" class="label label2">PLAIN TEXT</label>
+
+        <!-- come back to these. ideally get these into results table -->
+        <button class="button button7"><i class="fas fa-edit"></i></button>
+        <button class="button button8"><i class="fas fa-trash-alt"></i></button>
+    </form>
+</fieldset><br>
+
+<fieldset>
+    <legend>GET ALL FILMS</legend>
+    <form action="#">
+
+        <!-- new single search button -->
+        <input type="button" class="button button2" value="Get All Films"
+               onclick="getAllFilms('GetAllFilms')"/><br><br>
+
+        <div id="getallfilms"></div>
+    </form>
+</fieldset><br>
+
+<fieldset>
+    <!-- new unified search -->
+    <legend>GET FILMS BY NAME / ID</legend>
+    <form action="#">
+        <label>Film Name or ID: <input type="text" id="searchValue"/></label><br></br>
+
+        <!-- new controls -->
+        <input type="button" class=" button button3" value="Get Films By Name"
+               onclick="getFilmsByName('GetFilmsByName', 'searchValue')"/>
+
+        <input type="button" class=" button button3" value="Get Film By ID"
+               onclick="getFilmById('GetFilmById', 'searchValue')"/>
+
+        <br><br>
+        <div id="getfilmsbyname"></div>
+        <div id="getfilmbyid"></div>
+    </form>
+</fieldset><br>
+
+<fieldset>
+    <legend>ADD NEW FILM</legend>
+    <button class="button button6" id="showForm">Show/Hide Form</button>
+
+    <form action="#" id="addForm" hidden>
+        <label>Film Name: <input type="text" id="add_filmname"/></label><br></br>
+        <label>Year: <input type="text" id="add_year"/></label><br></br>
+        <label>Cast: <input type="text" id="add_stars"/></label><br></br>
+        <label>Director: <input type="text" id="add_director"/></label><br></br>
+        <label>Plot: </label>
+        <textarea rows="6" id="add_plot"></textarea><br>
+
+        <!-- new control. need to bind to add film function based on input -->
+        <input type="button" value="Add" class="button button4"
+               onclick="addFilm(
+                       'add_filmname', 'add_year', 'add_stars', 'add_director', 'add_plot',
+                       'AddFilm')"/>
+
+        <div id="addfilm"></div>
+    </form>
+</fieldset>
+
+<!-- hidden on entry -->
+<!-- displayed & populated, if user selects 'Update' from results table -->
+<fieldset id="updateForm" hidden>
+    <legend>UPDATE FILM DETAILS</legend>
+    <form action="#">
+
+        <label>Film ID: <input type="text" id="u_filmid" readonly/></label><br></br>
+        <label>Film Name: <input type="text" id="u_filmname"/></label><br></br>
+        <label>Year: <input type="text" id="u_year"/></label><br></br>
+        <label>Director: <input type="text" id="u_director"/></label><br></br>
+        <label>Cast: <input type="text" id="u_stars"/></label><br></br>
+        <label>Plot: </label><br>
+        <textarea rows="6" id="u_plot"></textarea><br><br>
+
+        <input type="button" class="button button2" value="Update Film"
+               onclick="updateFilm(
+                       'u_filmid', 'u_filmname', 'u_year', 'u_director', 'u_stars', 'u_plot',
+                       'UpdateFilm')"/>
+        <br><br>
+    </form>
+    <div id="updatefilm"></div>
+</fieldset></br>
+
+<fieldset>
+    <legend>DELETE FILM</legend>
+    <form action="#">
+
+        <label>Film ID: <input type="text" id="deletefilmid"/></label><br>
+        <input type="button" class="button button5" value="Delete"
+               onclick="deleteFilm('deletefilmid', 'DeleteFilm')"/>
+    </form>
+    <div id="deletefilm"></div>
+</fieldset><br>
+
+<!-- modal class for delete -->
+</div>
+</body>
+</html>
