@@ -143,12 +143,39 @@ function getFilmById(servletAddressIn, action, film_Id) {
     });
 }
 
+// toggle to show/hide add film form
+$(document).ready(function () {
+    $("#showForm").click(function () {
+        $("#addForm").toggle();
+    });
+});
+
+/**
+ * Adds new film to db
+ * @param {string} filmName
+ * @param {string} year
+ * @param {string} stars
+ * @param {string} director
+ * @param {string} review
+ * @param {string|number} servletAddressIn rest web service address
+ */
 function addFilm(filmName, year, stars, director,
-                 review, servletAddress, dataFormat) {
+                 review, servletAddressIn) {
+
+    let radioValue = $('input[name="format"]:checked').val();
+    let servletAddress = null;
+
+    // unified input field used. can pass number or text
+    // logic required, to handle either
+    if (isNaN(servletAddressIn)) {
+        servletAddress = document.getElementById(servletAddressIn).value;
+    } else servletAddress = servletAddressIn;
+
+    let action = "addFilm";
 
     $.ajax({
 
-        url: document.getElementById(servletAddress).value,
+        url: servletAddress,
         type: "POST",
         dataType: "text",
         data: {
@@ -157,11 +184,11 @@ function addFilm(filmName, year, stars, director,
             stars: document.getElementById(stars).value,
             director: document.getElementById(director).value,
             review: document.getElementById(review).value,
-            format: dataFormat
+            format: radioValue
         },
 
         success: function (servletResponse) {
-            responseHandler(servletResponse);
+            responseHandler(action, servletResponse);
         },
 
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -267,7 +294,22 @@ function deleteFilm(deleteFilmId, servletAddress) {
     });
 }
 
-function responseHandler(servletResponse) {
+function responseHandler(action, servletResponse) {
+
+    // clear any previous div content
+    $("#addfilm").html('');
+    $("#updatefilm").html('');
+    $("#deletefilm").html('');
+
+    if (action === "addFilm") {
+        $("#addfilm").append("<p>" + servletResponse + "</p>");
+
+    } else if (action === "updateFilm") {
+        $("#updatefilm").append("<p>" + servletResponse + "</p>");
+
+    } else if (action === "deleteFilm") {
+        $("#deletefilm").append("<p>" + servletResponse + "</p>");
+    }
 
     $("#filmtable").html('');
     $("#filmtable").append("<p>" + servletResponse + "</p>");
